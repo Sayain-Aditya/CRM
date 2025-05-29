@@ -152,7 +152,7 @@ const DestinationImages = () => {
               onClick={handelClick}
               className={`w-full rounded-lg text-white py-2 ${
                 seltOption
-                  ? "bg-indigo-600 hover:bg-indigo-700"
+                  ? "bg-purple-600 hover:bg-purple-700"
                   : "bg-gray-400 cursor-not-allowed"
               }`}
             >
@@ -165,7 +165,7 @@ const DestinationImages = () => {
       <div className="mx-auto p-6"></div>
       <Toaster position="top-center" reverseOrder={false} />
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-indigo-600">
+        <h2 className="text-3xl font-bold text-purple-600">
           Bulk Image Upload
         </h2>
         <p className="mt-2 text-gray-500 text-sm">

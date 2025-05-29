@@ -74,7 +74,7 @@ const Destination = () => {
       {/* Header & Add Image Button */}
       <div className="flex flex-col md:flex-row items-center justify-between mb-10 max-w-6xl mx-auto">
         <div className="text-center md:text-left">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-700 drop-shadow-lg">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-purple-700 drop-shadow-lg">
             Add Destinations
           </h1>
           <p className="text-gray-600 mt-2 text-md md:text-lg">
@@ -83,7 +83,7 @@ const Destination = () => {
         </div>
         <a
           href="/DestinationImages"
-          className="mt-4 cursor-pointer md:mt-0 bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600 transition duration-300 shadow-lg"
+          className="mt-4 cursor-pointer md:mt-0 bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition duration-300 shadow-lg"
         >
           + Add Images
         </a>
@@ -111,7 +111,7 @@ const Destination = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300"
+            className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
           >
             Add Destination
           </button>
@@ -168,10 +168,10 @@ const Destination = () => {
               destinations.map((destination, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-indigo-50 to-white rounded-xl shadow-lg p-6 flex flex-col gap-4 border border-indigo-200 hover:shadow-xl transition-shadow duration-300"
+                  className="bg-gradient-to-br from-purple-50 to-white rounded-xl shadow-lg p-6 flex flex-col gap-4 border border-purple-200 hover:shadow-xl transition-shadow duration-300"
                 >
                   <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-bold text-indigo-700 truncate">
+                    <h3 className="text-lg font-bold text-purple-700 truncate">
                       {destination.name}
                     </h3>
                     <span className="text-sm font-medium text-black">

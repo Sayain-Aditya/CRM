@@ -151,7 +151,7 @@ const AddImage = () => {
               onClick={handelClick}
               className={`w-full rounded-lg text-white py-2 ${
                 seltOption
-                  ? "bg-indigo-600 hover:bg-indigo-700"
+                  ? "bg-purple-600 hover:bg-purple-700"
                   : "bg-gray-400 cursor-not-allowed"
               }`}
             >
@@ -164,7 +164,7 @@ const AddImage = () => {
       <div className="mx-auto p-6"></div>
       <Toaster position="top-center" reverseOrder={false} />
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-indigo-600">
+        <h2 className="text-3xl font-bold text-purple-600">
           Bulk Image Upload
         </h2>
         <p className="mt-2 text-gray-500 text-sm">
@@ -261,7 +261,7 @@ const AddImage = () => {
       {/* Mobile Grid View */}
       {!loading && imagesByHotel[seltOption]?.length > 0 && (
         <div className="mt-10">
-          <div className="bg-gray-500 text-white p-4 border-t rounded-t-md font-semibold">
+          <div className="bg-gradient-to-r from-purple-100 to-purple-100 text-purple-800 font-semibold p-4 rounded-md">
             Images for {hotels.find((h) => h._id === seltOption)?.name}
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">

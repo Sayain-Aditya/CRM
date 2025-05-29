@@ -71,7 +71,7 @@ const ManageHotel = () => {
       {/* Header & Add Image Button */}
       <div className="flex flex-col md:flex-row items-center justify-between mb-10 max-w-6xl mx-auto">
         <div className="text-center md:text-left">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-700 drop-shadow-lg">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-purple-700 drop-shadow-lg">
             Add Hotels
           </h1>
           <p className="text-gray-600 mt-2 text-md md:text-lg">
@@ -80,7 +80,7 @@ const ManageHotel = () => {
         </div>
         <a
           href="/AddImages"
-          className="mt-4 cursor-pointer md:mt-0 bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600 transition duration-300 shadow-lg"
+          className="mt-4 cursor-pointer md:mt-0 bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition duration-300 shadow-lg"
         >
           + Add Image
         </a>
@@ -108,7 +108,7 @@ const ManageHotel = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300"
+            className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
           >
             Add Hotel
           </button>
@@ -119,10 +119,10 @@ const ManageHotel = () => {
       <div className="mt-12 mx-auto">
         <div className="overflow-hidden shadow-lg rounded-lg">
           {/* Desktop Table */}
-          <div className="hidden sm:block">
-            <table className="w-full table-auto">
-              <thead>
-                <tr className="bg-gray-300 text-black uppercase text-sm">
+          <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-200">
+            <table className="min-w-full text-sm text-left">
+              <thead className="bg-gradient-to-r from-purple-100 to-purple-100 text-purple-800 font-semibold">
+                <tr>
                   <th className="px-6 py-3 text-left">Sr. No.</th>
                   <th className="px-6 py-3 text-left">Hotel Name</th>
                   <th className="px-6 py-3 text-left">Action</th>
@@ -168,10 +168,10 @@ const ManageHotel = () => {
               hotels.map((hotel, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-r from-indigo-50 to-white rounded-xl shadow-lg p-6 flex flex-col gap-4 border border-indigo-200 hover:shadow-xl transition-shadow duration-300"
+                  className="bg-gradient-to-r from-purple-50 to-white rounded-xl shadow-lg p-6 flex flex-col gap-4 border border-purple-200 hover:shadow-xl transition-shadow duration-300"
                 >
                   <div className="flex justify-between items-center">
-                    <h3 className="text-xl font-bold text-indigo-700 truncate">
+                    <h3 className="text-xl font-bold text-purple-700 truncate">
                       {hotel.name}
                     </h3>
                     <span className="text-sm font-medium text-black">

@@ -531,7 +531,7 @@ const IternaryList = ({ leads, setLeads }) => {
                     type="button"
                     className={`px-4 py-2 rounded-lg font-semibold shadow-sm transition ${
                       activeDay === i + 1
-                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
+                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
                         : "bg-gray-200 text-gray-700 hover:bg-blue-100"
                     }`}
                     onClick={() => setActiveDay(i + 1)}

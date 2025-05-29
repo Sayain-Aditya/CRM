@@ -226,7 +226,7 @@ const InvoiceNewForm = () => {
   return (
     <div className="mx-auto p-2 sm:p-6">
       <ToastContainer />
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-indigo-700 tracking-wide">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-purple-700 tracking-wide">
         {id ? "Update Invoice" : "Create Invoice"}
       </h1>
       <form
@@ -242,7 +242,7 @@ const InvoiceNewForm = () => {
               name="invoiceDate"
               value={formData.invoiceDate}
               onChange={handleChange}
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -252,7 +252,7 @@ const InvoiceNewForm = () => {
               name="dueDate"
               value={formData.dueDate}
               onChange={handleChange}
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -263,7 +263,7 @@ const InvoiceNewForm = () => {
               value={formData.customerName}
               onChange={handleChange}
               placeholder="Customer Name"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -274,7 +274,7 @@ const InvoiceNewForm = () => {
               value={formData.invoiceNumber}
               onChange={handleChange}
               placeholder="Invoice Number"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -285,7 +285,7 @@ const InvoiceNewForm = () => {
               value={formData.customerAddress}
               onChange={handleChange}
               placeholder="Customer Address"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
             />
           </div>
           <div>
@@ -296,7 +296,7 @@ const InvoiceNewForm = () => {
               value={formData.customerPhone}
               onChange={handleChange}
               placeholder="Customer Phone"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -307,7 +307,7 @@ const InvoiceNewForm = () => {
               value={formData.customerEmail}
               onChange={handleChange}
               placeholder="Customer Email"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -318,7 +318,7 @@ const InvoiceNewForm = () => {
               value={formData.dispatchThrough}
               onChange={handleChange}
               placeholder="Dispatch Through (optional)"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -329,7 +329,7 @@ const InvoiceNewForm = () => {
               value={formData.customerGST}
               onChange={handleChange}
               placeholder="Customer GSTIN"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -340,19 +340,19 @@ const InvoiceNewForm = () => {
               value={formData.customerAadhar}
               onChange={handleChange}
               placeholder="Customer Aadhar"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
         </div>
 
         {/* Product Details */}
         <div>
-          <h2 className="text-lg font-bold mb-2 text-indigo-700">
+          <h2 className="text-lg font-bold mb-2 text-purple-700">
             Product Details
           </h2>
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto border rounded-lg">
-              <thead className="bg-indigo-50 text-indigo-700">
+              <thead className="bg-purple-50 text-purple-700">
                 <tr>
                   <th className="p-2">Description</th>
                   <th className="p-2">Unit</th>
@@ -477,7 +477,7 @@ const InvoiceNewForm = () => {
                       <button
                         type="button"
                         onClick={handleAddRow}
-                        className="bg-indigo-500 text-white px-3 py-1 rounded mb-1 w-full md:w-auto"
+                        className="bg-purple-500 text-white px-3 py-1 rounded mb-1 w-full md:w-auto"
                       >
                         Add
                       </button>
@@ -513,7 +513,7 @@ const InvoiceNewForm = () => {
               value={formData.amountDetails.gstPercentage}
               onChange={handleDiscountChange}
               placeholder="GST Percentage"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div className="flex-1">
@@ -526,7 +526,7 @@ const InvoiceNewForm = () => {
               value={formData.amountDetails.discountOnTotal}
               onChange={handleDiscountChange}
               placeholder="Discount on Total"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div className="flex-1">
@@ -564,7 +564,7 @@ const InvoiceNewForm = () => {
                 );
               })
             }
-            className="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all duration-200"
+            className="w-full sm:w-auto px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition-all duration-200"
           >
             {id ? "Update Invoice" : "Create Invoice"}
           </button>

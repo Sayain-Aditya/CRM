@@ -114,7 +114,7 @@ const Images = () => {
       <Toaster position="top-center" />
 
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-indigo-600">
+        <h2 className="text-3xl font-bold text-purple-600">
           Bulk Image Upload
         </h2>
         <p className="mt-2 text-gray-500 text-sm">
@@ -162,10 +162,10 @@ const Images = () => {
             <h3 className="text-2xl font-semibold text-gray-700 mb-4">
               Uploaded Images
             </h3>
-            <div className="overflow-x-auto">
+            <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-200">
               <table className="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
-                <thead>
-                  <tr className="bg-gray-300 text-black uppercase text-sm">
+                <thead className="bg-gradient-to-r from-purple-100 to-purple-100 text-purple-800 font-semibold">
+                  <tr>
                     <th className="py-3 px-6">Sr. No</th>
                     <th className="py-3 px-6">Image Name</th>
                     <th className="py-3 px-6">Preview</th>
@@ -213,7 +213,7 @@ const Images = () => {
                 <img
                   src={img.url}
                   alt={img.name}
-                  className="w-24 h-24 rounded-md object-cover border-2 border-indigo-200 shadow"
+                  className="w-24 h-24 rounded-md object-cover border-2 border-purple-200 shadow"
                 />
                 <p className="text-sm text-gray-600 truncate text-center mt-2">
                   {img.name || "N/A"}

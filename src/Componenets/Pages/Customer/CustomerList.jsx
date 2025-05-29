@@ -105,7 +105,7 @@ const CustomerList = () => {
             )}
           </div>
           <Link to="/CustomerForm">
-            <button className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white font-medium py-2 px-5 rounded-lg shadow-lg transition duration-200">
+            <button className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-600 hover:opacity-90 text-white font-medium py-2 px-5 rounded-lg shadow-lg transition duration-200">
               <FaPlus className="text-sm" />
               Add New
             </button>
@@ -116,7 +116,7 @@ const CustomerList = () => {
       {/* Table for desktop */}
       <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-200">
         <table className="min-w-full text-sm text-left">
-          <thead className="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-800 font-semibold">
+          <thead className="bg-gradient-to-r from-purple-100 to-purple-100 text-purple-800 font-semibold">
             <tr>
               <th className="px-6 py-4">Name</th>
               <th className="px-6 py-4">Phone</th>
