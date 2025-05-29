@@ -5,13 +5,10 @@ import { CheckCircle } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
 import { RxCrossCircled } from "react-icons/rx";
 import { Toaster, toast } from "react-hot-toast";
-import generatePDF from "react-to-pdf";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import generatePDF  from "react-to-pdf";
 import Logo from "/src/assets/Logo.png";
 import BannerImage from "/src/assets/71840.jpg";
 import Qr from "/src/assets/Qr.png";
-import { useNavigate } from "react-router-dom";
 
 const IternaryField = () => {
   const { id } = useParams();
@@ -20,12 +17,14 @@ const IternaryField = () => {
   const [destinationImages, setDestinationImages] = useState([]);
   const [images, setImages] = useState([]);
   const targetRef = useRef();
-  const navigate = useNavigate();
-  useEffect (() => {
+
+  useEffect(() => {
     const fetchItinerary = async () => {
       try {
         const res = await axios.get(
-          `https://billing-backend-seven.vercel.app/Iternary/mano/${id}`
+          `https://billing-backend-seven.vercel.app/Iternary/mano/${
+            id || "682c2f3ca98e563ebeb3ef01"
+          }`
         );
         setItinerary(res.data.data);
       } catch (err) {
@@ -33,6 +32,7 @@ const IternaryField = () => {
         toast.error("Failed to load itinerary.");
       }
     };
+
     fetchItinerary();
   }, [id]);
 
@@ -111,80 +111,22 @@ const IternaryField = () => {
           "https://billing-backend-seven.vercel.app/common/all"
         );
         setImages(res.data);
-      } catch (error) {
-        console.error("Failed to fetch images:", error);
-        toast.error("Failed to load images.");
+      } catch {
+        // Optional: show toast or silently fail
       }
     };
 
-    // Fetch images only once
-    if (images.length === 0) {
-      fetchImages();
-    }
-  }, [images]);
+    fetchImages();
 
-  // const handlePrint = useReactToPrint({
-  //   content: () => targetRef.current,
-  //   documentTitle: itinerary?.title || "Itinerary",
-  //   removeAfterPrint: true,
-  // });
+    const interval = setInterval(fetchImages, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const handleDownloadPDF = async () => {
-    const element = targetRef.current;
-
-    if (!element) {
-      toast.error("Unable to generate PDF. Please try again.");
-      return;
-    }
-
-    try {
-      // Convert all images to Base64
-      const images = element.querySelectorAll("img");
-      await Promise.all(
-        Array.from(images).map(async (img) => {
-          if (!img.src.startsWith("data:")) {
-            try {
-              console.log("Fetching image:", img.src);
-              const response = await fetch(img.src, { mode: "cors" });
-              const blob = await response.blob();
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                img.src = reader.result;
-                console.log("Image converted to Base64:", img.src);
-              };
-              reader.readAsDataURL(blob);
-              await new Promise((resolve) => (reader.onloadend = resolve));
-            } catch (error) {
-              console.error("Error converting image to Base64:", img.src, error);
-            }
-          }
-        })
-      );
-
-      // Add a small delay to ensure all images are rendered
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // Generate canvas from the element
-      const canvas = await html2canvas(element, {
-        useCORS: true, // Enable cross-origin handling
-        allowTaint: false, // Prevent tainting of the canvas
-      });
-      const imgData = canvas.toDataURL("image/png");
-
-      // Create PDF
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("itinerary.pdf");
-
-      toast.success("PDF downloaded successfully!");
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      toast.error("Failed to generate PDF. Please try again.");
-    }
-  };
+  const handlePrint = useReactToPrint({
+    content: () => targetRef.current,
+    documentTitle: itinerary?.title || "Itinerary",
+    removeAfterPrint: true,
+  });
 
   if (!itinerary) {
     return (

@@ -7,6 +7,7 @@ import {
   IdentificationIcon,
   PowerIcon,
   UserCircleIcon,
+  CalculatorIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
@@ -42,7 +43,7 @@ const Sidebar = () => {
       <div className="flex items-center gap-2 mb-6">
         <img src="/src/assets/Logo.png" alt="Logo" className="w-10 h-10" />
         {!collapsed && (
-          <h1 className="text-md font-bold font-serif tracking-wide">
+          <h1 className="text-md font-bold font-serif tracking-wide text-purple-600">
             Shine Infosolution
           </h1>
         )}
@@ -56,7 +57,7 @@ const Sidebar = () => {
       >
         <SidebarItem
           title="Dashboard"
-          icon={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
+          icon={<AdjustmentsHorizontalIcon className="w-5 h-5 text-purple-600" />}
           to="/"
           selected={selected}
           setSelected={handleItemClick}
@@ -64,7 +65,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="Customers"
-          icon={<UserCircleIcon className="w-5 h-5" />}
+          icon={<UserCircleIcon className="w-5 h-5 text-purple-600" />}
           to="/CustomerList"
           selected={selected}
           setSelected={handleItemClick}
@@ -72,28 +73,17 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="Leads"
-          icon={<IdentificationIcon className="w-5 h-5" />}
+          icon={<IdentificationIcon className="w-5 h-5 text-purple-600" />}
           to="/List"
           selected={selected}
           setSelected={handleItemClick}
           collapsed={collapsed}
         />
-        {/* <SidebarDropdown
-          title="Products"
-          icon={<Squares2X2Icon className="w-5 h-5" />}
-          isOpen={openProducts}
-          setIsOpen={setOpenProducts}
-          items={[{ title: "Add Product", link: "/Products" }]}
-          selected={selected}
-          setSelected={handleItemClick}
-          collapsed={collapsed}
-          setMobileOpen={setMobileOpen} // ✅ pass this
-        /> */}
 
         <SidebarDropdown
           title="Gallery"
-          icon={<CameraIcon className="w-5 h-5" />}
-          isOpen={openGallery} // ✅ Fix: use `openGallery` instead of `openProducts`
+          icon={<CameraIcon className="w-5 h-5 text-purple-600" />}
+          isOpen={openGallery}
           setIsOpen={setOpenGallery}
           items={[
             { title: "Common", link: "/Common" },
@@ -103,12 +93,12 @@ const Sidebar = () => {
           selected={selected}
           setSelected={handleItemClick}
           collapsed={collapsed}
-          setMobileOpen={setMobileOpen} // ✅ pass this
+          setMobileOpen={setMobileOpen}
         />
 
         <SidebarItem
           title="Invoice"
-          icon={<UserCircleIcon className="w-5 h-5" />}
+          icon={<UserCircleIcon className="w-5 h-5 text-purple-600" />}
           to="/InvoiceNewList"
           selected={selected}
           setSelected={handleItemClick}
@@ -116,7 +106,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="Iternary"
-          icon={<UserCircleIcon className="w-5 h-5" />}
+          icon={<CalculatorIcon className="w-5 h-5 text-purple-600" />}
           to="/IternaryTable"
           selected={selected}
           setSelected={handleItemClick}
@@ -127,11 +117,11 @@ const Sidebar = () => {
       {/* Logout */}
       <button
         onClick={logout}
-        className={`flex items-center gap-2 text-red-600 hover:bg-red-100 p-2 rounded-md transition ${
+        className={`bg-purple-500 flex items-center gap-2 text-white hover:bg-purple-700 p-2 rounded-md transition ${
           collapsed ? "justify-center" : ""
         }`}
       >
-        <PowerIcon className="w-5 h-5" />
+        <PowerIcon className="w-5 h-5 text-black" />
         {!collapsed && <span>Logout</span>}
       </button>
     </div>
@@ -142,21 +132,21 @@ const Sidebar = () => {
       {/* Hamburger for mobile */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="no-print fixed top-4 left-4 z-50 bg-white rounded-full p-2 md:hidden"
+        className="no-print fixed top-4 left-4 z-50 bg-white rounded-full p-2 md:hidden shadow-md"
       >
-        <Bars3Icon className="w-6 h-6 text-gray-700" />
+        <Bars3Icon className="w-6 h-6 text-purple-600" />
       </button>
 
       {/* Collapse Toggle for Desktop */}
       <div className="no-print absolute top-4 left-4 z-40 hidden md:flex flex-col items-center gap-2">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="bg-white rounded-full p-2 shadow"
+          className="bg-white rounded-full p-2 shadow-md"
         >
           {collapsed ? (
-            <Bars3Icon className="w-6 h-6 text-gray-700" />
+            <Bars3Icon className="w-6 h-6 text-purple-600" />
           ) : (
-            <Bars3Icon className="w-6 h-6 text-gray-700 " />
+            <Bars3Icon className="w-6 h-6 text-purple-600" />
           )}
         </button>
       </div>
@@ -188,8 +178,8 @@ const SidebarItem = ({ title, icon, to, selected, setSelected, collapsed }) => (
     onClick={() => setSelected(title)}
     className={`relative group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 ${
       selected === title
-        ? "bg-blue-100 text-blue-600 font-medium"
-        : "hover:bg-gray-100 text-gray-700"
+        ? "bg-purple-100 text-purple-600 font-medium"
+        : "hover:bg-purple-50 text-gray-700"
     } ${collapsed ? "justify-center" : ""}`}
   >
     <div className="w-5 h-5">{icon}</div>
@@ -212,7 +202,7 @@ const SidebarDropdown = ({
   selected,
   setSelected,
   collapsed,
-  setMobileOpen, // ✅ receive it
+  setMobileOpen,
 }) => (
   <div>
     {/* Toggle dropdown */}
@@ -220,8 +210,8 @@ const SidebarDropdown = ({
       onClick={() => setIsOpen(!isOpen)}
       className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200 ${
         selected === title
-          ? "bg-blue-100 text-blue-600 font-medium"
-          : "hover:bg-gray-100 text-gray-700"
+          ? "bg-purple-100 text-purple-600 font-medium"
+          : "hover:bg-purple-50 text-gray-700"
       } ${collapsed ? "justify-center" : ""}`}
     >
       <div className="flex items-center gap-3">
