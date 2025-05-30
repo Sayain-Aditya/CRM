@@ -8,6 +8,7 @@ import {
   PowerIcon,
   UserCircleIcon,
   CalculatorIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
@@ -17,8 +18,7 @@ const Sidebar = () => {
   const [openProducts, setOpenProducts] = useState(false);
   const [openGallery, setOpenGallery] = useState(false);
   const [selected, setSelected] = useState("");
-  const [collapsed, setCollapsed] = useState(true); // Default to collapsed
-  const [hovered, setHovered] = useState(false); // New hover state
+  const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -31,31 +31,46 @@ const Sidebar = () => {
 
   const handleItemClick = (title) => {
     setSelected(title);
+    if (collapsed) setCollapsed(false);
     if (mobileOpen) setMobileOpen(false); // Close mobile sidebar on click
   };
 
   const sidebarContent = (
     <div
-      className={`bg-gradient-to-r from-purple-300 to-purple-200 text-white border-r-4 border-purple-500 rounded-sm h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-lg no-print ${
-        collapsed && !hovered ? "w-16" : "w-64"
+      className={`bg-gradient-to-r from-purple-300 to-purple-500 text-white border-r-4 border-purple-800 rounded-sm h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-lg no-print ${
+        collapsed ? "w-16" : "w-64"
       }`}
-      onMouseEnter={() => setHovered(true)} // Expand on hover
-      onMouseLeave={() => setHovered(false)} // Collapse when hover ends
     >
-      {/* Logo */}
-      <div className="flex items-center gap-2 mb-6">
-        <img src={Logo} alt="Logo" className="w-10 h-10 rounded-full shadow-md" />
-        {!collapsed && !hovered && (
-          <h1 className="text-md font-bold font-serif tracking-wide text-white">
-            Shine Infosolution
-          </h1>
-        )}
+      {/* Logo & Collapse Toggle for Desktop */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <img
+            src={Logo}
+            alt="Logo"
+            className="w-10 h-10 rounded-full shadow-md"
+          />
+          {!collapsed && (
+            <h1 className="text-md font-bold font-serif tracking-wide text-white">
+              Shine Infosolution
+            </h1>
+          )}
+        </div>
+
+        {/* Collapse Button for Desktop */}
+        <div className="hidden md:block">
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="bg-purple-500 rounded-full p-2 shadow-md hover:bg-purple-700"
+          >
+            <Bars3Icon className="w-5 h-5 text-white" />
+          </button>
+        </div>
       </div>
 
       {/* Navigation */}
       <div
         className={`flex flex-col gap-1 flex-grow ${
-          collapsed && !hovered ? "overflow-hidden" : "overflow-y-auto"
+          collapsed ? "overflow-hidden" : "overflow-y-auto"
         }`}
       >
         <SidebarItem
@@ -64,7 +79,7 @@ const Sidebar = () => {
           to="/"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed && !hovered}
+          collapsed={collapsed}
         />
         <SidebarItem
           title="Customers"
@@ -72,7 +87,7 @@ const Sidebar = () => {
           to="/CustomerList"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed && !hovered}
+          collapsed={collapsed}
         />
         <SidebarItem
           title="Leads"
@@ -80,12 +95,12 @@ const Sidebar = () => {
           to="/List"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed && !hovered}
+          collapsed={collapsed}
         />
 
         <SidebarDropdown
           title="Gallery"
-          icon={<CameraIcon className="w-5 h-5 text-white absolute left-[20px]" />}
+          icon={<CameraIcon className="w-5 h-5 text-white " />}
           isOpen={openGallery}
           setIsOpen={setOpenGallery}
           items={[
@@ -95,7 +110,7 @@ const Sidebar = () => {
           ]}
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed && !hovered}
+          collapsed={collapsed}
           setMobileOpen={setMobileOpen}
         />
 
@@ -105,7 +120,7 @@ const Sidebar = () => {
           to="/InvoiceNewList"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed && !hovered}
+          collapsed={collapsed}
         />
         <SidebarItem
           title="Iternary"
@@ -113,7 +128,7 @@ const Sidebar = () => {
           to="/IternaryTable"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed && !hovered}
+          collapsed={collapsed}
         />
       </div>
 
@@ -121,11 +136,11 @@ const Sidebar = () => {
       <button
         onClick={logout}
         className={`bg-red-500 flex items-center gap-2 text-white hover:bg-red-700 p-2 rounded-md transition ${
-          collapsed && !hovered ? "justify-center" : ""
+          collapsed ? "justify-center" : ""
         }`}
       >
         <PowerIcon className="w-5 h-5 text-white" />
-        {!collapsed && !hovered && <span>Logout</span>}
+        {!collapsed && <span>Logout</span>}
       </button>
     </div>
   );
@@ -167,7 +182,7 @@ const SidebarItem = ({ title, icon, to, selected, setSelected, collapsed }) => (
     onClick={() => setSelected(title)}
     className={`relative group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 ${
       selected === title
-        ? "bg-purple-500 text-white font-medium"
+        ? "bg-purple-700 text-white font-medium"
         : "hover:bg-purple-600 text-white"
     } ${collapsed ? "justify-center" : ""}`}
   >
@@ -209,8 +224,8 @@ const SidebarDropdown = ({
       </div>
 
       {!collapsed && (
-        <ChevronDown
-          className={`w-4 h-4 transform transition-transform ${
+        <ChevronDownIcon
+          className={`w-4 h-4 text-white transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />

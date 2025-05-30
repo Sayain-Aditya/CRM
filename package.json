@@ -14,6 +14,7 @@
     "@react-pdf/renderer": "^4.3.0",
     "axios": "^1.6.2",
     "daisyui": "^5.0.35",
+    "firebase": "^11.8.1",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.510.0",
     "number-to-words": "^1.2.4",
