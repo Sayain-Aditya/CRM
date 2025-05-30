@@ -11,12 +11,14 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
+import Logo from "../../assets/Logo.png"; // Fixed logo import
 
 const Sidebar = () => {
   const [openProducts, setOpenProducts] = useState(false);
   const [openGallery, setOpenGallery] = useState(false);
   const [selected, setSelected] = useState("");
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true); // Default to collapsed
+  const [hovered, setHovered] = useState(false); // New hover state
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -29,21 +31,22 @@ const Sidebar = () => {
 
   const handleItemClick = (title) => {
     setSelected(title);
-    if (collapsed) setCollapsed(false);
     if (mobileOpen) setMobileOpen(false); // Close mobile sidebar on click
   };
 
   const sidebarContent = (
     <div
-      className={`bg-white border-r h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-md no-print ${
-        collapsed ? "w-16" : "w-64"
+      className={`bg-gradient-to-r from-purple-300 to-purple-200 text-white border-r-4 border-purple-500 rounded-sm h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-lg no-print ${
+        collapsed && !hovered ? "w-16" : "w-64"
       }`}
+      onMouseEnter={() => setHovered(true)} // Expand on hover
+      onMouseLeave={() => setHovered(false)} // Collapse when hover ends
     >
       {/* Logo */}
       <div className="flex items-center gap-2 mb-6">
-        <img src="/src/assets/Logo.png" alt="Logo" className="w-10 h-10" />
-        {!collapsed && (
-          <h1 className="text-md font-bold font-serif tracking-wide text-purple-600">
+        <img src={Logo} alt="Logo" className="w-10 h-10 rounded-full shadow-md" />
+        {!collapsed && !hovered && (
+          <h1 className="text-md font-bold font-serif tracking-wide text-white">
             Shine Infosolution
           </h1>
         )}
@@ -52,37 +55,37 @@ const Sidebar = () => {
       {/* Navigation */}
       <div
         className={`flex flex-col gap-1 flex-grow ${
-          collapsed ? "overflow-hidden" : "overflow-y-auto"
+          collapsed && !hovered ? "overflow-hidden" : "overflow-y-auto"
         }`}
       >
         <SidebarItem
           title="Dashboard"
-          icon={<AdjustmentsHorizontalIcon className="w-5 h-5 text-purple-600" />}
+          icon={<AdjustmentsHorizontalIcon className="w-5 h-5 text-white" />}
           to="/"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed}
+          collapsed={collapsed && !hovered}
         />
         <SidebarItem
           title="Customers"
-          icon={<UserCircleIcon className="w-5 h-5 text-purple-600" />}
+          icon={<UserCircleIcon className="w-5 h-5 text-white" />}
           to="/CustomerList"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed}
+          collapsed={collapsed && !hovered}
         />
         <SidebarItem
           title="Leads"
-          icon={<IdentificationIcon className="w-5 h-5 text-purple-600" />}
+          icon={<IdentificationIcon className="w-5 h-5 text-white" />}
           to="/List"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed}
+          collapsed={collapsed && !hovered}
         />
 
         <SidebarDropdown
           title="Gallery"
-          icon={<CameraIcon className="w-5 h-5 text-purple-600" />}
+          icon={<CameraIcon className="w-5 h-5 text-white absolute left-[20px]" />}
           isOpen={openGallery}
           setIsOpen={setOpenGallery}
           items={[
@@ -92,37 +95,37 @@ const Sidebar = () => {
           ]}
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed}
+          collapsed={collapsed && !hovered}
           setMobileOpen={setMobileOpen}
         />
 
         <SidebarItem
           title="Invoice"
-          icon={<UserCircleIcon className="w-5 h-5 text-purple-600" />}
+          icon={<UserCircleIcon className="w-5 h-5 text-white" />}
           to="/InvoiceNewList"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed}
+          collapsed={collapsed && !hovered}
         />
         <SidebarItem
           title="Iternary"
-          icon={<CalculatorIcon className="w-5 h-5 text-purple-600" />}
+          icon={<CalculatorIcon className="w-5 h-5 text-white" />}
           to="/IternaryTable"
           selected={selected}
           setSelected={handleItemClick}
-          collapsed={collapsed}
+          collapsed={collapsed && !hovered}
         />
       </div>
 
       {/* Logout */}
       <button
         onClick={logout}
-        className={`bg-purple-500 flex items-center gap-2 text-white hover:bg-purple-700 p-2 rounded-md transition ${
-          collapsed ? "justify-center" : ""
+        className={`bg-red-500 flex items-center gap-2 text-white hover:bg-red-700 p-2 rounded-md transition ${
+          collapsed && !hovered ? "justify-center" : ""
         }`}
       >
-        <PowerIcon className="w-5 h-5 text-black" />
-        {!collapsed && <span>Logout</span>}
+        <PowerIcon className="w-5 h-5 text-white" />
+        {!collapsed && !hovered && <span>Logout</span>}
       </button>
     </div>
   );
@@ -132,24 +135,10 @@ const Sidebar = () => {
       {/* Hamburger for mobile */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="no-print fixed top-4 left-4 z-50 bg-white rounded-full p-2 md:hidden shadow-md"
+        className="no-print fixed top-4 left-4 z-50 bg-purple-500 rounded-full p-2 md:hidden shadow-md hover:bg-purple-700"
       >
-        <Bars3Icon className="w-6 h-6 text-purple-600" />
+        <Bars3Icon className="w-6 h-6 text-white" />
       </button>
-
-      {/* Collapse Toggle for Desktop */}
-      <div className="no-print absolute top-4 left-4 z-40 hidden md:flex flex-col items-center gap-2">
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="bg-white rounded-full p-2 shadow-md"
-        >
-          {collapsed ? (
-            <Bars3Icon className="w-6 h-6 text-purple-600" />
-          ) : (
-            <Bars3Icon className="w-6 h-6 text-purple-600" />
-          )}
-        </button>
-      </div>
 
       {/* Sidebar for desktop */}
       <div className="no-print hidden md:block">{sidebarContent}</div>
@@ -163,7 +152,7 @@ const Sidebar = () => {
             onClick={() => setMobileOpen(false)}
           ></div>
           {/* Sidebar */}
-          <div className="no-print fixed top-0 left-0 w-64 h-full bg-white z-40 shadow-lg md:hidden">
+          <div className="no-print fixed top-0 left-0 w-64 h-full bg-gradient-to-r from-purple-500 to-purple-700 text-white z-40 shadow-lg md:hidden">
             {sidebarContent}
           </div>
         </>
@@ -178,8 +167,8 @@ const SidebarItem = ({ title, icon, to, selected, setSelected, collapsed }) => (
     onClick={() => setSelected(title)}
     className={`relative group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 ${
       selected === title
-        ? "bg-purple-100 text-purple-600 font-medium"
-        : "hover:bg-purple-50 text-gray-700"
+        ? "bg-purple-500 text-white font-medium"
+        : "hover:bg-purple-600 text-white"
     } ${collapsed ? "justify-center" : ""}`}
   >
     <div className="w-5 h-5">{icon}</div>
@@ -210,8 +199,8 @@ const SidebarDropdown = ({
       onClick={() => setIsOpen(!isOpen)}
       className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200 ${
         selected === title
-          ? "bg-purple-100 text-purple-600 font-medium"
-          : "hover:bg-purple-50 text-gray-700"
+          ? "bg-purple-700 text-white font-medium"
+          : "hover:bg-purple-600 text-white"
       } ${collapsed ? "justify-center" : ""}`}
     >
       <div className="flex items-center gap-3">
@@ -230,7 +219,7 @@ const SidebarDropdown = ({
 
     {/* Dropdown items */}
     {!collapsed && isOpen && (
-      <div className="ml-6 mt-1 flex flex-col gap-1 text-gray-600 text-sm animate-fade-in">
+      <div className="ml-6 mt-1 flex flex-col gap-1 text-white text-sm animate-fade-in">
         {items.map((item, idx) => (
           <Link
             to={item.link}
@@ -242,8 +231,8 @@ const SidebarDropdown = ({
             }}
             className={`pl-2 py-1 rounded-md transition-colors ${
               selected === item.title
-                ? "bg-blue-100 text-blue-600"
-                : "hover:text-black hover:bg-gray-100"
+                ? "bg-purple-800 text-white"
+                : "hover:text-white hover:bg-purple-600"
             }`}
           >
             {item.title}

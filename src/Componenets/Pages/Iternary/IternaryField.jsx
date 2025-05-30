@@ -5,7 +5,7 @@ import { CheckCircle } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
 import { RxCrossCircled } from "react-icons/rx";
 import { Toaster, toast } from "react-hot-toast";
-import generatePDF  from "react-to-pdf";
+import generatePDF from "react-to-pdf";
 import Logo from "/src/assets/Logo.png";
 import BannerImage from "/src/assets/71840.jpg";
 import Qr from "/src/assets/Qr.png";
@@ -22,9 +22,7 @@ const IternaryField = () => {
     const fetchItinerary = async () => {
       try {
         const res = await axios.get(
-          `https://billing-backend-seven.vercel.app/Iternary/mano/${
-            id || "682c2f3ca98e563ebeb3ef01"
-          }`
+          `https://billing-backend-seven.vercel.app/Iternary/mano/${id}`
         );
         setItinerary(res.data.data);
       } catch (err) {
@@ -128,6 +126,21 @@ const IternaryField = () => {
     removeAfterPrint: true,
   });
 
+  const options = {
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4",
+  };
+
+  const handleDownloadPDF = () => {
+    generatePDF(targetRef, {
+      filename: "itinerary.pdf",
+      options,
+      x: 0,
+      y: 0,
+    });
+  };
+
   if (!itinerary) {
     return (
       <p className="text-center mt-10 text-gray-500">Loading itinerary...</p>
@@ -139,11 +152,7 @@ const IternaryField = () => {
   return (
     <>
       <div>
-        <button
-          onClick={() => generatePDF(targetRef, { filename: "page.pdf" })}
-        >
-          Download PDF
-        </button>
+        <button onClick={handleDownloadPDF}>Download PDF</button>
       </div>
       <div
         ref={targetRef}
@@ -151,13 +160,17 @@ const IternaryField = () => {
       >
         <Toaster />
         <div className="flex justify-end mb-6"></div>
-        <div className="bg-white rounded-lg shadow-lg p-6 md:p-10 space-y-6">
+        <div className="bg-white rounded-lg shadow-lg p-6 md:p- space-y-6">
           <div className="flex justify-center">
-            <img src={Logo} alt="Logo" className="w-40 h-28 object-contain" />
+            <img
+              src={Logo}
+              alt="Logo"
+              className="w-40 h-28 object-contain mb-[-30px]"
+            />
           </div>
           <div className="w-full mb-4">
             <img
-              className="rounded-lg w-full h-[290px] object-cover shadow"
+              className="rounded-lg w-full h-[250px] object-cover shadow"
               src={BannerImage}
               alt="Main"
             />
