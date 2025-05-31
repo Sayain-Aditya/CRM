@@ -24,6 +24,13 @@ import InvoiceNewPrint from "./Componenets/Pages/Invoice/InvoiceNewPrint";
 import IternaryList from "./Componenets/Pages/Iternary/IternaryList";
 import IternaryField from "./Componenets/Pages/Iternary/IternaryField";
 import IternaryTable from "./Componenets/Pages/Iternary/IternaryTable";
+import {
+  generateToken,
+  messaging,
+  registerServiceWorker,
+} from "./Notification/firebasse";
+import { onMessage } from "firebase/messaging";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const navigate = useNavigate();
@@ -40,6 +47,39 @@ function App() {
       navigate("/");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    async function setupFCM() {
+      try {
+        await registerServiceWorker(); // Make sure this is defined and correct
+        const token = await generateToken();
+        if (token) {
+          console.log("Send this token to backend:", token);
+          localStorage.setItem("fcmToken", token); // Optional but useful for access later
+          // You can send it to backend here if needed
+          // await axios.post("/save-token", { token });
+        }
+      } catch (error) {
+        console.error("FCM setup failed:", error);
+      }
+    }
+
+    setupFCM();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log("Foreground FCM message received:", payload);
+      toast.success(
+        `${payload.notification.title}: ${payload.notification.body}`
+      );
+    });
+
+    // Optional: return unsubscribe function in case of cleanup
+    return () => {
+      if (typeof unsubscribe === "function") unsubscribe();
+    };
+  }, []);
 
   return (
     <>

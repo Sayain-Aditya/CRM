@@ -70,20 +70,29 @@ const LeadsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting form data:", formData);
+
     try {
+      const fcmToken = localStorage.getItem("fcmToken"); // 👈 retrieve token
+
+      const payload = {
+        ...formData,
+        fcmToken, // 👈 include token in request
+      };
+
       if (id) {
         await axios.put(
           `https://billing-backend-seven.vercel.app/lead/update/${id}`,
-          formData
+          payload
         );
         toast.success("Lead updated successfully");
       } else {
         await axios.post(
           "https://billing-backend-seven.vercel.app/lead/add",
-          formData
+          payload
         );
         toast.success("Lead added successfully");
       }
+
       navigate("/List");
     } catch (error) {
       toast.error("Something went wrong");
