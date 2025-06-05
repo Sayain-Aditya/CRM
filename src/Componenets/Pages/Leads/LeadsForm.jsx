@@ -81,6 +81,12 @@ const LeadsForm = () => {
     checkNotificationStatus();
   }, []);
 
+  useEffect(() => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      toast.warning("Push notifications are not supported on this device/browser.");
+    }
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -89,7 +95,13 @@ const LeadsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const subscription = await getPushSubscription();
+      let subscription = null;
+      try {
+        subscription = await getPushSubscription();
+      } catch (subError) {
+        // Log and continue without subscription
+        console.warn("Push subscription not available:", subError);
+      }
 
       const followUpDateUTC = new Date(formData.followUpDate).toISOString();
       const payload = {
@@ -116,7 +128,7 @@ const LeadsForm = () => {
       navigate("/List");
     } catch (error) {
       toast.error("Something went wrong");
-      console.error(error);
+      console.error("Lead form error:", error, error?.response);
     }
   };
 
