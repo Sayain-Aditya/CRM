@@ -81,12 +81,6 @@ const LeadsForm = () => {
     checkNotificationStatus();
   }, []);
 
-  useEffect(() => {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-      toast.warning("Push notifications are not supported on this device/browser.");
-    }
-  }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -95,13 +89,7 @@ const LeadsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let subscription = null;
-      try {
-        subscription = await getPushSubscription();
-      } catch (subError) {
-        // Log and continue without subscription
-        console.warn("Push subscription not available:", subError);
-      }
+      const subscription = await getPushSubscription();
 
       const followUpDateUTC = new Date(formData.followUpDate).toISOString();
       const payload = {
@@ -113,13 +101,13 @@ const LeadsForm = () => {
       let response;
       if (id) {
         response = await axios.put(
-          "https://billing-backend-seven.vercel.app/lead/update/" + id,
+          "http://localhost:5000/lead/update/" + id,
           payload
         );
         toast.success("Lead updated successfully");
       } else {
         response = await axios.post(
-          "https://billing-backend-seven.vercel.app/lead/add",
+          "http://localhost:5000/lead/add",
           payload
         );
         toast.success("Lead added successfully");
@@ -128,7 +116,7 @@ const LeadsForm = () => {
       navigate("/List");
     } catch (error) {
       toast.error("Something went wrong");
-      console.error("Lead form error:", error, error?.response);
+      console.error(error);
     }
   };
 
