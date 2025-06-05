@@ -94,6 +94,13 @@ const LeadsForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Ensure the form is submitted properly on mobile devices
+    if (!formData.name || !formData.email || !formData.phone) {
+        toast.error("Please fill out all required fields.");
+        return;
+    }
+
     try {
       let subscription = null;
       try {
