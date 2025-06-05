@@ -94,13 +94,6 @@ const LeadsForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Ensure the form is submitted properly on mobile devices
-    if (!formData.name || !formData.email || !formData.phone) {
-        toast.error("Please fill out all required fields.");
-        return;
-    }
-
     try {
       let subscription = null;
       try {
@@ -120,13 +113,13 @@ const LeadsForm = () => {
       let response;
       if (id) {
         response = await axios.put(
-          "http://localhost:5000/lead/update/" + id,
+          "https://billing-backend-seven.vercel.app/lead/update/" + id,
           payload
         );
         toast.success("Lead updated successfully");
       } else {
         response = await axios.post(
-          "http://localhost:5000/lead/add",
+          "https://billing-backend-seven.vercel.app/lead/add",
           payload
         );
         toast.success("Lead added successfully");
