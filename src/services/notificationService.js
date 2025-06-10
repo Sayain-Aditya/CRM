@@ -28,4 +28,16 @@ const showNotification = (lead) => {
   });
 };
 
+const showCarNotification = (car) => {
+  toast.info(`Follow-up reminder for ${car.name} regarding ${car.enquiry}`, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+
 export { requestNotificationPermission, showNotification };

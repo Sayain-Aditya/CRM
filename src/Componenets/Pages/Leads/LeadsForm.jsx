@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { requestNotificationPermission } from '../../../services/notificationService';
+import { requestNotificationPermission } from "../../../services/notificationService";
 
 async function getPushSubscription() {
-  if ('serviceWorker' in navigator) {
+  if ("serviceWorker" in navigator) {
     const registration = await navigator.serviceWorker.ready;
     const subscription = await registration.pushManager.getSubscription();
     return subscription;
@@ -101,13 +101,13 @@ const LeadsForm = () => {
       let response;
       if (id) {
         response = await axios.put(
-          "http://localhost:5000/lead/update/" + id,
+          `https://billing-backend-seven.vercel.app/lead/update/${id}`,
           payload
         );
         toast.success("Lead updated successfully");
       } else {
         response = await axios.post(
-          "http://localhost:5000/lead/add",
+          `https://billing-backend-seven.vercel.app/lead/add`,
           payload
         );
         toast.success("Lead added successfully");

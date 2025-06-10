@@ -24,21 +24,24 @@ import InvoiceNewPrint from "./Componenets/Pages/Invoice/InvoiceNewPrint";
 import IternaryList from "./Componenets/Pages/Iternary/IternaryList";
 import IternaryField from "./Componenets/Pages/Iternary/IternaryField";
 import IternaryTable from "./Componenets/Pages/Iternary/IternaryTable";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import React from 'react';
-import 'animate.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import React from "react";
+import "animate.css";
+import CarList from "./Componenets/Pages/Cars/CarList";
+import CarForm from "./Componenets/Pages/Cars/CarForm";
 
 async function subscribeUser() {
   const registration = await navigator.serviceWorker.ready;
   const subscription = await registration.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: 'BJe_vtNqtLr7GTOmVzXPM1r1viWvfsLUyPe-VUIIEaDUhA-zlHk-86NNxonVrHVTusWPdAoNfhlwEn6ZTDnyO9A', // Replace with your VAPID public key (base64)
+    applicationServerKey:
+      "BJe_vtNqtLr7GTOmVzXPM1r1viWvfsLUyPe-VUIIEaDUhA-zlHk-86NNxonVrHVTusWPdAoNfhlwEn6ZTDnyO9A", // Replace with your VAPID public key (base64)
   });
   // Send `subscription` to your backend to save it
-  await fetch('http://localhost:5000/push/subscribe', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  await fetch("https://billing-backend-seven.vercel.app/push/subscribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(subscription),
   });
 }
@@ -50,9 +53,9 @@ function App() {
 
   // Check subscription status on mount
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then(registration => {
-        registration.pushManager.getSubscription().then(subscription => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.pushManager.getSubscription().then((subscription) => {
           setIsSubscribed(!!subscription);
         });
       });
@@ -61,12 +64,12 @@ function App() {
 
   const handleEnableNotifications = async () => {
     const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
+    if (permission === "granted") {
       await subscribeUser();
       setIsSubscribed(true); // Hide the button after subscribing
-      alert('Push notifications enabled!');
+      alert("Push notifications enabled!");
     } else {
-      alert('Notifications permission denied.');
+      alert("Notifications permission denied.");
     }
   };
 
@@ -124,7 +127,11 @@ function App() {
               <Route path="IternaryField/" element={<IternaryField />} />
               <Route path="IternaryField/:id" element={<IternaryField />} />
               <Route path="IternaryTable" element={<IternaryTable />} />
+              <Route path="CarList" element={<CarList />} />
+              <Route path="CarForm" element={<CarForm />} />
+                  <Route path="CarForm/:id" element={<CarForm />} />
             </Routes>
+            
           </div>
         </div>
       ) : (

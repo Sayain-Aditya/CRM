@@ -122,6 +122,14 @@ const Sidebar = () => {
           setSelected={handleItemClick}
           collapsed={collapsed}
         />
+        <SidebarItem
+          title="CarList"
+          icon={<UserCircleIcon className="w-5 h-5" />}
+          to="/CarList"
+          selected={selected}
+          setSelected={handleItemClick}
+          collapsed={collapsed}
+        />
       </div>
 
       {/* Logout */}
