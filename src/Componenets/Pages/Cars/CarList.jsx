@@ -168,15 +168,15 @@ const CarList = () => {
               </div>
               <div className="text-gray-700 text-sm">
                 <span className="font-semibold">Insurance:</span>{" "}
-                {car.insurance}
+              {new Date(car.insurance).toLocaleString()}
               </div>
               <div className="text-gray-700 text-sm">
                 <span className="font-semibold">Pollution:</span>{" "}
-                {car.pollution}
+                   {new Date(car.pollution).toLocaleString()}
               </div>
               <div className="text-gray-700 text-sm">
                 <span className="font-semibold">Service Reminder:</span>{" "}
-                {car.serviceReminder}
+                  {new Date(car.serviceReminder).toLocaleString()}
               </div>
               <div className="mt-2">
                 <button
