@@ -67,6 +67,10 @@ const List = () => {
     setFilteredLeads(leads);
   };
 
+  const handleUpdate = (id) => {
+    navigate(`/LeadsForm/${id}`);
+  };
+
   return (
     <div className="p-6 bg-gradient-to-b from-purple-50 to-white min-h-screen">
       <Toaster />
@@ -111,12 +115,13 @@ const List = () => {
               <th className="px-6 py-4">Enquiry</th>
               <th className="px-6 py-4">Follow-Up</th>
               <th className="px-6 py-4">Status</th>
+              <th className="px-6 py-4">Actions</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
             {filteredLeads.length === 0 ? (
               <tr>
-                <td colSpan="6" className="text-center py-8 text-gray-500">
+                <td colSpan="7" className="text-center py-8 text-gray-500">
                   No leads available.
                 </td>
               </tr>
@@ -156,6 +161,14 @@ const List = () => {
                         ? "In Progress"
                         : "Not Interested"}
                     </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => handleUpdate(lead._id)}
+                      className="bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                      Update
+                    </button>
                   </td>
                 </tr>
               ))

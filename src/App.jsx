@@ -114,7 +114,10 @@ function App() {
               <Route path="destination" element={<Destination />} />
               <Route path="DestinationImages" element={<DestinationImages />} />
               <Route path="list" element={<List />} />
-              <Route path="leadsform" element={<LeadsForm />} />
+              
+              <Route path="Leadsform" element={<LeadsForm />} />
+               <Route path="Leadsform/:id" element={<LeadsForm />} />
+
               <Route path="CustomerList" element={<CustomerList />} />
               <Route path="CustomerForm" element={<CustomerForm />} />
               <Route path="CustomerForm/:id" element={<CustomerForm />} />

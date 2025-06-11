@@ -161,9 +161,12 @@ const LeadsForm = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.email}
                 onChange={handleChange}
-                required
               />
             </div>
+          </div>
+
+          {/* Secondary Number & Address */}
+          <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block mb-2 font-semibold">Primary Number</label>
               <input
@@ -176,19 +179,16 @@ const LeadsForm = () => {
                 required
               />
             </div>
-          </div>
-
-          {/* Secondary Number & Address */}
-          <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block mb-2 font-semibold">Address</label>
-              <input
+              <textarea
                 type="text"
                 name="Address"
                 placeholder="Full address"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.Address}
                 onChange={handleChange}
+                rows={4}
                 required
               />
             </div>
@@ -200,7 +200,6 @@ const LeadsForm = () => {
               <label className="block mb-2 font-semibold">Enquiry Type</label>
               <select
                 name="enquiry"
-                required
                 className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.enquiry}
                 onChange={handleChange}
@@ -208,9 +207,9 @@ const LeadsForm = () => {
                 <option value="Select Enquiry" disabled>
                   Select Enquiry
                 </option>
-                <option value="Enquiry 1">Enquiry 1</option>
-                <option value="Enquiry 2">Enquiry 2</option>
-                <option value="Enquiry 3">Enquiry 3</option>
+                <option value="Enquiry 1">Online</option>
+                <option value="Enquiry 2">Offline</option>
+                <option value="Enquiry 3">Referance</option>
               </select>
             </div>
             <div>
@@ -229,7 +228,6 @@ const LeadsForm = () => {
               <input
                 type="datetime-local"
                 name="followUpDate"
-                required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.followUpDate}
                 onChange={handleChange}
@@ -260,7 +258,6 @@ const LeadsForm = () => {
               <input
                 type="datetime-local"
                 name="meetingdate"
-                required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.meetingdate}
                 onChange={handleChange}
@@ -274,13 +271,15 @@ const LeadsForm = () => {
               <label className="block mb-2 font-semibold">Lead Status</label>
               <select
                 name="status"
-                required
                 className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.status}
                 onChange={handleChange}
               >
-                <option value="true">True</option>
-                <option value="false">False</option>
+               <option value="Select Status" disabled>
+                  Select Status
+                </option>
+                <option value="true">Intrested</option>
+                <option value="false">Not-Intrested</option>
               </select>
             </div>
             <div>
@@ -288,7 +287,6 @@ const LeadsForm = () => {
               <input
                 type="datetime-local"
                 name="calldate"
-                required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.calldate}
                 onChange={handleChange}
@@ -297,24 +295,22 @@ const LeadsForm = () => {
           </div>
 
           {/* Updated Date */}
-          <div>
+          {/* <div>
             <label className="block mb-2 font-semibold">Last Updated</label>
             <input
               type="datetime-local"
               name="update"
-              required
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.update}
               onChange={handleChange}
             />
-          </div>
+          </div> */}
 
           {/* Notes */}
           <div>
             <label className="block mb-2 font-semibold">Additional Notes</label>
             <textarea
               name="notes"
-              required
               value={formData.notes}
               onChange={handleChange}
               placeholder="Write any important notes here..."

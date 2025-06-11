@@ -31,26 +31,26 @@ const CarForm = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   // Load saved cars once on mount
-useEffect(() => {
-  console.log("Car ID:", id); // Log the id
-  if (id) {
-    axios
-      .get(`https://billing-backend-seven.vercel.app/car/mano/${id}`)
-      .then((res) => {
-        const { carNumber, insurance, pollution, serviceReminder } = res.data;
-        setForm({
-          carNumber: carNumber || "",
-          insurance: insurance || "",
-          pollution: pollution || "",
-          serviceReminder: serviceReminder || "",
+  useEffect(() => {
+    console.log("Car ID:", id); // Log the id
+    if (id) {
+      axios
+        .get(`https://billing-backend-seven.vercel.app/car/mano/${id}`)
+        .then((res) => {
+          const { carNumber, insurance, pollution, serviceReminder } = res.data;
+          setForm({
+            carNumber: carNumber || "",
+            insurance: insurance || "",
+            pollution: pollution || "",
+            serviceReminder: serviceReminder || "",
+          });
+        })
+        .catch((err) => {
+          toast.error("Failed to load car data");
+          console.error("Error loading car data:", err);
         });
-      })
-      .catch((err) => {
-        toast.error("Failed to load car data");
-        console.error("Error loading car data:", err);
-      });
-  }
-}, [id]);
+    }
+  }, [id]);
 
   useEffect(() => {
     const checkNotificationStatus = async () => {
@@ -64,42 +64,45 @@ useEffect(() => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const subscription = await getPushSubscription();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const subscription = await getPushSubscription();
 
-    const insuranceDateUTC = new Date(form.insurance).toISOString();
-    const pollutionDateUTC = new Date(form.pollution).toISOString();
-    const serviceReminderDateUTC = new Date(form.serviceReminder).toISOString();
-    const payload = {
-      ...form,
-      insurance: insuranceDateUTC,
-      pollution: pollutionDateUTC,
-      serviceReminder: serviceReminderDateUTC,
-      subscription,
-    };
-    let response;
-    if (id) {
-      response = await axios.put(
-      `https://billing-backend-seven.vercel.app/car/update/${id}`,
-        payload
-      );
-      toast.success("Car updated successfully");
-    } else {
-      response = await axios.post(
-       `https://billing-backend-seven.vercel.app/car/add`,
-        payload
-      );
-      toast.success("Car added successfully");
+      const insuranceDateUTC = new Date(form.insurance).toISOString();
+      const pollutionDateUTC = new Date(form.pollution).toISOString();
+      const serviceReminderDateUTC = new Date(
+        form.serviceReminder
+      ).toISOString();
+      const payload = {
+        ...form,
+        insurance: insuranceDateUTC,
+        pollution: pollutionDateUTC,
+        serviceReminder: serviceReminderDateUTC,
+        subscription,
+      };
+      let response;
+      if (id) {
+        response = await axios.put(
+          `https://billing-backend-seven.vercel.app/car/update/${id}`,
+          payload
+        );
+        toast.success("Car updated successfully");
+      } else {
+        response = await axios.post(
+          `https://billing-backend-seven.vercel.app/car/add`,
+          payload
+        );
+        toast.success("Car added successfully");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+
+      navigate("/CarList");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Failed to submit form");
     }
-
-    navigate("/CarList");
-  } catch (error) {
-    console.error("Error submitting form:", error);
-    toast.error("Failed to submit form");
-  }
-};
+  };
 
   const testNotification = () => {
     if (notificationsEnabled) {
@@ -111,7 +114,7 @@ useEffect(() => {
 
   return (
     <div className="mx-auto p-4">
-       <ToastContainer position="top-right" reverseOrder={false} />
+      <ToastContainer />
       <h1 className="text-2xl font-bold mb-4">Car Information</h1>
       <form className="space-y-4 bg-white p-4 rounded shadow">
         <input
