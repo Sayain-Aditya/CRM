@@ -57,7 +57,7 @@ const Sidebar = () => {
         <SidebarItem
           title="Dashboard"
           icon={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
-          to="/"
+          to="/Dashboard"
           selected={selected}
           setSelected={handleItemClick}
           collapsed={collapsed}

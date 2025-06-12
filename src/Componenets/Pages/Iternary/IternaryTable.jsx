@@ -77,8 +77,9 @@ const IternaryTable = () => {
   }
 
   const handleView = (id) => {
-    navigate(`/IternaryField/${id}`); // Navigate to the view page with the selected itinerary id
-  }
+    // Navigate to the view page with the itinerary ID
+    window.location.href = `/IternaryField/${id}`;
+  };
 
   return (
     <div className="p-6 bg-gradient-to-b from-purple-50 to-white min-h-screen">
