@@ -76,6 +76,10 @@ const IternaryTable = () => {
     navigate(`/IternaryList/${id}`); // Ensure the correct id is passed to the form page
   }
 
+  const handleView = (id) => {
+    navigate(`/IternaryField/${id}`); // Navigate to the view page with the selected itinerary id
+  }
+
   return (
     <div className="p-6 bg-gradient-to-b from-purple-50 to-white min-h-screen">
       <Toaster />
