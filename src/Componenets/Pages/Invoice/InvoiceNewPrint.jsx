@@ -20,6 +20,7 @@ const InvoiceNewPrint = () => {
         const data = await response.json();
         if (data.success) {
           setInvoice(data.data);
+          console.log("Fetched Invoice:", invoice);
         } else {
           setError("Invoice not found");
         }
@@ -214,16 +215,16 @@ const InvoiceNewPrint = () => {
                       {index + 1}
                     </td>
                     <td className="border border-black px-2 py-1">
-                      {product.item}
+                      {product.description}
                     </td>
                     <td className="border border-black px-2 py-1">
-                      {product.hsn}
+                      {product.unit}
                     </td>
                     <td className="border border-black px-2 py-1">
-                      ₹{product.rate}
+                      ₹{product.price}
                     </td>
                     <td className="border border-black px-2 py-1">
-                      {product.qty}
+                      {product.quantity}
                     </td>
                     <td className="border border-black px-2 py-1">
                       ₹{product.taxableValue}

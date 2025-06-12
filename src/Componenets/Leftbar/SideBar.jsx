@@ -220,56 +220,60 @@ const SidebarDropdown = ({
   selected,
   setSelected,
   collapsed,
-  setMobileOpen, // ✅ receive it
-}) => (
-  <div>
-    {/* Toggle dropdown */}
-    <div
-      onClick={() => setIsOpen(!isOpen)}
-      className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200 ${
-        selected === title
-          ? "bg-blue-100 text-blue-600 font-medium"
-          : "hover:bg-gray-100 text-gray-700"
-      } ${collapsed ? "justify-center" : ""}`}
-    >
-      <div className="flex items-center gap-3">
-        <div className="w-5 h-5">{icon}</div>
-        {!collapsed && <span className="text-sm">{title}</span>}
+  setMobileOpen,
+}) => {
+  const toggleDropdown = () => {
+    if (title === "Gallery") {
+      setIsOpen((prev) => !prev); // Toggle only for Gallery
+    }
+  };
+
+  return (
+    <div>
+      {/* Toggle dropdown */}
+      <div
+        onClick={toggleDropdown}
+        className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200 ${
+          selected === title
+            ? "bg-blue-100 text-blue-600 font-medium"
+            : "hover:bg-gray-100 text-gray-700"
+        } ${collapsed ? "justify-center" : ""}`}
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5">{icon}</div>
+          {!collapsed && <span className="text-sm">{title}</span>}
+        </div>
+
+        {!collapsed && (
+          <ChevronDown
+            className={`w-4 h-4 transform transition-transform ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        )}
       </div>
 
-      {!collapsed && (
-        <ChevronDown
-          className={`w-4 h-4 transform transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
+      {/* Dropdown items */}
+      {!collapsed && isOpen && (
+        <div className="ml-6 mt-1 flex flex-col gap-1 text-gray-600 text-sm animate-fade-in">
+          {items.map((item, idx) => (
+            <Link
+              to={item.link}
+              key={idx}
+              onClick={() => setSelected(item.title)}
+              className={`pl-2 py-1 rounded-md transition-colors ${
+                selected === item.title
+                  ? "bg-blue-100 text-blue-600"
+                  : "hover:text-black hover:bg-gray-100"
+              }`}
+            >
+              {item.title}
+            </Link>
+          ))}
+        </div>
       )}
     </div>
-
-    {/* Dropdown items */}
-    {!collapsed && isOpen && (
-      <div className="ml-6 mt-1 flex flex-col gap-1 text-gray-600 text-sm animate-fade-in">
-        {items.map((item, idx) => (
-          <Link
-            to={item.link}
-            key={idx}
-            onClick={() => {
-              setSelected(item.title);
-              setIsOpen(false); // optional: close dropdown
-              if (setMobileOpen) setMobileOpen(false); // ✅ close mobile sidebar
-            }}
-            className={`pl-2 py-1 rounded-md transition-colors ${
-              selected === item.title
-                ? "bg-blue-100 text-blue-600"
-                : "hover:text-black hover:bg-gray-100"
-            }`}
-          >
-            {item.title}
-          </Link>
-        ))}
-      </div>
-    )}
-  </div>
-);
+  );
+};
 
 export default Sidebar;
