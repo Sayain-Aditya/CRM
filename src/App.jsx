@@ -3,6 +3,8 @@ import {
   Routes,
   Route,
   useNavigate,
+  Link,
+  Navigate,
 } from "react-router-dom";
 import DashBoard from "./Componenets/Pages/DashBoard";
 import Product from "./Componenets/Pages/Products";
@@ -30,6 +32,9 @@ import React from "react";
 import "animate.css";
 import CarList from "./Componenets/Pages/Cars/CarList";
 import CarForm from "./Componenets/Pages/Cars/CarForm";
+import { auth } from './services/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import Register from "./Login/Register";
 
 async function subscribeUser() {
   const registration = await navigator.serviceWorker.ready;
@@ -50,6 +55,47 @@ function App() {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // Handle Firebase auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        setIsAuthenticated(true);
+        setUser(user);
+        // Get the token and store it
+        user.getIdToken().then(token => {
+          localStorage.setItem('firebaseToken', token);
+        });
+      } else {
+        // User is signed out
+        setIsAuthenticated(false);
+        setUser(null);
+        localStorage.removeItem('firebaseToken');
+        // Only navigate to '/' if we're not already on login or register page
+        const currentPath = window.location.pathname;
+        if (currentPath !== '/' && currentPath !== '/register') {
+          navigate('/');
+        }
+      }
+    });
+
+    // Cleanup subscription
+    return () => unsubscribe();
+  }, [navigate]);
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      // Clear any other local storage items
+      localStorage.clear();
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   // Check subscription status on mount
   useEffect(() => {
@@ -73,16 +119,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const userLoggedIn = localStorage.getItem("loggedin");
-    if (userLoggedIn) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-      navigate("/");
-    }
-  }, [navigate]);
-
   return (
     <>
       {/* Only show the button if not already subscribed */}
@@ -95,12 +131,13 @@ function App() {
         </button>
       )}
       <ToastContainer />
-      {/* Protected Layout Route */}
+      {console.log('App render - isAuthenticated:', isAuthenticated)}
+      
       {isAuthenticated ? (
         <div className="flex h-screen">
           {/* Sidebar Layout */}
           <div className="min-h-screen bg-white shadow-md">
-            <Layout />
+            <Layout onLogout={handleLogout} user={user} />
           </div>
 
           {/* Main Content Area */}
@@ -138,9 +175,23 @@ function App() {
           </div>
         </div>
       ) : (
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-        </Routes>
+        <div className="min-h-screen">
+          <Routes>
+            <Route 
+              path="/" 
+              element={<LoginPage />} 
+            />
+            <Route 
+              path="register" 
+              element={<Register />} 
+            />
+            {/* Catch all other routes and redirect to login */}
+            <Route 
+              path="*" 
+              element={<Navigate to="/" replace />} 
+            />
+          </Routes>
+        </div>
       )}
     </>
   );

@@ -16,8 +16,9 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'; // ✅ CORRECT
 
 ReactDOM.createRoot(document.getElementById('root')).render(
- <BrowserRouter>
-    <App />
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
     </BrowserRouter>
-,
-)
+  </React.StrictMode>
+);
