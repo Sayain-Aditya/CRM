@@ -1,87 +1,84 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   UserCircleIcon,
   IdentificationIcon,
   Squares2X2Icon,
   CameraIcon,
   AdjustmentsHorizontalIcon
-} from '@heroicons/react/24/outline'
+} from '@heroicons/react/24/outline';
+import { auth } from '../../services/firebase'; // Import Firebase auth
 
 const DashBoard = () => {
-  return (
-    <div className="p-6 bg-gradient-to-b from-blue-50 to-white min-h-screen">
-      <h1 className="text-3xl font-extrabold text-blue-700 mb-6 text-center sm:text-left">Dashboard</h1>
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Link
-          to="/CustomerList"
-          className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-lg hover:bg-blue-50 transition"
-        >
-          <UserCircleIcon className="w-10 h-10 text-blue-600" />
-          <div>
-            <h2 className="text-xl font-bold text-blue-700">Customers</h2>
-            <p className="text-gray-600">Manage customer information</p>
-          </div>
-        </Link>
+  useEffect(() => {
+    // Get user data directly from Firebase auth
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserData({
+          email: user.email,
+          uid: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL
+        });
+      } else {
+        setError('No user logged in');
+      }
+      setLoading(false);
+    });
 
-        <Link
-          to="/List"
-          className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-lg hover:bg-blue-50 transition"
-        >
-          <IdentificationIcon className="w-10 h-10 text-blue-600" />
-          <div>
-            <h2 className="text-xl font-bold text-blue-700">Leads</h2>
-            <p className="text-gray-600">Track and manage leads</p>
-          </div>
-        </Link>
+    // Cleanup subscription
+    return () => unsubscribe();
+  }, []);
 
-        {/* <Link
-          to="/Products"
-          className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-lg hover:bg-blue-50 transition"
-        >
-          <Squares2X2Icon className="w-10 h-10 text-blue-600" />
-          <div>
-            <h2 className="text-xl font-bold text-blue-700">Products</h2>
-            <p className="text-gray-600">View and manage products</p>
-          </div>
-        </Link> */}
-
-        <Link
-          to="/Common"
-          className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-lg hover:bg-blue-50 transition"
-        >
-          <CameraIcon className="w-10 h-10 text-blue-600" />
-          <div>
-            <h2 className="text-xl font-bold text-blue-700">Gallery</h2>
-            <p className="text-gray-600">Browse and manage images</p>
-          </div>
-        </Link>
-
-        <Link
-          to="/InvoiceNewList"
-          className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-lg hover:bg-blue-50 transition"
-        >
-          <AdjustmentsHorizontalIcon className="w-10 h-10 text-blue-600" />
-          <div>
-            <h2 className="text-xl font-bold text-blue-700">Invoices</h2>
-            <p className="text-gray-600">Generate and manage invoices</p>
-          </div>
-        </Link>
-
-        <Link
-          to="/IternaryTable"
-          className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-lg hover:bg-blue-50 transition"
-        >
-          <Squares2X2Icon className="w-10 h-10 text-blue-600" />
-          <div>
-            <h2 className="text-xl font-bold text-blue-700">Itinerary</h2>
-            <p className="text-gray-600">Plan and manage itineraries</p>
-          </div>
-        </Link>
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          Error: {error}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      
+      {userData && (
+        <div className="bg-white shadow rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-4">Welcome, {userData.email}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h3 className="font-medium text-blue-800">User ID</h3>
+              <p className="text-blue-600">{userData.uid}</p>
+            </div>
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h3 className="font-medium text-green-800">Email</h3>
+              <p className="text-green-600">{userData.email}</p>
+            </div>
+            {userData.displayName && (
+              <div className="bg-purple-50 p-4 rounded-lg">
+                <h3 className="font-medium text-purple-800">Display Name</h3>
+                <p className="text-purple-600">{userData.displayName}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
-export default DashBoard
+export default DashBoard;

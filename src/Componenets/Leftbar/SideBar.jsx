@@ -10,6 +10,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
+import { signOut } from 'firebase/auth';
+import { auth } from '../../services/firebase';
 
 const Sidebar = () => {
   const [openProducts, setOpenProducts] = useState(false);
@@ -19,11 +21,16 @@ const Sidebar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 
-  const logout = () => {
-    localStorage.clear();
-    setTimeout(() => {
-      navigate("/");
-    }, 800);
+  const logout = async () => {
+    try {
+      await signOut(auth); // Sign out from Firebase
+      localStorage.clear(); // Clear any other local storage
+      setTimeout(() => {
+        navigate("/");
+      }, 800);
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   const handleItemClick = (title) => {
@@ -34,15 +41,15 @@ const Sidebar = () => {
 
   const sidebarContent = (
     <div
-      className={`bg-white border-r h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-md no-print ${
+      className={`bg-white border-r h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-lg no-print ${
         collapsed ? "w-16" : "w-64"
       }`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2 mb-6">
-        <img src="/src/assets/Logo.png" alt="Logo" className="w-10 h-10" />
+      <div className="flex items-center gap-3 mb-8">
+        <img src="/src/assets/Logo.png" alt="Logo" className="w-12 h-12 rounded-lg" />
         {!collapsed && (
-          <h1 className="text-md font-bold font-serif tracking-wide">
+          <h1 className="text-lg font-bold font-serif tracking-wide text-gray-800">
             Shine Infosolution
           </h1>
         )}
@@ -50,7 +57,7 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <div
-        className={`flex flex-col gap-1 flex-grow ${
+        className={`flex flex-col gap-2 flex-grow ${
           collapsed ? "overflow-hidden" : "overflow-y-auto"
         }`}
       >
@@ -135,12 +142,12 @@ const Sidebar = () => {
       {/* Logout */}
       <button
         onClick={logout}
-        className={`flex items-center gap-2 text-red-600 hover:bg-red-100 p-2 rounded-md transition ${
+        className={`flex items-center gap-2 text-red-600 hover:bg-red-50 p-3 rounded-lg transition-all duration-200 mt-4 ${
           collapsed ? "justify-center" : ""
         }`}
       >
         <PowerIcon className="w-5 h-5" />
-        {!collapsed && <span>Logout</span>}
+        {!collapsed && <span className="font-medium">Logout</span>}
       </button>
     </div>
   );
@@ -150,7 +157,7 @@ const Sidebar = () => {
       {/* Hamburger for mobile */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="no-print fixed top-4 left-4 z-50 bg-white rounded-full p-2 md:hidden"
+        className="no-print fixed top-4 left-4 z-50 bg-white rounded-lg p-2.5 md:hidden shadow-md hover:bg-gray-50 transition-colors"
       >
         <Bars3Icon className="w-6 h-6 text-gray-700" />
       </button>
@@ -159,13 +166,9 @@ const Sidebar = () => {
       <div className="no-print absolute top-4 left-4 z-40 hidden md:flex flex-col items-center gap-2">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="bg-white rounded-full p-2 shadow"
+          className="bg-white rounded-lg p-2.5 shadow-md hover:bg-gray-50 transition-colors"
         >
-          {collapsed ? (
-            <Bars3Icon className="w-6 h-6 text-gray-700" />
-          ) : (
-            <Bars3Icon className="w-6 h-6 text-gray-700 " />
-          )}
+          <Bars3Icon className="w-6 h-6 text-gray-700" />
         </button>
       </div>
 
@@ -175,13 +178,11 @@ const Sidebar = () => {
       {/* Sidebar for mobile with overlay */}
       {mobileOpen && (
         <>
-          {/* Overlay */}
           <div
-            className="fixed inset-0 bg-black bg-opacity-40 z-30 md:hidden"
+            className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           ></div>
-          {/* Sidebar */}
-          <div className="no-print fixed top-0 left-0 w-64 h-full bg-white z-40 shadow-lg md:hidden">
+          <div className="no-print fixed top-0 left-0 w-64 h-full bg-white z-40 shadow-xl md:hidden">
             {sidebarContent}
           </div>
         </>
@@ -194,17 +195,17 @@ const SidebarItem = ({ title, icon, to, selected, setSelected, collapsed }) => (
   <Link
     to={to}
     onClick={() => setSelected(title)}
-    className={`relative group flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 ${
+    className={`relative group flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
       selected === title
-        ? "bg-blue-100 text-blue-600 font-medium"
-        : "hover:bg-gray-100 text-gray-700"
+        ? "bg-blue-50 text-blue-600 font-medium shadow-sm"
+        : "hover:bg-gray-50 text-gray-700"
     } ${collapsed ? "justify-center" : ""}`}
   >
     <div className="w-5 h-5">{icon}</div>
     {!collapsed && <span className="text-sm">{title}</span>}
 
     {collapsed && (
-      <span className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-2 py-1 rounded-md bg-black text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-3 py-1.5 rounded-md bg-gray-900 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
         {title}
       </span>
     )}
@@ -220,60 +221,56 @@ const SidebarDropdown = ({
   selected,
   setSelected,
   collapsed,
-  setMobileOpen,
-}) => {
-  const toggleDropdown = () => {
-    if (title === "Gallery") {
-      setIsOpen((prev) => !prev); // Toggle only for Gallery
-    }
-  };
-
-  return (
-    <div>
-      {/* Toggle dropdown */}
-      <div
-        onClick={toggleDropdown}
-        className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200 ${
-          selected === title
-            ? "bg-blue-100 text-blue-600 font-medium"
-            : "hover:bg-gray-100 text-gray-700"
-        } ${collapsed ? "justify-center" : ""}`}
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-5 h-5">{icon}</div>
-          {!collapsed && <span className="text-sm">{title}</span>}
-        </div>
-
-        {!collapsed && (
-          <ChevronDown
-            className={`w-4 h-4 transform transition-transform ${
-              isOpen ? "rotate-180" : ""
-            }`}
-          />
-        )}
+  setMobileOpen, // ✅ receive it
+}) => (
+  <div>
+    {/* Toggle dropdown */}
+    <div
+      onClick={() => setIsOpen(!isOpen)}
+      className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200 ${
+        selected === title
+          ? "bg-blue-100 text-blue-600 font-medium"
+          : "hover:bg-gray-100 text-gray-700"
+      } ${collapsed ? "justify-center" : ""}`}
+    >
+      <div className="flex items-center gap-3">
+        <div className="w-5 h-5">{icon}</div>
+        {!collapsed && <span className="text-sm">{title}</span>}
       </div>
 
-      {/* Dropdown items */}
-      {!collapsed && isOpen && (
-        <div className="ml-6 mt-1 flex flex-col gap-1 text-gray-600 text-sm animate-fade-in">
-          {items.map((item, idx) => (
-            <Link
-              to={item.link}
-              key={idx}
-              onClick={() => setSelected(item.title)}
-              className={`pl-2 py-1 rounded-md transition-colors ${
-                selected === item.title
-                  ? "bg-blue-100 text-blue-600"
-                  : "hover:text-black hover:bg-gray-100"
-              }`}
-            >
-              {item.title}
-            </Link>
-          ))}
-        </div>
+      {!collapsed && (
+        <ChevronDown
+          className={`w-4 h-4 transform transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
       )}
     </div>
-  );
-};
+
+    {/* Dropdown items */}
+    {!collapsed && isOpen && (
+      <div className="ml-6 mt-1 flex flex-col gap-1 text-gray-600 text-sm animate-fade-in">
+        {items.map((item, idx) => (
+          <Link
+            to={item.link}
+            key={idx}
+            onClick={() => {
+              setSelected(item.title);
+              setIsOpen(false); // optional: close dropdown
+              if (setMobileOpen) setMobileOpen(false); // ✅ close mobile sidebar
+            }}
+            className={`pl-2 py-1 rounded-md transition-colors ${
+              selected === item.title
+                ? "bg-blue-100 text-blue-600"
+                : "hover:text-black hover:bg-gray-100"
+            }`}
+          >
+            {item.title}
+          </Link>
+        ))}
+      </div>
+    )}
+  </div>
+);
 
 export default Sidebar;
