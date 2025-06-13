@@ -8,7 +8,7 @@ import { Toaster, toast } from "react-hot-toast";
 import generatePDF from "react-to-pdf";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import Logo from "/src/assets/Logo.png";
+import Logo from "/src/assets/icon.png";
 import BannerImage from "/src/assets/71840.jpg";
 import Qr from "/src/assets/Qr.png";
 import { useNavigate } from "react-router-dom";

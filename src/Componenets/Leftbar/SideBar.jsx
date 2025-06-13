@@ -46,14 +46,14 @@ const Sidebar = () => {
       }`}
     >
       {/* Logo */}
-      {/* <div className="flex items-center gap-3 mb-8">
-        <img src="/src/assets/Logo.png" alt="Logo" className="w-14 h-14 rounded-lg" />
+      <div className="flex items-center gap-3 mb-8">
+        <img src="/src/assets/Logo.png" alt="Logo" className="w-10 h-10 rounded-lg" />
         {!collapsed && (
           <h1 className="text-xl font-bold font-serif tracking-wide text-gray-900">
             Shine Infosolution
           </h1>
         )}
-      </div> */}
+      </div>
 
       {/* Navigation */}
       <div
@@ -142,14 +142,14 @@ const Sidebar = () => {
   );
 
   return (
-    <div className="flex h-screen left-2">
+    <div className="flex h-screen">
       {/* Hamburger for mobile */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
         className="no-print fixed top-4 left-4 z-50 bg-white rounded-lg p-2.5 md:hidden shadow-md hover:bg-gray-50 transition-colors"
       >
         {mobileOpen ? (
-          <img src="/src/assets/Logo.png" alt="Logo" className="w-8 h-8" />
+          <img src="/src/assets/icon.png" alt="Logo" className="w-8 h-8" />
         ) : (
           <Bars3Icon className="w-6 h-6 text-gray-700" />
         )}
@@ -162,7 +162,7 @@ const Sidebar = () => {
           className={`bg-white rounded-lg p-2.5 shadow-md hover:bg-gray-50 transition-colors ${collapsed ? "w-16 h-16" : "w-12 h-12"}`}
         >
           {collapsed ? (
-            <img src="/src/assets/Logo.png" alt="Logo" className="w-8 h-8" />
+            <img src="/src/assets/icon.png" alt="Logo" className="w-8 h-8" />
           ) : (
             <Bars3Icon className="w-6 h-6 text-gray-700" />
           )}
