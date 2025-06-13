@@ -41,29 +41,29 @@ const Sidebar = () => {
 
   const sidebarContent = (
     <div
-      className={`bg-white border-r h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-lg no-print ${
-        collapsed ? "w-16" : "w-64"
+      className={`bg-gray-100 border-r h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-lg no-print ${
+        collapsed ? "w-20" : "w-72"
       }`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 mb-8">
-        <img src="/src/assets/Logo.png" alt="Logo" className="w-12 h-12 rounded-lg" />
+      {/* <div className="flex items-center gap-3 mb-8">
+        <img src="/src/assets/Logo.png" alt="Logo" className="w-14 h-14 rounded-lg" />
         {!collapsed && (
-          <h1 className="text-lg font-bold font-serif tracking-wide text-gray-800">
+          <h1 className="text-xl font-bold font-serif tracking-wide text-gray-900">
             Shine Infosolution
           </h1>
         )}
-      </div>
+      </div> */}
 
       {/* Navigation */}
       <div
-        className={`flex flex-col gap-2 flex-grow ${
+        className={`flex flex-col gap-3 flex-grow ${
           collapsed ? "overflow-hidden" : "overflow-y-auto"
         }`}
       >
         <SidebarItem
           title="Dashboard"
-          icon={<AdjustmentsHorizontalIcon className="w-5 h-5" />}
+          icon={<AdjustmentsHorizontalIcon className="w-6 h-6" />}
           to="/Dashboard"
           selected={selected}
           setSelected={handleItemClick}
@@ -71,7 +71,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="Customers"
-          icon={<UserCircleIcon className="w-5 h-5" />}
+          icon={<UserCircleIcon className="w-6 h-6" />}
           to="/CustomerList"
           selected={selected}
           setSelected={handleItemClick}
@@ -79,28 +79,17 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="Leads"
-          icon={<IdentificationIcon className="w-5 h-5" />}
+          icon={<IdentificationIcon className="w-6 h-6" />}
           to="/List"
           selected={selected}
           setSelected={handleItemClick}
           collapsed={collapsed}
         />
-        {/* <SidebarDropdown
-          title="Products"
-          icon={<Squares2X2Icon className="w-5 h-5" />}
-          isOpen={openProducts}
-          setIsOpen={setOpenProducts}
-          items={[{ title: "Add Product", link: "/Products" }]}
-          selected={selected}
-          setSelected={handleItemClick}
-          collapsed={collapsed}
-          setMobileOpen={setMobileOpen} // ✅ pass this
-        /> */}
 
         <SidebarDropdown
           title="Gallery"
-          icon={<CameraIcon className="w-5 h-5" />}
-          isOpen={openGallery} // ✅ Fix: use `openGallery` instead of `openProducts`
+          icon={<CameraIcon className="w-6 h-6" />}
+          isOpen={openGallery}
           setIsOpen={setOpenGallery}
           items={[
             { title: "Common", link: "/Common" },
@@ -110,12 +99,12 @@ const Sidebar = () => {
           selected={selected}
           setSelected={handleItemClick}
           collapsed={collapsed}
-          setMobileOpen={setMobileOpen} // ✅ pass this
+          setMobileOpen={setMobileOpen}
         />
 
         <SidebarItem
           title="Invoice"
-          icon={<UserCircleIcon className="w-5 h-5" />}
+          icon={<UserCircleIcon className="w-6 h-6" />}
           to="/InvoiceNewList"
           selected={selected}
           setSelected={handleItemClick}
@@ -123,7 +112,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="Iternary"
-          icon={<UserCircleIcon className="w-5 h-5" />}
+          icon={<UserCircleIcon className="w-6 h-6" />}
           to="/IternaryTable"
           selected={selected}
           setSelected={handleItemClick}
@@ -131,7 +120,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="CarList"
-          icon={<UserCircleIcon className="w-5 h-5" />}
+          icon={<UserCircleIcon className="w-6 h-6" />}
           to="/CarList"
           selected={selected}
           setSelected={handleItemClick}
@@ -142,33 +131,41 @@ const Sidebar = () => {
       {/* Logout */}
       <button
         onClick={logout}
-        className={`flex items-center gap-2 text-red-600 hover:bg-red-50 p-3 rounded-lg transition-all duration-200 mt-4 ${
+        className={`flex items-center gap-2 text-red-600 hover:bg-red-100 p-3 rounded-lg transition-all duration-200 mt-4 ${
           collapsed ? "justify-center" : ""
         }`}
       >
-        <PowerIcon className="w-5 h-5" />
+        <PowerIcon className="w-6 h-6" />
         {!collapsed && <span className="font-medium">Logout</span>}
       </button>
     </div>
   );
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen left-2">
       {/* Hamburger for mobile */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
         className="no-print fixed top-4 left-4 z-50 bg-white rounded-lg p-2.5 md:hidden shadow-md hover:bg-gray-50 transition-colors"
       >
-        <Bars3Icon className="w-6 h-6 text-gray-700" />
+        {mobileOpen ? (
+          <img src="/src/assets/Logo.png" alt="Logo" className="w-8 h-8" />
+        ) : (
+          <Bars3Icon className="w-6 h-6 text-gray-700" />
+        )}
       </button>
 
       {/* Collapse Toggle for Desktop */}
       <div className="no-print absolute top-4 left-4 z-40 hidden md:flex flex-col items-center gap-2">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="bg-white rounded-lg p-2.5 shadow-md hover:bg-gray-50 transition-colors"
+          className={`bg-white rounded-lg p-2.5 shadow-md hover:bg-gray-50 transition-colors ${collapsed ? "w-16 h-16" : "w-12 h-12"}`}
         >
-          <Bars3Icon className="w-6 h-6 text-gray-700" />
+          {collapsed ? (
+            <img src="/src/assets/Logo.png" alt="Logo" className="w-8 h-8" />
+          ) : (
+            <Bars3Icon className="w-6 h-6 text-gray-700" />
+          )}
         </button>
       </div>
 

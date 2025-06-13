@@ -15,7 +15,7 @@ const Layout = ({ onLogout, user }) => {
       </div>
       
       {/* Add user info and logout button */}
-      <div className="mt-auto p-4 border-t">
+      {/* <div className="mt-auto p-4 border-t">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
@@ -34,7 +34,7 @@ const Layout = ({ onLogout, user }) => {
             Logout
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

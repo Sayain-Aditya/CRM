@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { toast, Toaster } from 'react-hot-toast';
+import { useAuth } from '../Context/authContext';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -14,6 +17,14 @@ function LoginPage() {
     console.log('LoginPage mounted');
     console.log('Current location:', window.location.pathname);
   }, []);
+
+  // If user is already logged in, redirect to dashboard
+  useEffect(() => {
+    if (user) {
+      const from = location.state?.from?.pathname || '/dashboard';
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, location]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -87,12 +98,22 @@ function LoginPage() {
 
         <p className="mt-4 text-center text-gray-600">
           Don't have an account?{' '}
-          <Link
-            to="/register"
+          <button
+            type="button"
+            onClick={() => {
+              console.log('Register button clicked');
+              console.log('Before navigation - pathname:', window.location.pathname);
+              try {
+                navigate('/register', { replace: true });
+                console.log('Navigation called successfully');
+              } catch (error) {
+                console.error('Navigation error:', error);
+              }
+            }}
             className="text-blue-600 hover:text-blue-800"
           >
             Register
-          </Link>
+          </button>
         </p>
       </form>
     </div>

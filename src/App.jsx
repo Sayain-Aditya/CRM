@@ -5,6 +5,7 @@ import {
   useNavigate,
   Link,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import DashBoard from "./Componenets/Pages/DashBoard";
 import Product from "./Componenets/Pages/Products";
@@ -35,6 +36,7 @@ import CarForm from "./Componenets/Pages/Cars/CarForm";
 import { auth } from './services/firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import Register from "./Login/Register";
+import { AuthProvider, useAuth } from './Context/authContext';
 
 async function subscribeUser() {
   const registration = await navigator.serviceWorker.ready;
@@ -51,45 +53,35 @@ async function subscribeUser() {
   });
 }
 
+// Protected Route Component
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
+
+  return children;
+}
+
 function App() {
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [user, setUser] = useState(null);
-
-  // Handle Firebase auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in
-        setIsAuthenticated(true);
-        setUser(user);
-        // Get the token and store it
-        user.getIdToken().then(token => {
-          localStorage.setItem('firebaseToken', token);
-        });
-      } else {
-        // User is signed out
-        setIsAuthenticated(false);
-        setUser(null);
-        localStorage.removeItem('firebaseToken');
-        // Only navigate to '/' if we're not already on login or register page
-        const currentPath = window.location.pathname;
-        if (currentPath !== '/' && currentPath !== '/register') {
-          navigate('/');
-        }
-      }
-    });
-
-    // Cleanup subscription
-    return () => unsubscribe();
-  }, [navigate]);
 
   // Handle logout
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      // Clear any other local storage items
       localStorage.clear();
       navigate('/');
     } catch (error) {
@@ -131,9 +123,9 @@ function App() {
         </button>
       )}
       <ToastContainer />
-      {console.log('App render - isAuthenticated:', isAuthenticated)}
+      {console.log('App render - isAuthenticated:', user)}
       
-      {isAuthenticated ? (
+      {user ? (
         <div className="flex h-screen">
           {/* Sidebar Layout */}
           <div className="min-h-screen bg-white shadow-md">
@@ -175,26 +167,21 @@ function App() {
           </div>
         </div>
       ) : (
-        <div className="min-h-screen">
-          <Routes>
-            <Route 
-              path="/" 
-              element={<LoginPage />} 
-            />
-            <Route 
-              path="register" 
-              element={<Register />} 
-            />
-            {/* Catch all other routes and redirect to login */}
-            <Route 
-              path="*" 
-              element={<Navigate to="/" replace />} 
-            />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="register" element={<Register />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       )}
     </>
   );
 }
 
-export default App;
+// Wrap your app with AuthProvider
+export default function AppWrapper() {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}

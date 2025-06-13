@@ -53,30 +53,65 @@ const DashBoard = () => {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      
-      {userData && (
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">Welcome, {userData.email}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-medium text-blue-800">User ID</h3>
-              <p className="text-blue-600">{userData.uid}</p>
-            </div>
-            <div className="bg-green-50 p-4 rounded-lg">
-              <h3 className="font-medium text-green-800">Email</h3>
-              <p className="text-green-600">{userData.email}</p>
-            </div>
-            {userData.displayName && (
-              <div className="bg-purple-50 p-4 rounded-lg">
-                <h3 className="font-medium text-purple-800">Display Name</h3>
-                <p className="text-purple-600">{userData.displayName}</p>
-              </div>
-            )}
+    <div className="p-6 bg-gray-100 min-h-screen overflow-hidden">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Dashboard</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Link
+          to="/CustomerList"
+          className="bg-white shadow-md rounded-lg p-4 flex items-center gap-4 hover:bg-blue-50 transition"
+        >
+          <UserCircleIcon className="w-10 h-10 text-blue-500" />
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Customers</h2>
+            <p className="text-sm text-gray-500">Manage customer details</p>
           </div>
-        </div>
-      )}
+        </Link>
+
+        <Link
+          to="/List"
+          className="bg-white shadow-md rounded-lg p-4 flex items-center gap-4 hover:bg-blue-50 transition"
+        >
+          <IdentificationIcon className="w-10 h-10 text-green-500" />
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Leads</h2>
+            <p className="text-sm text-gray-500">Track and manage leads</p>
+          </div>
+        </Link>
+
+        <Link
+          to="/Common"
+          className="bg-white shadow-md rounded-lg p-4 flex items-center gap-4 hover:bg-blue-50 transition"
+        >
+          <CameraIcon className="w-10 h-10 text-purple-500" />
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Gallery</h2>
+            <p className="text-sm text-gray-500">View and manage images</p>
+          </div>
+        </Link>
+
+        <Link
+          to="/InvoiceNewList"
+          className="bg-white shadow-md rounded-lg p-4 flex items-center gap-4 hover:bg-blue-50 transition"
+        >
+          <Squares2X2Icon className="w-10 h-10 text-yellow-500" />
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Invoices</h2>
+            <p className="text-sm text-gray-500">Generate and manage invoices</p>
+          </div>
+        </Link>
+
+        <Link
+          to="/IternaryTable"
+          className="bg-white shadow-md rounded-lg p-4 flex items-center gap-4 hover:bg-blue-50 transition"
+        >
+          <AdjustmentsHorizontalIcon className="w-10 h-10 text-red-500" />
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Itinerary</h2>
+            <p className="text-sm text-gray-500">Plan and organize trips</p>
+          </div>
+        </Link>
+      </div>
     </div>
   );
 };
