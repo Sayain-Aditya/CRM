@@ -7,6 +7,8 @@ import {
   IdentificationIcon,
   PowerIcon,
   UserCircleIcon,
+  CalculatorIcon,
+  QueueListIcon
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
@@ -39,6 +41,13 @@ const Sidebar = () => {
     if (mobileOpen) setMobileOpen(false); // Close mobile sidebar on click
   };
 
+  const handleGalleryClick = () => {
+    if (collapsed) {
+      setCollapsed(false); // Expand the sidebar if collapsed
+    }
+    setOpenGallery(!openGallery); // Toggle the Gallery dropdown
+  };
+
   const sidebarContent = (
     <div
       className={`bg-gray-100 border-r h-full p-4 flex flex-col transition-all duration-300 ease-in-out shadow-lg no-print ${
@@ -47,7 +56,7 @@ const Sidebar = () => {
     >
       {/* Logo */}
       <div className="flex items-center gap-3 mb-8">
-        <img src="/src/assets/Logo.png" alt="Logo" className="w-10 h-10 rounded-lg" />
+        <img src="/src/assets/icon.png" alt="Logo" className="w-10 h-10 rounded-lg" />
         {!collapsed && (
           <h1 className="text-xl font-bold font-serif tracking-wide text-gray-900">
             Shine Infosolution
@@ -63,7 +72,7 @@ const Sidebar = () => {
       >
         <SidebarItem
           title="Dashboard"
-          icon={<AdjustmentsHorizontalIcon className="w-6 h-6" />}
+          icon={<AdjustmentsHorizontalIcon className="w-6 h-6 text-blue-500" />}
           to="/Dashboard"
           selected={selected}
           setSelected={handleItemClick}
@@ -71,7 +80,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="Customers"
-          icon={<UserCircleIcon className="w-6 h-6" />}
+          icon={<UserCircleIcon className="w-6 h-6 text-green-500" />}
           to="/CustomerList"
           selected={selected}
           setSelected={handleItemClick}
@@ -79,7 +88,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="Leads"
-          icon={<IdentificationIcon className="w-6 h-6" />}
+          icon={<IdentificationIcon className="w-6 h-6 text-purple-500" />}
           to="/List"
           selected={selected}
           setSelected={handleItemClick}
@@ -88,9 +97,9 @@ const Sidebar = () => {
 
         <SidebarDropdown
           title="Gallery"
-          icon={<CameraIcon className="w-6 h-6" />}
+          icon={<CameraIcon className="w-6 h-6 text-yellow-500" />}
           isOpen={openGallery}
-          setIsOpen={setOpenGallery}
+          setIsOpen={handleGalleryClick}
           items={[
             { title: "Common", link: "/Common" },
             { title: "Hotel", link: "/Hotel" },
@@ -104,7 +113,7 @@ const Sidebar = () => {
 
         <SidebarItem
           title="Invoice"
-          icon={<UserCircleIcon className="w-6 h-6" />}
+          icon={<CalculatorIcon className="w-6 h-6 text-red-500" />}
           to="/InvoiceNewList"
           selected={selected}
           setSelected={handleItemClick}
@@ -120,7 +129,7 @@ const Sidebar = () => {
         />
         <SidebarItem
           title="CarList"
-          icon={<UserCircleIcon className="w-6 h-6" />}
+          icon={<QueueListIcon className="w-6 h-6" />}
           to="/CarList"
           selected={selected}
           setSelected={handleItemClick}
@@ -159,10 +168,10 @@ const Sidebar = () => {
       <div className="no-print absolute top-4 left-4 z-40 hidden md:flex flex-col items-center gap-2">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className={`bg-white rounded-lg p-2.5 shadow-md hover:bg-gray-50 transition-colors ${collapsed ? "w-16 h-16" : "w-12 h-12"}`}
+          className={`bg-white rounded-lg p-2.5 shadow-md hover:bg-gray-50 transition-colors ${collapsed ? "w-13 h-13" : "w-12 h-12"}`}
         >
           {collapsed ? (
-            <img src="/src/assets/icon.png" alt="Logo" className="w-8 h-8" />
+            <img src="/src/assets/icon.png" alt="Logo" className="w-10 h-10" />
           ) : (
             <Bars3Icon className="w-6 h-6 text-gray-700" />
           )}
