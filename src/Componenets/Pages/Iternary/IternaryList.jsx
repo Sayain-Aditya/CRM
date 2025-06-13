@@ -11,62 +11,6 @@ const IternaryList = ({ leads, setLeads }) => {
   const [hotels, setHotels] = useState([]);
   const [destinations, setDestinations] = useState([]);
 
-  useEffect(() => {
-    if (id) {
-      // Fetch existing itinerary data to edit
-      axios
-        .get(`https://billing-backend-seven.vercel.app/Iternary/mano/${id}`)
-        .then((res) => {
-          const {
-            title,
-            days,
-            date,
-            pickLoc,
-            dropLoc,
-            pickTime,
-            dropTime,
-            vehicle,
-            package: packageName,
-            cost,
-            personNo,
-            hotelType,
-            advance,
-            hotelSelected,
-            destinations: dests,
-            dynamicFields,
-            costInclude,
-            costExclude,
-          } = res.data.data;
-          setFormData({
-            title: title || "",
-            days: days || "",
-            date: date || "",
-            pickLoc: pickLoc || "",
-            dropLoc: dropLoc || "",
-            pickTime: pickTime || "",
-            dropTime: dropTime || "",
-            vehicle: vehicle || "",
-            package: packageName || "",
-            cost: cost || "",
-            personNo: personNo || "",
-            hotelType: hotelType || "",
-            advance: advance || "",
-            hotelSelected: hotelSelected || [],
-            destinations: dests || [],
-            dynamicFields: dynamicFields || Array().fill({ fieldName: "" }),
-            costInclude: costInclude || [],
-            costExclude: costExclude || [],
-          });
-          setDaySchedules(dynamicFields.map((day) => day.points || []));
-          setActiveDay(1); // Reset to first day
-        })
-        .catch((err) => {
-          toast.error("Failed to load itinerary data");
-          console.error(err);
-        });
-    }
-  }, [id]);
-
   const [formData, setFormData] = useState({
     title: "",
     days: "",
@@ -158,6 +102,72 @@ const IternaryList = ({ leads, setLeads }) => {
 
     fetchDestinations();
   }, []);
+
+  useEffect(() => {
+    if (id) {
+      axios
+        .get(`https://billing-backend-seven.vercel.app/Iternary/mano/${id}`)
+        .then((res) => {
+          const {
+            title,
+            days,
+            date,
+            pickLoc,
+            dropLoc,
+            pickTime,
+            dropTime,
+            vehicle,
+            package: packageName,
+            cost,
+            personNo,
+            hotelType,
+            advance,
+            hotelSelected,
+            destinations: dests,
+            dynamicFields,
+            costInclude,
+            costExclude,
+          } = res.data.data;
+
+          // 🛠 Map hotelSelected and destinations to proper objects
+          const mappedHotels = hotelSelected
+            .map((hotelId) => hotels.find((h) => h.value === hotelId))
+            .filter(Boolean);
+
+          const mappedDestinations = dests
+            .map((destId) => destinations.find((d) => d.value === destId))
+            .filter(Boolean);
+
+          setFormData({
+            title: title || "",
+            days: days || "",
+            date: date || "",
+            pickLoc: pickLoc || "",
+            dropLoc: dropLoc || "",
+            pickTime: pickTime || "",
+            dropTime: dropTime || "",
+            vehicle: vehicle || "",
+            package: packageName || "",
+            cost: cost || "",
+            personNo: personNo || "",
+            hotelType: hotelType || "",
+            advance: advance || "",
+            hotelSelected: mappedHotels || [],
+            destinations: mappedDestinations || [],
+            dynamicFields: dynamicFields || Array().fill({ fieldName: "" }),
+            costInclude: costInclude || [],
+            costExclude: costExclude || [],
+          });
+
+          setDaySchedules(dynamicFields.map((day) => day.points || []));
+          setActiveDay(1);
+        })
+        .catch((err) => {
+          toast.error("Failed to load itinerary data");
+          console.error(err);
+        });
+    }
+  }, [id, hotels, destinations]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -309,7 +319,6 @@ const IternaryList = ({ leads, setLeads }) => {
     setCostInclude([]);
     setCostExclude([]);
   };
-  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-4 px-1 flex justify-center">
@@ -339,8 +348,7 @@ const IternaryList = ({ leads, setLeads }) => {
             Add New Tour
           </h2>
           <Link to={`/IternaryField/${id}`} className="w-full sm:w-auto">
-            <button 
-            className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto px-4 py-2 rounded-lg shadow-lg text-base font-semibold transition">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto px-4 py-2 rounded-lg shadow-lg text-base font-semibold transition">
               Print Itinerary
             </button>
           </Link>

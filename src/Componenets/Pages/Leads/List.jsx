@@ -165,7 +165,7 @@ const List = () => {
                   <td className="px-6 py-4">
                     <button
                       onClick={() => handleUpdate(lead._id)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded"
+                      className="bg-purple-600 hover:bg-purple-700 text-white w-full px-4 py-2 rounded-lg text-sm font-semibold transition"
                     >
                       Update
                     </button>
@@ -226,6 +226,14 @@ const List = () => {
                 >
                   {lead.status === "true" ? "In Progress" : "Not Interested"}
                 </span>
+              </div>
+              <div className="flex flex-col gap-2 mt-2">
+                <button
+                  onClick={() => handleUpdate(lead._id)}
+                  className="bg-purple-600 hover:bg-purple-700 text-white w-full py-2 rounded-lg text-sm font-semibold transition"
+                >
+                  Update
+                </button>
               </div>
             </div>
           ))

@@ -72,6 +72,9 @@ const IternaryTable = () => {
       }
     }
   };
+  const handleUpdate = (id) => {
+    navigate(`/IternaryList/${id}`); // Ensure the correct id is passed to the form page
+  }
 
   const handleView = (id) => {
     // Navigate to the view page with the itinerary ID
