@@ -158,7 +158,7 @@ const Sidebar = () => {
         className="no-print fixed top-4 left-4 z-50 bg-white rounded-lg p-2.5 md:hidden shadow-md hover:bg-gray-50 transition-colors"
       >
         {mobileOpen ? (
-          <img src="/src/assets/icon.png" alt="Logo" className="w-8 h-8" />
+          <img src="/src/assets/icon.png" alt="Logo" className="w-2 h-2" />
         ) : (
           <Bars3Icon className="w-6 h-6 text-gray-700" />
         )}
