@@ -28,8 +28,11 @@ const List = () => {
       const res = await axios.get(
         "https://billing-backend-seven.vercel.app/lead/all"
       );
-      setLeads(res.data.data || []);
-      setFilteredLeads(res.data.data || []);
+      const sortedLeads = (res.data.data || []).sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      setLeads(sortedLeads);
+      setFilteredLeads(sortedLeads);
     } catch (error) {
       toast.error("Failed to fetch leads");
     }

@@ -19,7 +19,11 @@ const InvoiceNewList = () => {
           "https://billing-backend-seven.vercel.app/invoices/all"
         );
         const data = await response.json();
-        setInvoices(data.data || []);
+        const sortedInvoices = (data.data || []).sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+        setInvoices(sortedInvoices);
+        setFilteredInvoice(sortedInvoices);
       } catch (error) {
         console.error("Error fetching invoices:", error);
       } finally {

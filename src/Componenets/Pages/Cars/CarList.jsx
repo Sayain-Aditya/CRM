@@ -21,8 +21,12 @@ const CarList = () => {
       const res = await axios.get(`https://billing-backend-seven.vercel.app/car/all`); // Ensure the Promise is awaited
       console.log("Full API Response:", res); // Log the full response
       const cars = res.data?.data || []; // Access the data field in the response
-      console.log("Cars fetched successfully:", cars); // Log the fetched cars
-      setCars(cars); // Update the state with the fetched cars
+      const sortedCars = cars.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      console.log("Cars fetched successfully:", sortedCars); // Log the fetched cars
+      setCars(sortedCars); // Update the state with the fetched cars
+      setFilteredCars(sortedCars);
     } catch (error) {
       console.error("Failed to fetch cars:", error);
     }

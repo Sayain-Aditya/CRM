@@ -47,8 +47,11 @@ const IternaryTable = () => {
       const res = await axios.get(
         "https://billing-backend-seven.vercel.app/Iternary/all"
       );
-      setIternaries(res.data.data || []);
-      setFilteredIternaries(res.data.data || []);
+      const sortedIternaries = (res.data.data || []).sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      setIternaries(sortedIternaries);
+      setFilteredIternaries(sortedIternaries);
     } catch (error) {
       toast.error("Failed to fetch itineraries");
     }

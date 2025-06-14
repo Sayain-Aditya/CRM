@@ -28,8 +28,11 @@ const CustomerList = () => {
       const res = await axios.get(
         "https://billing-backend-seven.vercel.app/customer/all"
       );
-      setCustomer(res.data.data || []);
-      setFilteredCustomer(res.data.data || []);
+      const sortedCustomers = (res.data.data || []).sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      setCustomer(sortedCustomers);
+      setFilteredCustomer(sortedCustomers);
     } catch (error) {
       toast.error("Failed to fetch customers");
       console.error(error);
