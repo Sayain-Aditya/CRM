@@ -208,7 +208,7 @@ const IternaryField = () => {
         <div className="flex justify-end mb-6"></div>
         <div className="bg-white rounded-lg shadow-lg p-6 md:p-10 space-y-6">
           <div className="flex justify-center">
-            <img src="/public/icon.png" alt="Logo" className="w-40 h-28 object-contain" />
+            <img src="/icon.png" alt="Logo" className="w-40 h-28 object-contain" />
           </div>
           <div className="w-full mb-4">
             <img
