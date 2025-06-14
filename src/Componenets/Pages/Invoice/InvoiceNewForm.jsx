@@ -83,6 +83,24 @@ const InvoiceNewForm = () => {
       fetchInvoice();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (!id) {
+      // Only fetch for new invoice
+      axios
+        .get("https://billing-backend-seven.vercel.app/invoices/next-invoice-number")
+        .then((res) => {
+          setFormData((prev) => ({
+            ...prev,
+            invoiceNumber: res.data.nextInvoiceNumber,
+          }));
+        })
+        .catch((err) => {
+          toast.error("Failed to fetch next invoice number");
+        });
+    }
+  }, [id]);
+
   const handleRemoveRow = (index) => {
     if (rows.length > 1) {
       const newRows = rows.filter((_, i) => i !== index);
@@ -275,6 +293,7 @@ const InvoiceNewForm = () => {
               onChange={handleChange}
               placeholder="Invoice Number"
               className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              readOnly
             />
           </div>
           <div>
