@@ -213,7 +213,7 @@ const IternaryField = () => {
           <div className="w-full mb-4">
             <img
               className="rounded-lg w-full h-[290px] object-cover shadow"
-              src="/public/71840.jpg"
+              src="/71840.jpg"
               alt="Main"
             />
           </div>
@@ -222,21 +222,21 @@ const IternaryField = () => {
             <div className="rounded-md">
               <img
                 className="rounded-lg w-full h-[150px] object-cover shadow"
-                src="/public/71840.jpg"
+                src="/71840.jpg"
                 alt="Main"
               />
             </div>
             <div className="rounded-md">
               <img
                 className="rounded-lg w-full h-[150px] object-cover shadow"
-                src="/public/71840.jpg"
+                src="/71840.jpg"
                 alt="Main"
               />
             </div>
             <div className="rounded-md">
               <img
                 className="rounded-lg w-full h-[150px] object-cover shadow"
-                src="/public/71840.jpg"
+                src="/71840.jpg"
                 alt="Main"
               />
             </div>
@@ -492,7 +492,7 @@ const IternaryField = () => {
           )}
           <div className="items-center flex flex-col mt-8">
             <div className="">
-              <img src="/public/Qr.png" alt="Payment QR" className="object-contain mb-2" />
+              <img src="/Qr.png" alt="Payment QR" className="object-contain mb-2" />
               <div className="text-center">
                 <p className="font-semibold text-gray-700">Scan to Pay</p>
                 <p className="text-sm text-gray-500">
