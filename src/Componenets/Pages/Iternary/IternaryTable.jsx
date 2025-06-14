@@ -78,7 +78,7 @@ const IternaryTable = () => {
 
   const handleView = (id) => {
     // Navigate to the view page with the itinerary ID
-    window.location.href = `/IternaryField/${id}`;
+    navigate(`/IternaryField/${id}`);
   };
 
   return (
