@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 const InvoiceNewForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [error, setError] = useState({});
   const [formData, setFormData] = useState({
     customerGST: "",
     invoiceDate: "",
@@ -27,6 +28,8 @@ const InvoiceNewForm = () => {
     },
   });
 
+  
+
   const [rows, setRows] = useState([
     {
       description: "",
@@ -37,6 +40,29 @@ const InvoiceNewForm = () => {
       amount: "",
     },
   ]);
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (formData.customerName.trim() === "") newErrors.customerName = "Customer name is required";
+    if (formData.invoiceDate.trim() === "") newErrors.invoiceDate = "Invoice date is required";
+    if (formData.dueDate.trim() === "") newErrors.dueDate = "Due date is required";
+    if (formData.customerGST.trim() === "") newErrors.customerGST = "Customer GST is required";
+    if (formData.customerAddress.trim() === "") newErrors.customerAddress = "Customer address is required";
+    if (formData.customerPhone.trim() === "") newErrors.customerPhone = "Customer phone is required";
+    if (formData.customerEmail.trim() === "") newErrors.customerEmail = "Customer email is required";
+    if (formData.customerAadhar.trim() === "") newErrors.customerAadhar = "Customer Aadhar is required";
+    if (formData.dispatchThrough.trim() === "") newErrors.dispatchThrough = "Dispatch through is required";
+
+    rows.forEach((row, idx) => {
+      if (row.description === "") newErrors[`row_description_${idx}`] = "Description is required";
+      if (row.unit === "") newErrors[`row_unit_${idx}`] = "Unit is required";
+      if (row.quantity === "" || isNaN(Number(row.quantity))) newErrors[`row_quantity_${idx}`] = "Quantity is required";
+      if (row.price === "" || isNaN(Number(row.price))) newErrors[`row_price_${idx}`] = "Price is required";
+      if (row.discount === "" || isNaN(Number(row.discount))) newErrors[`row_discount_${idx}`] = "Discount is required";
+    });
+
+    return newErrors;
+  };
 
   const handleAddRow = () => {
     setRows([
@@ -69,7 +95,7 @@ const InvoiceNewForm = () => {
             unit: product.unit,
             quantity: product.quantity,
             price: product.price,
-            discount: product.discountPercentage,
+            discountPercentage: product.discountPercentage,
             amount: product.amount,
             invoiceNumber: product.invoiceNumber,
           }));
@@ -158,6 +184,13 @@ const InvoiceNewForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validateForm();
+    setError(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      toast.error("Please fix the errors in the form.");
+      return;
+    }
 
     const productDetails = rows.map((row) => ({
       description: row.description,
@@ -260,8 +293,9 @@ const InvoiceNewForm = () => {
               name="invoiceDate"
               value={formData.invoiceDate}
               onChange={handleChange}
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error.invoiceDate ? 'border-red-500' : ''}`}
             />
+            {error.invoiceDate && <span className="text-red-500 text-xs">{error.invoiceDate}</span>}
           </div>
           <div>
             <label className="block mb-1 font-semibold">Due Date</label>
@@ -270,8 +304,9 @@ const InvoiceNewForm = () => {
               name="dueDate"
               value={formData.dueDate}
               onChange={handleChange}
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error.dueDate ? 'border-red-500' : ''}`}
             />
+            {error.dueDate && <span className="text-red-500 text-xs">{error.dueDate}</span>}
           </div>
           <div>
             <label className="block mb-1 font-semibold">Customer Name</label>
@@ -281,8 +316,9 @@ const InvoiceNewForm = () => {
               value={formData.customerName}
               onChange={handleChange}
               placeholder="Customer Name"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error.customerName ? 'border-red-500' : ''}`}
             />
+            {error.customerName && <span className="text-red-500 text-xs">{error.customerName}</span>}
           </div>
           <div>
             <label className="block mb-1 font-semibold">Invoice Number</label>
@@ -304,8 +340,9 @@ const InvoiceNewForm = () => {
               value={formData.customerAddress}
               onChange={handleChange}
               placeholder="Customer Address"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none ${error.customerAddress ? 'border-red-500' : ''}`}
             />
+            {error.customerAddress && <span className="text-red-500 text-xs">{error.customerAddress}</span>}
           </div>
           <div>
             <label className="block mb-1 font-semibold">Customer Phone</label>
@@ -315,8 +352,9 @@ const InvoiceNewForm = () => {
               value={formData.customerPhone}
               onChange={handleChange}
               placeholder="Customer Phone"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error.customerPhone ? 'border-red-500' : ''}`}
             />
+            {error.customerPhone && <span className="text-red-500 text-xs">{error.customerPhone}</span>}
           </div>
           <div>
             <label className="block mb-1 font-semibold">Customer Email</label>
@@ -326,8 +364,9 @@ const InvoiceNewForm = () => {
               value={formData.customerEmail}
               onChange={handleChange}
               placeholder="Customer Email"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error.customerEmail ? 'border-red-500' : ''}`}
             />
+            {error.customerEmail && <span className="text-red-500 text-xs">{error.customerEmail}</span>}
           </div>
           <div>
             <label className="block mb-1 font-semibold">Dispatch Through</label>
@@ -337,8 +376,9 @@ const InvoiceNewForm = () => {
               value={formData.dispatchThrough}
               onChange={handleChange}
               placeholder="Dispatch Through (optional)"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error.dispatchThrough ? 'border-red-500' : ''}`}
             />
+            {error.dispatchThrough && <span className="text-red-500 text-xs">{error.dispatchThrough}</span>}
           </div>
           <div>
             <label className="block mb-1 font-semibold">Customer GSTIN</label>
@@ -348,8 +388,9 @@ const InvoiceNewForm = () => {
               value={formData.customerGST}
               onChange={handleChange}
               placeholder="Customer GSTIN"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error.customerGST ? 'border-red-500' : ''}`}
             />
+            {error.customerGST && <span className="text-red-500 text-xs">{error.customerGST}</span>}
           </div>
           <div>
             <label className="block mb-1 font-semibold">Customer Aadhar</label>
@@ -359,8 +400,9 @@ const InvoiceNewForm = () => {
               value={formData.customerAadhar}
               onChange={handleChange}
               placeholder="Customer Aadhar"
-              className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={`border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 ${error.customerAadhar ? 'border-red-500' : ''}`}
             />
+            {error.customerAadhar && <span className="text-red-500 text-xs">{error.customerAadhar}</span>}
           </div>
         </div>
 
@@ -391,12 +433,11 @@ const InvoiceNewForm = () => {
                         list="product-list"
                         type="text"
                         value={row.description}
-                        onChange={(e) =>
-                          handleInputChange(e, index, "description")
-                        }
+                        onChange={(e) => handleInputChange(e, index, "description")}
                         placeholder="Product name"
-                        className="border rounded p-2 w-full"
+                        className={`border rounded p-2 w-full ${error[`row_description_${index}`] ? 'border-red-500' : ''}`}
                       />
+                      {error[`row_description_${index}`] && <span className="text-red-500 text-xs">{error[`row_description_${index}`]}</span>}
                       {index === 0 && (
                         <datalist id="product-list">
                           {productOptions.map((name, i) => (
@@ -409,7 +450,7 @@ const InvoiceNewForm = () => {
                       <select
                         value={row.unit}
                         onChange={(e) => handleInputChange(e, index, "unit")}
-                        className="border rounded p-2 w-full"
+                        className={`border rounded p-2 w-full ${error[`row_unit_${index}`] ? 'border-red-500' : ''}`}
                       >
                         <option value="">Unit</option>
                         <option value="pcs">Pieces</option>
@@ -418,6 +459,7 @@ const InvoiceNewForm = () => {
                         <option value="pack">Pack</option>
                         <option value="dozen">Dozen</option>
                       </select>
+                      {error[`row_unit_${index}`] && <span className="text-red-500 text-xs">{error[`row_unit_${index}`]}</span>}
                     </td>
                     <td className="p-2">
                       <input
@@ -438,8 +480,9 @@ const InvoiceNewForm = () => {
                           setRows(updatedRows);
                         }}
                         placeholder="Qty"
-                        className="border rounded p-2 w-full"
+                        className={`border rounded p-2 w-full ${error[`row_quantity_${index}`] ? 'border-red-500' : ''}`}
                       />
+                      {error[`row_quantity_${index}`] && <span className="text-red-500 text-xs">{error[`row_quantity_${index}`]}</span>}
                     </td>
                     <td className="p-2">
                       <input
@@ -459,8 +502,9 @@ const InvoiceNewForm = () => {
                           setRows(updatedRows);
                         }}
                         placeholder="Price"
-                        className="border rounded p-2 w-full"
+                        className={`border rounded p-2 w-full ${error[`row_price_${index}`] ? 'border-red-500' : ''}`}
                       />
+                      {error[`row_price_${index}`] && <span className="text-red-500 text-xs">{error[`row_price_${index}`]}</span>}
                     </td>
                     <td className="p-2">
                       <input
@@ -480,8 +524,9 @@ const InvoiceNewForm = () => {
                           setRows(updatedRows);
                         }}
                         placeholder="Discount (%)"
-                        className="border rounded p-2 w-full"
+                        className={`border rounded p-2 w-full ${error[`row_discount_${index}`] ? 'border-red-500' : ''}`}
                       />
+                      {error[`row_discount_${index}`] && <span className="text-red-500 text-xs">{error[`row_discount_${index}`]}</span>}
                     </td>
                     <td className="p-2">
                       <input
@@ -505,11 +550,10 @@ const InvoiceNewForm = () => {
                       <button
                         type="button"
                         onClick={() => handleRemoveRow(index)}
-                        className={`bg-red-500 text-white px-3 py-1 rounded w-full md:w-auto ${
-                          rows.length <= 1
+                        className={`bg-red-500 text-white px-3 py-1 rounded w-full md:w-auto ${rows.length <= 1
                             ? "cursor-not-allowed opacity-50"
                             : "hover:bg-red-600"
-                        }`}
+                          }`}
                         disabled={rows.length <= 1}
                       >
                         Remove
@@ -565,24 +609,6 @@ const InvoiceNewForm = () => {
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
           <button
             type="submit"
-            disabled={
-              !formData.customerName ||
-              !formData.invoiceDate ||
-              !formData.dueDate ||
-              !formData.customerGST ||
-              !formData.customerAddress ||
-              !formData.customerPhone ||
-              !formData.customerEmail ||
-              rows.some((row) => {
-                return (
-                  !row.description ||
-                  !row.unit ||
-                  !row.quantity ||
-                  !row.price ||
-                  !row.discount
-                );
-              })
-            }
             className="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all duration-200"
           >
             {id ? "Update Invoice" : "Create Invoice"}
