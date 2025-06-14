@@ -55,11 +55,11 @@ const Sidebar = () => {
       }`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex items-center gap-6 mb-8">
         <img src="/icon.png" alt="Logo" className="w-10 h-10 rounded-lg" />
         {!collapsed && (
           <h1 className="text-xl font-bold font-serif tracking-wide text-gray-900">
-            Shine Infosolution
+            Shine<br></br> Infosolution
           </h1>
         )}
       </div>
