@@ -43,22 +43,22 @@ const InvoiceNewForm = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.customerName) newErrors.customerName = "Customer name is required";
-    if (!formData.invoiceDate) newErrors.invoiceDate = "Invoice date is required";
-    if (!formData.dueDate) newErrors.dueDate = "Due date is required";
-    if (!formData.customerGST) newErrors.customerGST = "Customer GST is required";
-    if (!formData.customerAddress) newErrors.customerAddress = "Customer address is required";
-    if (!formData.customerPhone) newErrors.customerPhone = "Customer phone is required";
-    if (!formData.customerEmail) newErrors.customerEmail = "Customer email is required";
-    if (!formData.customerAadhar) newErrors.customerAadhar = "Customer Aadhar is required";
-    if (!formData.dispatchThrough) newErrors.dispatchThrough = "Dispatch through is required";
+    if (formData.customerName.trim() === "") newErrors.customerName = "Customer name is required";
+    if (formData.invoiceDate.trim() === "") newErrors.invoiceDate = "Invoice date is required";
+    if (formData.dueDate.trim() === "") newErrors.dueDate = "Due date is required";
+    if (formData.customerGST.trim() === "") newErrors.customerGST = "Customer GST is required";
+    if (formData.customerAddress.trim() === "") newErrors.customerAddress = "Customer address is required";
+    if (formData.customerPhone.trim() === "") newErrors.customerPhone = "Customer phone is required";
+    if (formData.customerEmail.trim() === "") newErrors.customerEmail = "Customer email is required";
+    if (formData.customerAadhar.trim() === "") newErrors.customerAadhar = "Customer Aadhar is required";
+    if (formData.dispatchThrough.trim() === "") newErrors.dispatchThrough = "Dispatch through is required";
 
     rows.forEach((row, idx) => {
-      if (!row.description) newErrors[`row_description_${idx}`] = "Description is required";
-      if (!row.unit) newErrors[`row_unit_${idx}`] = "Unit is required";
-      if (!row.quantity) newErrors[`row_quantity_${idx}`] = "Quantity is required";
-      if (!row.price) newErrors[`row_price_${idx}`] = "Price is required";
-      if (!row.discount) newErrors[`row_discount_${idx}`] = "Discount is required";
+      if (row.description === "") newErrors[`row_description_${idx}`] = "Description is required";
+      if (row.unit === "") newErrors[`row_unit_${idx}`] = "Unit is required";
+      if (row.quantity === "" || isNaN(Number(row.quantity))) newErrors[`row_quantity_${idx}`] = "Quantity is required";
+      if (row.price === "" || isNaN(Number(row.price))) newErrors[`row_price_${idx}`] = "Price is required";
+      if (row.discount === "" || isNaN(Number(row.discount))) newErrors[`row_discount_${idx}`] = "Discount is required";
     });
 
     return newErrors;
@@ -609,24 +609,6 @@ const InvoiceNewForm = () => {
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
           <button
             type="submit"
-            disabled={
-              !formData.customerName ||
-              !formData.invoiceDate ||
-              !formData.dueDate ||
-              !formData.customerGST ||
-              !formData.customerAddress ||
-              !formData.customerPhone ||
-              !formData.customerEmail ||
-              rows.some((row) => {
-                return (
-                  !row.description ||
-                  !row.unit ||
-                  !row.quantity ||
-                  !row.price ||
-                  !row.discount
-                );
-              })
-            }
             className="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all duration-200"
           >
             {id ? "Update Invoice" : "Create Invoice"}
