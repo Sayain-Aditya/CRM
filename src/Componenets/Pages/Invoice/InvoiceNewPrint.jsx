@@ -135,7 +135,7 @@ const InvoiceNewPrint = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 border-b-2 border-black">
             <div className="flex flex-col sm:flex-row items-start gap-2 mb-2 p-2">
               <img
-                src="/src/assets/icon.png"
+                src="/public/icon.png"
                 alt="Logo"
                 className="w-20 h-16 object-contain mb-2 sm:mb-0"
               />

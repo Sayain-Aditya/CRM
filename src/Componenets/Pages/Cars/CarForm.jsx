@@ -69,6 +69,16 @@ const CarForm = () => {
     try {
       const subscription = await getPushSubscription();
 
+      if (!subscription) {
+        console.error(
+          "Push subscription is null. Ensure service workers are enabled and configured correctly."
+        );
+        toast.error(
+          "Push subscription is not available. Please check your browser settings."
+        );
+        return;
+      }
+
       const insuranceDateUTC = new Date(form.insurance).toISOString();
       const pollutionDateUTC = new Date(form.pollution).toISOString();
       const serviceReminderDateUTC = new Date(

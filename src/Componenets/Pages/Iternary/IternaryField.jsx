@@ -8,9 +8,6 @@ import { Toaster, toast } from "react-hot-toast";
 import generatePDF from "react-to-pdf";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import Logo from "/src/assets/icon.png";
-import BannerImage from "/src/assets/71840.jpg";
-import Qr from "/src/assets/Qr.png";
 import { useNavigate } from "react-router-dom";
 
 const IternaryField = () => {
@@ -211,12 +208,12 @@ const IternaryField = () => {
         <div className="flex justify-end mb-6"></div>
         <div className="bg-white rounded-lg shadow-lg p-6 md:p-10 space-y-6">
           <div className="flex justify-center">
-            <img src={Logo} alt="Logo" className="w-40 h-28 object-contain" />
+            <img src="/public/icon.png" alt="Logo" className="w-40 h-28 object-contain" />
           </div>
           <div className="w-full mb-4">
             <img
               className="rounded-lg w-full h-[290px] object-cover shadow"
-              src={BannerImage}
+              src="/public/71840.jpg"
               alt="Main"
             />
           </div>
@@ -225,21 +222,21 @@ const IternaryField = () => {
             <div className="rounded-md">
               <img
                 className="rounded-lg w-full h-[150px] object-cover shadow"
-                src={BannerImage}
+                src="/public/71840.jpg"
                 alt="Main"
               />
             </div>
             <div className="rounded-md">
               <img
                 className="rounded-lg w-full h-[150px] object-cover shadow"
-                src={BannerImage}
+                src="/public/71840.jpg"
                 alt="Main"
               />
             </div>
             <div className="rounded-md">
               <img
                 className="rounded-lg w-full h-[150px] object-cover shadow"
-                src={BannerImage}
+                src="/public/71840.jpg"
                 alt="Main"
               />
             </div>
@@ -495,7 +492,7 @@ const IternaryField = () => {
           )}
           <div className="items-center flex flex-col mt-8">
             <div className="">
-              <img src={Qr} alt="Payment QR" className="object-contain mb-2" />
+              <img src="/public/Qr.png" alt="Payment QR" className="object-contain mb-2" />
               <div className="text-center">
                 <p className="font-semibold text-gray-700">Scan to Pay</p>
                 <p className="text-sm text-gray-500">
