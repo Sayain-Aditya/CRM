@@ -70,8 +70,22 @@ const List = () => {
     setFilteredLeads(leads);
   };
 
-  const handleUpdate = (id) => {
+  const handleUpdate = async (id) => {
     navigate(`/LeadsForm/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this lead?")) {
+      try {
+        await axios.delete(
+          `https://billing-backend-seven.vercel.app/lead/delete/${id}`
+        );
+        toast.success("Lead deleted successfully");
+        fetchLeads();
+      } catch (error) {
+        toast.error("Failed to delete lead");
+      }
+    }
   };
 
   return (
@@ -173,6 +187,14 @@ const List = () => {
                       Update
                     </button>
                   </td>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => handleDelete(lead._id)}
+                      className="bg-red-600 hover:bg-red-700 text-white w-full px-4 py-2 rounded-lg text-sm font-semibold transition"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))
             )}
@@ -236,6 +258,12 @@ const List = () => {
                   className="bg-purple-600 hover:bg-purple-700 text-white w-full py-2 rounded-lg text-sm font-semibold transition"
                 >
                   Update
+                </button>
+                <button
+                  onClick={() => handleDelete(lead._id)}
+                  className="bg-red-600 hover:bg-red-700 text-white w-full py-2 rounded-lg text-sm font-semibold transition"
+                >
+                  Delete
                 </button>
               </div>
             </div>
