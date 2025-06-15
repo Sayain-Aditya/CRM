@@ -27,7 +27,6 @@ const LeadsForm = () => {
     meetingdate: "",
     status: "true",
     calldate: "",
-    update: "",
     notes: "",
   });
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -48,7 +47,6 @@ const LeadsForm = () => {
             meetingdate,
             status,
             calldate,
-            update,
             notes,
           } = res.data.data;
           setFormData({
