@@ -138,6 +138,22 @@ const IternaryList = ({ leads, setLeads }) => {
             .map((destId) => destinations.find((d) => d.value === destId))
             .filter(Boolean);
 
+          // Initialize dynamicFields with the actual data
+          const initialDynamicFields = dynamicFields || [];
+          setDynamicFields(initialDynamicFields);
+          
+          // Initialize daySchedules with the points from dynamicFields
+          const initialDaySchedules = initialDynamicFields.map(day => day.points || []);
+          setDaySchedules(initialDaySchedules);
+          
+          // Set maxDays based on the actual number of days
+          setMaxDays(initialDynamicFields.length || 4);
+          setActiveDay(1);
+
+          // Initialize costInclude and costExclude
+          setCostInclude(costInclude || []);
+          setCostExclude(costExclude || []);
+
           setFormData({
             title: title || "",
             days: days || "",
@@ -154,13 +170,10 @@ const IternaryList = ({ leads, setLeads }) => {
             advance: advance || "",
             hotelSelected: mappedHotels || [],
             destinations: mappedDestinations || [],
-            dynamicFields: dynamicFields || Array().fill({ fieldName: "" }),
+            dynamicFields: initialDynamicFields,
             costInclude: costInclude || [],
             costExclude: costExclude || [],
           });
-
-          setDaySchedules(dynamicFields.map((day) => day.points || []));
-          setActiveDay(1);
         })
         .catch((err) => {
           toast.error("Failed to load itinerary data");
@@ -176,12 +189,14 @@ const IternaryList = ({ leads, setLeads }) => {
   const addDayTab = () => {
     setMaxDays((prev) => prev + 1);
     setDynamicFields((prev) => [...prev, { dayTitle: "", points: [""] }]);
+    setDaySchedules((prev) => [...prev, []]);
   };
 
   const removeDayTab = () => {
     if (maxDays > 1) {
       setMaxDays((prev) => prev - 1);
       setDynamicFields((prev) => prev.slice(0, -1));
+      setDaySchedules((prev) => prev.slice(0, -1));
       if (activeDay > maxDays - 1) setActiveDay(maxDays - 1);
     }
   };
@@ -190,6 +205,7 @@ const IternaryList = ({ leads, setLeads }) => {
     if (maxDays > 1) {
       setMaxDays((prev) => prev - 1);
       setDynamicFields((prev) => prev.filter((_, i) => i !== indexToDelete));
+      setDaySchedules((prev) => prev.filter((_, i) => i !== indexToDelete));
       if (activeDay > maxDays - 1) setActiveDay(1);
     }
   };
