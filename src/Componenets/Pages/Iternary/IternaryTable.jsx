@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
-import { FaPlus, FaSearch, FaTimes } from "react-icons/fa";
+import { FaPlus, FaSearch, FaTimes, FaTrash } from "react-icons/fa";
 import debounce from "lodash.debounce";
 
 const IternaryTable = () => {
@@ -10,6 +10,8 @@ const IternaryTable = () => {
   const [iternaries, setIternaries] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredIternaries, setFilteredIternaries] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [iternaryToDelete, setIternaryToDelete] = useState(null);
   const debouncedSearch = useRef(
     debounce((value, data) => {
       const lowerSearch = value.toLowerCase();
@@ -59,20 +61,18 @@ const IternaryTable = () => {
 
   const clearSearch = () => setSearchInput("");
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this itinerary?")) {
-      try {
-        await axios.delete(
-          `https://billing-backend-seven.vercel.app/Iternary/delete/${id}`
-        );
-        toast.success("Itinerary deleted successfully!");
-        setIternaries((prev) => prev.filter((iternaries) => iternaries._id !== id));
-        setFilteredIternaries((prev) =>
-          prev.filter((iternaries) => iternaries._id !== id)
-        );
-      } catch (error) {
-        console.error("Error deleting itinerary:", error);
-        toast.error("Failed to delete itinerary.");
-      }
+    try {
+      await axios.delete(
+        `https://billing-backend-seven.vercel.app/Iternary/delete/${id}`
+      );
+      toast.success("Itinerary deleted successfully!");
+      setIternaries((prev) => prev.filter((iternaries) => iternaries._id !== id));
+      setFilteredIternaries((prev) =>
+        prev.filter((iternaries) => iternaries._id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting itinerary:", error);
+      toast.error("Failed to delete itinerary.");
     }
   };
   const handleUpdate = (id) => {
@@ -168,7 +168,10 @@ const IternaryTable = () => {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(iternaries._id)}
+                      onClick={() => {
+                        setIternaryToDelete(iternaries._id);
+                        setShowDeleteModal(true);
+                      }}
                       className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                     >
                       Delete
@@ -226,7 +229,10 @@ const IternaryTable = () => {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(iternaries._id)}
+                  onClick={() => {
+                    setIternaryToDelete(iternaries._id);
+                    setShowDeleteModal(true);
+                  }}
                   className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                 >
                   Delete
@@ -236,6 +242,35 @@ const IternaryTable = () => {
           ))
         )}
       </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm mx-auto flex flex-col items-center">
+            <h2 className="text-lg font-bold mb-2 text-red-600 flex items-center gap-2">
+              <FaTrash className="inline-block" /> Delete Itinerary?
+            </h2>
+            <p className="text-gray-600 mb-4 text-center">Are you sure you want to delete this itinerary? This action cannot be undone.</p>
+            <div className="flex gap-4 w-full">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  await handleDelete(iternaryToDelete);
+                  setShowDeleteModal(false);
+                  setIternaryToDelete(null);
+                }}
+                className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

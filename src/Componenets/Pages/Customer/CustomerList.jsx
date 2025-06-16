@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
-import { FaPlus, FaSearch, FaTimes } from "react-icons/fa";
+import { FaPlus, FaSearch, FaTimes, FaTrash } from "react-icons/fa";
 import debounce from "lodash.debounce";
 
 const CustomerList = () => {
@@ -10,6 +10,8 @@ const CustomerList = () => {
   const [customer, setCustomer] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredCustomer, setFilteredCustomer] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     fetchCustomers();
@@ -80,9 +82,52 @@ const CustomerList = () => {
     setFilteredCustomer(customer);
   };
 
+  const openDeleteModal = (id) => {
+    setDeleteId(id);
+    setShowDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteId(null);
+  };
+
+  const confirmDelete = async () => {
+    if (deleteId) {
+      try {
+        const res = await axios.delete(
+          `https://billing-backend-seven.vercel.app/customer/delete/${deleteId}`
+        );
+        if (res.status === 200) {
+          toast.success("Customer deleted");
+          fetchCustomers();
+        }
+      } catch (error) {
+        toast.error("Failed to delete");
+      }
+      closeDeleteModal();
+    }
+  };
+
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-6 font-sans">
       <Toaster />
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm mx-auto flex flex-col items-center">
+          <h2 className="text-lg font-bold mb-2 text-red-600 flex items-center gap-2">
+              <FaTrash className="inline-block" /> Delete Customer?
+            </h2>
+            <p className="text-gray-600 mb-4 text-center">Are you sure you want to delete this customer? This action cannot be undone.</p>
+            <div className="flex gap-4 w-full">
+              <button onClick={closeDeleteModal} className="flex-1 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold transition">Cancel</button>
+              <button onClick={confirmDelete} className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition">Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3 sm:gap-0">
@@ -119,7 +164,7 @@ const CustomerList = () => {
       {/* Table for desktop */}
       <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-200">
         <table className="min-w-full text-sm text-left">
-          <thead className="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-800 font-semibold">
+          <thead className="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-800 font-semibold sticky top-0 z-10">
             <tr>
               <th className="px-6 py-4">Name</th>
               <th className="px-6 py-4">Phone</th>
@@ -165,7 +210,7 @@ const CustomerList = () => {
                       Update
                     </button>
                     <button
-                      onClick={() => deleteCustomer(customer._id)}
+                      onClick={() => openDeleteModal(customer._id)}
                       className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
                     >
                       Delete
@@ -222,7 +267,7 @@ const CustomerList = () => {
                   Update
                 </button>
                 <button
-                  onClick={() => deleteCustomer(customer._id)}
+                  onClick={() => openDeleteModal(customer._id)}
                   className="bg-red-600 hover:bg-red-700 text-white w-full py-2 rounded-lg text-sm font-semibold transition"
                 >
                   Delete

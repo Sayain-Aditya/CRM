@@ -27,6 +27,7 @@ const LeadsForm = () => {
     meetingdate: "",
     status: "true",
     calldate: "",
+    update: "",
     notes: "",
   });
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -47,6 +48,7 @@ const LeadsForm = () => {
             meetingdate,
             status,
             calldate,
+            // update,
             notes,
           } = res.data.data;
           setFormData({
@@ -60,7 +62,7 @@ const LeadsForm = () => {
             meetingdate: meetingdate || "",
             status: status || "true",
             calldate: calldate || "",
-            update: update || "",
+            // update: update || "",
             notes: notes || "",
           });
         })
@@ -95,6 +97,8 @@ const LeadsForm = () => {
         followUpDate: followUpDateUTC,
         subscription,
       };
+
+      console.log("Submitting payload:", payload);
 
       let response;
       if (id) {

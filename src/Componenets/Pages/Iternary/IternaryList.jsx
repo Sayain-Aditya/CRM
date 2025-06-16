@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify"; // for toast notificatio
 import { MultiSelect } from "react-multi-select-component";
 import { Link } from "react-router-dom"; // for navigation links
 import axios from "axios"; // for making HTTP requests
+import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 
 const IternaryList = ({ leads, setLeads }) => {
   const { id } = useParams(); // Get the id from URL
@@ -60,6 +61,11 @@ const IternaryList = ({ leads, setLeads }) => {
   const [daySchedules, setDaySchedules] = useState(
     Array.from({ length: 4 }, () => [])
   );
+
+  const [showDeleteDayModal, setShowDeleteDayModal] = useState(false);
+  const [dayToDelete, setDayToDelete] = useState(null);
+
+  const [showDeleteItineraryModal, setShowDeleteItineraryModal] = useState(false);
 
   useEffect(() => {
     const fetchHotels = async () => {
@@ -336,6 +342,18 @@ const IternaryList = ({ leads, setLeads }) => {
     setCostExclude([]);
   };
 
+  const handleDeleteItinerary = async () => {
+    if (!id) return;
+    try {
+      await axios.delete(`https://billing-backend-seven.vercel.app/Iternary/delete/${id}`);
+      toast.success("Itinerary deleted successfully!");
+      navigate("/IternaryTable");
+    } catch (error) {
+      console.error("Error deleting itinerary:", error);
+      toast.error("Failed to delete itinerary.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-4 px-1 flex justify-center">
       <div className="w-full">
@@ -359,6 +377,16 @@ const IternaryList = ({ leads, setLeads }) => {
             >
               Print Itieranary
             </Link> */}
+            {id && (
+              <button
+                type="button"
+                onClick={() => setShowDeleteItineraryModal(true)}
+                className="ml-2 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg shadow-lg text-lg font-semibold transition flex items-center gap-2"
+                title="Delete this itinerary"
+              >
+                <FaTrash /> Delete Itinerary
+              </button>
+            )}
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-blue-700 tracking-wide w-full sm:w-auto">
             Add New Tour
@@ -553,12 +581,13 @@ const IternaryList = ({ leads, setLeads }) => {
                 <div key={i} className="relative">
                   <button
                     type="button"
-                    className={`px-4 py-2 rounded-lg font-semibold shadow-sm transition ${
-                      activeDay === i + 1
-                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-blue-100"
-                    }`}
+                    className={`px-4 py-2 rounded-lg font-semibold shadow-md transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-blue-400
+                      ${activeDay === i + 1
+                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-700 scale-105"
+                        : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50 hover:border-blue-400"}
+                    `}
                     onClick={() => setActiveDay(i + 1)}
+                    title={`Go to Day ${i + 1}`}
                   >
                     Day {i + 1}
                   </button>
@@ -566,10 +595,13 @@ const IternaryList = ({ leads, setLeads }) => {
                     <button
                       type="button"
                       title="Delete this day"
-                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-700 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow"
-                      onClick={() => deleteDay(i)}
+                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-700 text-white rounded-full w-7 h-7 flex items-center justify-center text-base shadow-lg border-2 border-white z-10 transition-all duration-150"
+                      onClick={() => {
+                        setDayToDelete(i);
+                        setShowDeleteDayModal(true);
+                      }}
                     >
-                      ×
+                      <FaTrash />
                     </button>
                   )}
                 </div>
@@ -581,7 +613,7 @@ const IternaryList = ({ leads, setLeads }) => {
                   title="Add Day"
                   className="flex items-center gap-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg shadow transition-all duration-200"
                 >
-                  <span className="text-lg">＋</span>
+                  <FaPlus className="text-lg" />
                   <span className="hidden xs:inline">Add Day</span>
                 </button>
                 <button
@@ -590,16 +622,45 @@ const IternaryList = ({ leads, setLeads }) => {
                   disabled={dynamicFields.length <= 1}
                   title="Remove Last Day"
                   className={`flex items-center gap-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg shadow transition-all duration-200 ${
-                    dynamicFields.length <= 1
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
+                    dynamicFields.length <= 1 ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
-                  <span className="text-lg">−</span>
+                  <FaMinus className="text-lg" />
                   <span className="hidden xs:inline">Remove Day</span>
                 </button>
               </div>
             </div>
+
+            {/* Delete Day Confirmation Modal */}
+            {showDeleteDayModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full border-t-8 border-red-500 animate-fadeIn">
+                  <h2 className="text-2xl font-bold mb-4 text-red-600 flex items-center gap-2">
+                    <FaTrash className="inline-block" /> Delete Day
+                  </h2>
+                  <p className="mb-6 text-gray-700">Are you sure you want to delete <span className="font-semibold">Day {dayToDelete + 1}</span>? This action cannot be undone.</p>
+                  <div className="flex justify-end gap-3">
+                    <button
+                      onClick={() => setShowDeleteDayModal(false)}
+                      className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 font-semibold"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        deleteDay(dayToDelete);
+                        setShowDeleteDayModal(false);
+                        setDayToDelete(null);
+                      }}
+                      className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Schedule Input for Active Day */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">{`Schedule for Day ${activeDay}`}</h3>
@@ -792,6 +853,32 @@ const IternaryList = ({ leads, setLeads }) => {
           </form>
         </div>
       </div>
+
+      {/* Delete Itinerary Confirmation Modal */}
+      {showDeleteItineraryModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full border-t-8 border-red-500 animate-fadeIn">
+            <h2 className="text-2xl font-bold mb-4 text-red-600 flex items-center gap-2">
+              <FaTrash className="inline-block" /> Delete Itinerary
+            </h2>
+            <p className="mb-6 text-gray-700">Are you sure you want to delete this itinerary? This action cannot be undone.</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowDeleteItineraryModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteItinerary}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

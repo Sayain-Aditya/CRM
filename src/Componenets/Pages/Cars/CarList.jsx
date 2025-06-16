@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { FaPlus, FaSearch, FaTimes } from "react-icons/fa";
+import {FaRegTimesCircle, FaPlus, FaSearch, FaTimes } from "react-icons/fa";
 import debounce from "lodash.debounce";
 
 const CarList = () => {
@@ -11,6 +11,8 @@ const CarList = () => {
   const [cars, setCars] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredCars, setFilteredCars] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     fetchCars();
@@ -58,19 +60,44 @@ const CarList = () => {
     setFilteredCars(cars);
   };
 
-  const handleDelete = async (id) => {
-    console.log("Deleting car with id:", id); // Log the id
-    try {
-      const res = await axios.delete(`https://billing-backend-seven.vercel.app/car/delete/${id}`);
-      console.log("Delete response:", res);
-      fetchCars(); // Refresh the list after deletion
-    } catch (error) {
-      console.error("Failed to delete car:", error);
+  const openDeleteModal = (id) => {
+    setDeleteId(id);
+    setShowDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteId(null);
+  };
+
+  const confirmDelete = async () => {
+    if (deleteId) {
+      try {
+        await axios.delete(`https://billing-backend-seven.vercel.app/car/delete/${deleteId}`);
+        fetchCars();
+      } catch (error) {
+        console.error("Failed to delete car:", error);
+      }
+      closeDeleteModal();
     }
   };
 
   return (
     <div className="p-6 bg-gradient-to-b from-purple-50 to-white min-h-screen">
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm mx-auto flex flex-col items-center">
+          <FaRegTimesCircle className="text-red-500 text-4xl mb-2 animate-pulse" />
+            <h2 className="text-lg font-bold mb-2">Delete Car?</h2>
+            <p className="text-gray-600 mb-4 text-center">Are you sure you want to delete this car? This action cannot be undone.</p>
+            <div className="flex gap-4 w-full">
+              <button onClick={closeDeleteModal} className="flex-1 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold transition">Cancel</button>
+              <button onClick={confirmDelete} className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition">Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
         <h1 className="text-3xl font-extrabold text-purple-700">Saved Cars</h1>
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
@@ -136,7 +163,7 @@ const CarList = () => {
                   </td>
                   <td className="px-6 py-4 flex flex-col sm:flex-row justify-center gap-2">
                     <button
-                      onClick={() => handleDelete(car._id)}
+                      onClick={() => openDeleteModal(car._id)}
                       className="bg-red-500 text-white px-4 py-2 rounded"
                     >
                       Delete
@@ -184,7 +211,7 @@ const CarList = () => {
               </div>
               <div className="mt-2">
                 <button
-                  onClick={() => handleDelete(car._id)}
+                  onClick={() => openDeleteModal(car._id)}
                   className="bg-red-500 text-white px-4 py-2 rounded"
                 >
                   Delete

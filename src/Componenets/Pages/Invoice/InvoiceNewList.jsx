@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
-import { FaPlus, FaSearch, FaTimes } from "react-icons/fa";
+import { FaPlus, FaSearch, FaTimes, FaTrash } from "react-icons/fa";
 import debounce from "lodash.debounce";
 
 const InvoiceNewList = () => {
@@ -10,6 +10,8 @@ const InvoiceNewList = () => {
   const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState("");
   const [filteredInvoice, setFilteredInvoice] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [invoiceToDelete, setInvoiceToDelete] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,9 +81,6 @@ const InvoiceNewList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this invoice?"))
-      return;
-
     try {
       await axios.delete(
         `https://billing-backend-seven.vercel.app/invoices/delete/${id}`
@@ -192,7 +191,10 @@ const InvoiceNewList = () => {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(invoice._id)}
+                      onClick={() => {
+                        setInvoiceToDelete(invoice._id);
+                        setShowDeleteModal(true);
+                      }}
                       className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md"
                     >
                       Delete
@@ -270,7 +272,10 @@ const InvoiceNewList = () => {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(invoice._id)}
+                  onClick={() => {
+                    setInvoiceToDelete(invoice._id);
+                    setShowDeleteModal(true);
+                  }}
                   className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-base font-semibold text-white bg-red-500 shadow hover:bg-red-600 transition"
                 >
                   <svg
@@ -289,6 +294,35 @@ const InvoiceNewList = () => {
           ))
         )}
       </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
+          <h2 className="text-lg font-bold mb-2 text-red-600 flex items-center gap-2">
+              <FaTrash className="inline-block" /> Delete Invoice?
+            </h2>
+            <p className="mb-6 text-gray-700">Are you sure you want to delete this invoice? This action cannot be undone.</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  await handleDelete(invoiceToDelete);
+                  setShowDeleteModal(false);
+                  setInvoiceToDelete(null);
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
