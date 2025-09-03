@@ -78,7 +78,7 @@ const Images = () => {
 
         if (res.ok) {
           toast.success("✅ Images uploaded successfully!");
-          setImages((prev) => [...prev, ...data.data]); // Firebase URLs from backend
+          setImages((prev) => [...prev, ...data.data]); // URLs from backend
         } else {
           toast.error(data.message || "❌ Upload failed");
         }

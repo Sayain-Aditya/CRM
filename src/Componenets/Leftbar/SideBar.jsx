@@ -5,15 +5,12 @@ import {
   CameraIcon,
   Bars3Icon,
   IdentificationIcon,
-  PowerIcon,
   UserCircleIcon,
   CalculatorIcon,
   QueueListIcon
 } from "@heroicons/react/24/outline";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
-import { signOut } from 'firebase/auth';
-import { auth } from '../../services/firebase';
 
 const Sidebar = () => {
   const [openProducts, setOpenProducts] = useState(false);
@@ -21,31 +18,18 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const logout = async () => {
-    try {
-      await signOut(auth); // Sign out from Firebase
-      localStorage.clear(); // Clear any other local storage
-      setTimeout(() => {
-        navigate("/");
-      }, 800);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
 
   const handleItemClick = (title) => {
     setSelected(title);
     if (collapsed) setCollapsed(false);
-    if (mobileOpen) setMobileOpen(false); // Close mobile sidebar on click
+    if (mobileOpen) setMobileOpen(false);
   };
 
   const handleGalleryClick = () => {
     if (collapsed) {
-      setCollapsed(false); // Expand the sidebar if collapsed
+      setCollapsed(false);
     }
-    setOpenGallery(!openGallery); // Toggle the Gallery dropdown
+    setOpenGallery(!openGallery);
   };
 
   const sidebarContent = (
@@ -136,17 +120,6 @@ const Sidebar = () => {
           collapsed={collapsed}
         />
       </div>
-
-      {/* Logout */}
-      <button
-        onClick={logout}
-        className={`flex items-center gap-2 text-red-600 hover:bg-red-100 p-3 rounded-lg transition-all duration-200 mt-4 ${
-          collapsed ? "justify-center" : ""
-        }`}
-      >
-        <PowerIcon className="w-6 h-6" />
-        {!collapsed && <span className="font-medium">Logout</span>}
-      </button>
     </div>
   );
 
@@ -227,7 +200,7 @@ const SidebarDropdown = ({
   selected,
   setSelected,
   collapsed,
-  setMobileOpen, // ✅ receive it
+  setMobileOpen,
 }) => (
   <div>
     {/* Toggle dropdown */}
@@ -262,8 +235,8 @@ const SidebarDropdown = ({
             key={idx}
             onClick={() => {
               setSelected(item.title);
-              setIsOpen(false); // optional: close dropdown
-              if (setMobileOpen) setMobileOpen(false); // ✅ close mobile sidebar
+              setIsOpen(false);
+              if (setMobileOpen) setMobileOpen(false);
             }}
             className={`pl-2 py-1 rounded-md transition-colors ${
               selected === item.title

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   UserCircleIcon,
@@ -8,51 +8,8 @@ import {
   AdjustmentsHorizontalIcon,
   QueueListIcon
 } from '@heroicons/react/24/outline';
-import { auth } from '../../services/firebase'; // Import Firebase auth
 
 const DashBoard = () => {
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Get user data directly from Firebase auth
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUserData({
-          email: user.email,
-          uid: user.uid,
-          displayName: user.displayName,
-          photoURL: user.photoURL
-        });
-      } else {
-        setError('No user logged in');
-      }
-      setLoading(false);
-    });
-
-    // Cleanup subscription
-    return () => unsubscribe();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          Error: {error}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
        <h1 className="text-3xl font-extrabold text-purple-700 text-center mb-8">Dashboard</h1>
@@ -123,13 +80,6 @@ const DashBoard = () => {
           </div>
         </Link>
       </div>
-      <footer className="mt-8 text-center bottom-0 w-full p-4 bg-white shadow-md rounded-lg">
-        <h2 className="text-xl font-semibold text-gray-800">Welcome, {userData.displayName || userData.email}</h2>
-        <img src={userData.photoURL || `https://ui-avatars.com/api/?name=${userData.email}`}
-        alt="User Avatar"
-        className="w-16 h-16 rounded-full mx-auto mt-4" />
-        <p className="text-gray-600">Email: {userData.email}</p>
-        </footer>
     </div>
   );
 };
