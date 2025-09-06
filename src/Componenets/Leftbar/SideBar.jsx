@@ -9,7 +9,7 @@ import {
   CalculatorIcon,
   QueueListIcon
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 
 const Sidebar = () => {
@@ -18,6 +18,7 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleItemClick = (title) => {
     setSelected(title);
@@ -30,6 +31,11 @@ const Sidebar = () => {
       setCollapsed(false);
     }
     setOpenGallery(!openGallery);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // ✅ clear user
+    navigate("/"); // ✅ redirect to login
   };
 
   const sidebarContent = (
@@ -120,6 +126,14 @@ const Sidebar = () => {
           collapsed={collapsed}
         />
       </div>
+
+      {/* ✅ Logout Button */}
+      <button
+        onClick={handleLogout}
+        className="mt-4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors"
+      >
+        Logout
+      </button>
     </div>
   );
 
@@ -141,7 +155,9 @@ const Sidebar = () => {
       <div className="no-print absolute top-4 left-4 z-40 hidden md:flex flex-col items-center gap-2">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className={`bg-white rounded-lg p-2.5 shadow-md hover:bg-gray-50 transition-colors ${collapsed ? "w-13 h-13" : "w-12 h-12"}`}
+          className={`bg-white rounded-lg p-2.5 shadow-md hover:bg-gray-50 transition-colors ${
+            collapsed ? "w-13 h-13" : "w-12 h-12"
+          }`}
         >
           {collapsed ? (
             <img src="/icon.png" alt="Logo" className="w-10 h-10" />

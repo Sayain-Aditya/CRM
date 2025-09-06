@@ -1,7 +1,4 @@
-import {
-  Routes,
-  Route,
-} from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import DashBoard from "./Componenets/Pages/DashBoard";
 import Product from "./Componenets/Pages/Products";
 import Layout from "./Componenets/Layout";
@@ -27,23 +24,12 @@ import React from "react";
 import "animate.css";
 import CarList from "./Componenets/Pages/Cars/CarList";
 import CarForm from "./Componenets/Pages/Cars/CarForm";
-
-async function subscribeUser() {
-  const registration = await navigator.serviceWorker.ready;
-  const subscription = await registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey:
-      "BJe_vtNqtLr7GTOmVzXPM1r1viWvfsLUyPe-VUIIEaDUhA-zlHk-86NNxonVrHVTusWPdAoNfhlwEn6ZTDnyO9A",
-  });
-  await fetch("https://billing-backend-seven.vercel.app/push/subscribe", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(subscription),
-  });
-}
+import AuthPage from "./Componenets/Pages/auth/auth";
+import ProtectedRoute from "./Componenets/ProtectedRoute";
 
 function App() {
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -58,13 +44,14 @@ function App() {
   const handleEnableNotifications = async () => {
     const permission = await Notification.requestPermission();
     if (permission === "granted") {
-      await subscribeUser();
       setIsSubscribed(true);
       alert("Push notifications enabled!");
     } else {
       alert("Notifications permission denied.");
     }
   };
+
+  const isAuthPage = location.pathname === "/";
 
   return (
     <>
@@ -77,43 +64,222 @@ function App() {
         </button>
       )}
       <ToastContainer />
-      
-      <div className="flex h-screen">
-        <div className="min-h-screen bg-white shadow-md">
-          <Layout />
-        </div>
 
-        <div className="flex-1 p-4 bg-gray-100 overflow-y-auto">
-          <Routes>
-            <Route path="/" element={<DashBoard />} />
-            <Route path="/dashboard" element={<DashBoard />} />
-            <Route path="/products" element={<Product />} />
-            <Route path="/common" element={<Images />} />
-            <Route path="/hotel" element={<ManageHotel />} />
-            <Route path="/addimages" element={<AddImage />} />
-            <Route path="/destination" element={<Destination />} />
-            <Route path="/DestinationImages" element={<DestinationImages />} />
-            <Route path="/list" element={<List />} />
-            <Route path="/Leadsform" element={<LeadsForm />} />
-            <Route path="/Leadsform/:id" element={<LeadsForm />} />
-            <Route path="/CustomerList" element={<CustomerList />} />
-            <Route path="/CustomerForm" element={<CustomerForm />} />
-            <Route path="/CustomerForm/:id" element={<CustomerForm />} />
-            <Route path="/InvoiceNewList" element={<InvoiceNewList />} />
-            <Route path="/InvoiceNewForm/:id" element={<InvoiceNewForm />} />
-            <Route path="/InvoiceNewForm" element={<InvoiceNewForm />} />
-            <Route path="/InvoiceNewPrint/:id" element={<InvoiceNewPrint />} />
-            <Route path="/IternaryList" element={<IternaryList />} />
-            <Route path="/IternaryList/:id" element={<IternaryList />} />
-            <Route path="/IternaryField/" element={<IternaryField />} />
-            <Route path="/IternaryField/:id" element={<IternaryField />} />
-            <Route path="/IternaryTable" element={<IternaryTable />} />
-            <Route path="/CarList" element={<CarList />} />
-            <Route path="/CarForm" element={<CarForm />} />
-            <Route path="/CarForm/:id" element={<CarForm />} />
-          </Routes>
+      {isAuthPage ? (
+        <Routes>
+          <Route path="/" element={<AuthPage />} />
+        </Routes>
+      ) : (
+        <div className="flex h-screen">
+          <div className="min-h-screen bg-white shadow-md">
+            <Layout />
+          </div>
+          <div className="flex-1 p-4 bg-gray-100 overflow-y-auto">
+            <Routes>
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <DashBoard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/products"
+                element={
+                  <ProtectedRoute>
+                    <Product />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/common"
+                element={
+                  <ProtectedRoute>
+                    <Images />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/hotel"
+                element={
+                  <ProtectedRoute>
+                    <ManageHotel />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/addimages"
+                element={
+                  <ProtectedRoute>
+                    <AddImage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/destination"
+                element={
+                  <ProtectedRoute>
+                    <Destination />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/DestinationImages"
+                element={
+                  <ProtectedRoute>
+                    <DestinationImages />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/list"
+                element={
+                  <ProtectedRoute>
+                    <List />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/Leadsform"
+                element={
+                  <ProtectedRoute>
+                    <LeadsForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/Leadsform/:id"
+                element={
+                  <ProtectedRoute>
+                    <LeadsForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/CustomerList"
+                element={
+                  <ProtectedRoute>
+                    <CustomerList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/CustomerForm"
+                element={
+                  <ProtectedRoute>
+                    <CustomerForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/CustomerForm/:id"
+                element={
+                  <ProtectedRoute>
+                    <CustomerForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/InvoiceNewList"
+                element={
+                  <ProtectedRoute>
+                    <InvoiceNewList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/InvoiceNewForm/:id"
+                element={
+                  <ProtectedRoute>
+                    <InvoiceNewForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/InvoiceNewForm"
+                element={
+                  <ProtectedRoute>
+                    <InvoiceNewForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/InvoiceNewPrint/:id"
+                element={
+                  <ProtectedRoute>
+                    <InvoiceNewPrint />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/IternaryList"
+                element={
+                  <ProtectedRoute>
+                    <IternaryList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/IternaryList/:id"
+                element={
+                  <ProtectedRoute>
+                    <IternaryList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/IternaryField/"
+                element={
+                  <ProtectedRoute>
+                    <IternaryField />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/IternaryField/:id"
+                element={
+                  <ProtectedRoute>
+                    <IternaryField />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/IternaryTable"
+                element={
+                  <ProtectedRoute>
+                    <IternaryTable />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/CarList"
+                element={
+                  <ProtectedRoute>
+                    <CarList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/CarForm"
+                element={
+                  <ProtectedRoute>
+                    <CarForm />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/CarForm/:id"
+                element={
+                  <ProtectedRoute>
+                    <CarForm />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

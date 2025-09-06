@@ -36,6 +36,19 @@ export const makeRequest = async (endpoint, options = {}) => {
 
 // API methods
 export const apiService = {
+   // ----------------- AUTH -----------------
+   register: (data) =>
+    makeRequest('/api/users/register', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
+  login: (data) =>
+    makeRequest('/api/users/login', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+
   // Customer methods
   getCustomers: () => makeRequest('/customer/all'),
   getCustomerById: (id) => makeRequest(`/customer/mono/${id}`),
