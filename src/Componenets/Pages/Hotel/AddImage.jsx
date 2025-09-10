@@ -23,7 +23,7 @@ const AddImage = () => {
   const fetchHotels = async () => {
     try {
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/hotels"
+        "https://billing-backend-seven.vercel.app/all"
       );
       setHotels(res.data);
     } catch (err) {
@@ -111,7 +111,7 @@ const AddImage = () => {
 
     try {
       await axios.delete(
-        `https://billing-backend-seven.vercel.app/gals/delete/${id}`
+        `https://billing-backend-seven.vercel.app/gals/delete-image/${id}`
       );
       toast.success("🗑️ Image deleted successfully.");
       fetchImages(); // refresh list

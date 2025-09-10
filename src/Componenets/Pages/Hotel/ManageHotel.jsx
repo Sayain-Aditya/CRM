@@ -43,7 +43,7 @@ const ManageHotel = () => {
   const fetchHotels = async () => {
     try {
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/hotels"
+        "https://billing-backend-seven.vercel.app/all"
       );
       setHotels(res.data); // adjust if your data shape is different
     } catch (err) {
