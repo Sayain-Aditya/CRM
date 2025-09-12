@@ -23,7 +23,7 @@ const AddImage = () => {
   const fetchHotels = async () => {
     try {
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/all"
+        "http://localhost:5000/hotels/all"
       );
       setHotels(res.data);
     } catch (err) {
@@ -35,7 +35,7 @@ const AddImage = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://billing-backend-seven.vercel.app/gals/all?hotelId=${seltOption}`
+        `http://localhost:5000/hotels/images?hotelId=${seltOption}`
       );
       setImagesByHotel((prev) => ({
         ...prev,
@@ -50,7 +50,7 @@ const AddImage = () => {
 
   const handleSelectChange = (e) => {
     setSelctOption(e.target.value);
-    setVisible(false); // reset visibility if hotel changes
+    setVisible(false);
   };
 
   const handelClick = () => {
@@ -84,7 +84,7 @@ const AddImage = () => {
 
     try {
       const res = await axios.post(
-        "https://billing-backend-seven.vercel.app/gals/upload-images",
+        "http://localhost:5000/hotels/upload-images",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -92,7 +92,7 @@ const AddImage = () => {
       );
 
       toast.success("✅ Images uploaded successfully!");
-      await fetchImages(); // 🔄 fetch updated images
+      await fetchImages();
     } catch (err) {
       console.error(err);
       toast.error("❌ Upload failed");
@@ -111,10 +111,10 @@ const AddImage = () => {
 
     try {
       await axios.delete(
-        `https://billing-backend-seven.vercel.app/gals/delete-image/${id}`
+        `http://localhost:5000/hotels/delete-image/${id}`
       );
       toast.success("🗑️ Image deleted successfully.");
-      fetchImages(); // refresh list
+      fetchImages();
     } catch (error) {
       toast.error("❌ Error deleting image");
     }
@@ -206,59 +206,10 @@ const AddImage = () => {
         </div>
       )}
 
-      {/* Loading spinner */}
       {loading && (
         <p className="text-center text-blue-500 mt-4">Loading images...</p>
       )}
 
-      {/* Image Table */}
-      {/* {!loading && imagesByHotel[seltOption]?.length > 0 && (
-        <div className="hidden sm:block mt-10">
-          <div className="mt-10">
-            <div className="bg-gray-500 text-white p-4 border-t rounded-t-md font-semibold">
-              Images for {hotels.find((h) => h._id === seltOption)?.name}
-            </div>
-            <table className="min-w-full bg-white shadow-md overflow-hidden">
-              <thead>
-                <tr className="bg-gray-300 text-black uppercase text-sm">
-                  <th className="py-3 px-6">Sr. No</th>
-                  <th className="py-3 px-6">Image URL</th>
-                  <th className="py-3 px-6">Preview</th>
-                  <th className="py-3 px-6">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {imagesByHotel[seltOption].map((img, idx) => (
-                  <tr
-                    key={img._id}
-                    className="border-t hover:bg-gray-50 text-center text-gray-600"
-                  >
-                    <td className="py-3 px-6">{idx + 1}</td>
-                    <td className="py-3 px-6 truncate">{img.name || "N/A"}</td>
-                    <td className="py-3 px-6 flex justify-center">
-                      <img
-                        src={img.url}
-                        alt="uploaded"
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                    </td>
-                    <td className="py-3 px-6">
-                      <button
-                        onClick={() => removeImage(img._id)}
-                        className="bg-red-500 hover:bg-red-700 text-white py-1 px-4 rounded"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )} */}
-
-      {/* Mobile Grid View */}
       {!loading && imagesByHotel[seltOption]?.length > 0 && (
         <div className="mt-10">
           <div className="bg-gray-500 text-white p-4 border-t rounded-t-md font-semibold">
@@ -268,25 +219,24 @@ const AddImage = () => {
             {imagesByHotel[seltOption].map((img, idx) => (
               <div
                 key={img._id}
-                className="bg-white rounded-lg shadow-md p-3 flex flex-col items-center gap-2 border border-gray-200 hover:shadow-lg transition-shadow"
+                className="bg-white rounded-lg shadow-md p-4"
               >
-                <img
-                  src={img.url}
-                  alt="uploaded"
-                  className="w-24 h-24 rounded-md object-cover"
-                />
-                <p
-                  className="text-sm text-gray-600 truncate text-center mt-2 w-full"
-                  title={img.name || "N/A"} // Tooltip to show full name on hover
-                >
-                  {img.name || "N/A"}
-                </p>
-                <button
-                  onClick={() => removeImage(img._id)}
-                  className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded text-xs font-semibold"
-                >
-                  Delete
-                </button>
+                <div className="text-center">
+                  <img
+                    src={img.url}
+                    alt="uploaded"
+                    className="w-full h-32 object-cover rounded-lg mb-2"
+                  />
+                  <p className="text-sm text-gray-600 mb-2 truncate">
+                    {img.name || "N/A"}
+                  </p>
+                  <button
+                    onClick={() => removeImage(img._id)}
+                    className="bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded text-sm"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -295,4 +245,5 @@ const AddImage = () => {
     </div>
   );
 };
+
 export default AddImage;
