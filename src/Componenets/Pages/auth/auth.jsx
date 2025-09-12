@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function AuthPage() {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true); // 🔄 toggle login/register
+  const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -25,7 +25,7 @@ export default function AuthPage() {
 
     if (data.user) {
       localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/dashboard"); // ✅ redirect
+      navigate("/dashboard");
     } else {
       alert(data.message || "Something went wrong");
     }
@@ -78,7 +78,7 @@ export default function AuthPage() {
         </button>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          {isLogin ? "Don’t have an account?" : "Already have an account?"}{" "}
+          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             type="button"
             onClick={() => setIsLogin(!isLogin)}
