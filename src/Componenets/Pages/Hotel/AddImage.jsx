@@ -199,7 +199,7 @@ const AddImage = () => {
                 />
               </svg>
               <p className="text-gray-500 mt-2">
-                Click to upload or drag and drop images
+                Click to upload or drag and drop the images
               </p>
             </div>
           </label>
