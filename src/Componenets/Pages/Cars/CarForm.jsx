@@ -21,7 +21,7 @@ const CarForm = () => {
     console.log("Car ID:", id);
     if (id) {
       axios
-        .get(`https://billing-backend-seven.vercel.app/car/mano/${id}`)
+        .get(`https://billing-backend-wheat.vercel.app/car/mano/${id}`)
         .then((res) => {
           const { carNumber, insurance, pollution, serviceReminder } = res.data;
           setForm({
@@ -65,13 +65,13 @@ const CarForm = () => {
       let response;
       if (id) {
         response = await axios.put(
-          `https://billing-backend-seven.vercel.app/car/update/${id}`,
+          `https://billing-backend-wheat.vercel.app/car/update/${id}`,
           payload
         );
         toast.success("Car updated successfully");
       } else {
         response = await axios.post(
-          `https://billing-backend-seven.vercel.app/car/add`,
+          `https://billing-backend-wheat.vercel.app/car/add`,
           payload
         );
         toast.success("Car added successfully");

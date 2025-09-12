@@ -23,7 +23,7 @@ const LeadsForm = () => {
   useEffect(() => {
     if (id) {
       axios
-        .get(`https://billing-backend-seven.vercel.app/lead/mano/${id}`)
+        .get(`https://billing-backend-wheat.vercel.app/lead/mano/${id}`)
         .then((res) => {
           const {
             name,
@@ -78,13 +78,13 @@ const LeadsForm = () => {
       let response;
       if (id) {
         response = await axios.put(
-          `https://billing-backend-seven.vercel.app/lead/update/${id}`,
+          `https://billing-backend-wheat.vercel.app/lead/update/${id}`,
           payload
         );
         toast.success("Lead updated successfully");
       } else {
         response = await axios.post(
-          `https://billing-backend-seven.vercel.app/lead/add`,
+          `https://billing-backend-wheat.vercel.app/lead/add`,
           payload
         );
         toast.success("Lead added successfully");

@@ -71,7 +71,7 @@ const IternaryList = ({ leads, setLeads }) => {
     const fetchHotels = async () => {
       try {
         const res = await axios.get(
-          "https://billing-backend-seven.vercel.app/hotels/all"
+          "https://billing-backend-wheat.vercel.app/hotels/all"
         ); // Hotel API endpoint
         const hotelOptions = res.data.map((hotel) => ({
           id: hotel._id,
@@ -92,7 +92,7 @@ const IternaryList = ({ leads, setLeads }) => {
     const fetchDestinations = async () => {
       try {
         const res = await axios.get(
-          "https://billing-backend-seven.vercel.app/destinations/"
+          "https://billing-backend-wheat.vercel.app/destinations/"
         ); // Destination API endpoint
         const destinationOptions = res.data.map((destination) => ({
           id: destination._id,
@@ -112,7 +112,7 @@ const IternaryList = ({ leads, setLeads }) => {
   useEffect(() => {
     if (id) {
       axios
-        .get(`https://billing-backend-seven.vercel.app/Iternary/mano/${id}`)
+        .get(`https://billing-backend-wheat.vercel.app/Iternary/mano/${id}`)
         .then((res) => {
           const {
             title,
@@ -288,14 +288,14 @@ const IternaryList = ({ leads, setLeads }) => {
       if (id) {
         // Update existing itinerary
         await axios.put(
-          `https://billing-backend-seven.vercel.app/Iternary/update/${id}`,
+          `https://billing-backend-wheat.vercel.app/Iternary/update/${id}`,
           finalData
         );
         toast.success("Itinerary updated successfully!");
       } else {
         // Add new itinerary
         await axios.post(
-          "https://billing-backend-seven.vercel.app/Iternary/add",
+          "https://billing-backend-wheat.vercel.app/Iternary/add",
           finalData
         );
         toast.success("Itinerary added successfully!");
@@ -308,7 +308,7 @@ const IternaryList = ({ leads, setLeads }) => {
     // try {
     //   console.log("📦 Sending Final Data:", finalData);
     //   const res = await axios.post(
-    //     "https://billing-backend-seven.vercel.app/Iternary/add",
+    //     "https://billing-backend-wheat.vercel.app/Iternary/add",
     //     finalData
     //   );
     //   console.log("Itinerary saved:", res.data.message);
@@ -345,7 +345,7 @@ const IternaryList = ({ leads, setLeads }) => {
   const handleDeleteItinerary = async () => {
     if (!id) return;
     try {
-      await axios.delete(`https://billing-backend-seven.vercel.app/Iternary/delete/${id}`);
+      await axios.delete(`https://billing-backend-wheat.vercel.app/Iternary/delete/${id}`);
       toast.success("Itinerary deleted successfully!");
       navigate("/IternaryTable");
     } catch (error) {

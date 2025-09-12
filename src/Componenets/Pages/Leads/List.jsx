@@ -29,7 +29,7 @@ const List = () => {
   const fetchLeads = async () => {
     try {
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/lead/all"
+        "https://billing-backend-wheat.vercel.app/lead/all"
       );
       const sortedLeads = (res.data.data || []).sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt);
@@ -91,7 +91,7 @@ const List = () => {
     if (deleteId) {
       try {
         await axios.delete(
-          `https://billing-backend-seven.vercel.app/lead/delete/${deleteId}`
+          `https://billing-backend-wheat.vercel.app/lead/delete/${deleteId}`
         );
         toast.success("Lead deleted successfully");
         fetchLeads();

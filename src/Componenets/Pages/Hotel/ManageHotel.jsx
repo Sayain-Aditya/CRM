@@ -20,7 +20,7 @@ const ManageHotel = () => {
 
     try {
       const res = await axios.post(
-        "https://billing-backend-seven.vercel.app/add",
+        "https://billing-backend-wheat.vercel.app/add",
         {
           name: name.trim(),
         }
@@ -43,7 +43,7 @@ const ManageHotel = () => {
   const fetchHotels = async () => {
     try {
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/all"
+        "https://billing-backend-wheat.vercel.app/all"
       );
       setHotels(res.data); // adjust if your data shape is different
     } catch (err) {
@@ -53,7 +53,7 @@ const ManageHotel = () => {
   const deleteHotel = async (id) => {
     try {
       const res = await axios.delete(
-        `https://billing-backend-seven.vercel.app/hotels/${id}`
+        `https://billing-backend-wheat.vercel.app/hotels/${id}`
       );
       if (res.status === 200) {
         toast.success("Hotel deleted successfully!");

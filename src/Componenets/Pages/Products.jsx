@@ -38,7 +38,7 @@ export default function Product() {
     setIsLoading(true);
     try {
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/billing/all"
+        "https://billing-backend-wheat.vercel.app/billing/all"
       );
       setProducts(res.data.data);
     } catch (error) {
@@ -58,13 +58,13 @@ export default function Product() {
     try {
       if (editingId) {
         await axios.put(
-          `https://billing-backend-seven.vercel.app/billing/update/${editingId}`,
+          `https://billing-backend-wheat.vercel.app/billing/update/${editingId}`,
           formData
         );
         toast.success("Product updated successfully");
       } else {
         await axios.post(
-          "https://billing-backend-seven.vercel.app/billing/create",
+          "https://billing-backend-wheat.vercel.app/billing/create",
           formData
         );
         toast.success("Product created successfully");
@@ -88,7 +88,7 @@ export default function Product() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://billing-backend-seven.vercel.app/billing/delete/${id}`
+        `https://billing-backend-wheat.vercel.app/billing/delete/${id}`
       );
       toast.success("Product deleted successfully");
       fetchProducts();

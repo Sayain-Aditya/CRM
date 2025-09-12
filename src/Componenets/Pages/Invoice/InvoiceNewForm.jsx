@@ -82,7 +82,7 @@ const InvoiceNewForm = () => {
       const fetchInvoice = async () => {
         try {
           const response = await axios.get(
-            `https://billing-backend-seven.vercel.app/invoices/mono/${id}`
+            `https://billing-backend-wheat.vercel.app/invoices/mono/${id}`
           );
           setFormData({
             ...response.data.data,
@@ -114,7 +114,7 @@ const InvoiceNewForm = () => {
     if (!id) {
       // Only fetch for new invoice
       axios
-        .get("https://billing-backend-seven.vercel.app/invoices/next-invoice-number")
+        .get("https://billing-backend-wheat.vercel.app/invoices/next-invoice-number")
         .then((res) => {
           setFormData((prev) => ({
             ...prev,
@@ -210,14 +210,14 @@ const InvoiceNewForm = () => {
       if (id) {
         // Update the invoice using PUT request
         await axios.put(
-          `https://billing-backend-seven.vercel.app/invoices/update/${id}`,
+          `https://billing-backend-wheat.vercel.app/invoices/update/${id}`,
           payload
         );
         toast.success("Invoice updated successfully!");
       } else {
         // Create a new invoice
         await axios.post(
-          "https://billing-backend-seven.vercel.app/invoices/create",
+          "https://billing-backend-wheat.vercel.app/invoices/create",
           payload
         );
         toast.success("Invoice created successfully!");
@@ -267,7 +267,7 @@ const InvoiceNewForm = () => {
   // Fetch all product names on component mount
   useEffect(() => {
     axios
-      .get("https://billing-backend-seven.vercel.app/billing/all/wp")
+      .get("https://billing-backend-wheat.vercel.app/billing/all/wp")
       .then((res) => {
         setProductOptions(res.data.data.map((product) => product.productName));
       })

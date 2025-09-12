@@ -15,7 +15,7 @@ const InvoiceNewPrint = () => {
     const fetchInvoice = async () => {
       try {
         const response = await fetch(
-          `https://billing-backend-seven.vercel.app/invoices/mono/${id}`
+          `https://billing-backend-wheat.vercel.app/invoices/mono/${id}`
         );
         const data = await response.json();
         if (data.success) {

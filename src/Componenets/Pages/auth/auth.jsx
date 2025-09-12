@@ -15,7 +15,7 @@ export default function AuthPage() {
 
     const endpoint = isLogin ? "login" : "register";
 
-    const res = await fetch(`https://billing-backend-seven.vercel.app/user/${endpoint}`, {
+    const res = await fetch(`https://billing-backend-wheat.vercel.app/user/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),

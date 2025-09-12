@@ -11,7 +11,7 @@ const Images = () => {
     const fetchImages = async () => {
       try {
         const res = await axios.get(
-          "https://billing-backend-seven.vercel.app/gals/all?hotelId=common-images"
+          "https://billing-backend-wheat.vercel.app/gals/all?hotelId=common-images"
         );
         setImages(res.data); // Assuming backend returns [{ _id, url, name }]
       } catch (err) {
@@ -78,7 +78,7 @@ const Images = () => {
 
       try {
         const res = await axios.post(
-          "https://billing-backend-seven.vercel.app/gals/upload-images",
+          "https://billing-backend-wheat.vercel.app/gals/upload-images",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -87,7 +87,7 @@ const Images = () => {
 
         toast.success("✅ Images uploaded successfully!");
         const updatedRes = await axios.get(
-          "https://billing-backend-seven.vercel.app/gals/all?hotelId=common-images"
+          "https://billing-backend-wheat.vercel.app/gals/all?hotelId=common-images"
         );
         setImages(updatedRes.data);
       } catch (err) {
@@ -109,7 +109,7 @@ const Images = () => {
 
     try {
       await axios.delete(
-        `https://billing-backend-seven.vercel.app/gals/delete-image/${id}`
+        `https://billing-backend-wheat.vercel.app/gals/delete-image/${id}`
       );
       setImages((prev) => prev.filter((img) => img._id !== id));
       toast.success("🗑️ Image deleted successfully.");

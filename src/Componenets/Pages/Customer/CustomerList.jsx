@@ -28,7 +28,7 @@ const CustomerList = () => {
   const fetchCustomers = async () => {
     try {
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/customer/all"
+        "https://billing-backend-wheat.vercel.app/customer/all"
       );
       const sortedCustomers = (res.data.data || []).sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt);
@@ -44,7 +44,7 @@ const CustomerList = () => {
   const deleteCustomer = async (id) => {
     try {
       const res = await axios.delete(
-        `https://billing-backend-seven.vercel.app/customer/delete/${id}`
+        `https://billing-backend-wheat.vercel.app/customer/delete/${id}`
       );
       if (res.status === 200) {
         toast.success("Customer deleted");
@@ -96,7 +96,7 @@ const CustomerList = () => {
     if (deleteId) {
       try {
         const res = await axios.delete(
-          `https://billing-backend-seven.vercel.app/customer/delete/${deleteId}`
+          `https://billing-backend-wheat.vercel.app/customer/delete/${deleteId}`
         );
         if (res.status === 200) {
           toast.success("Customer deleted");
