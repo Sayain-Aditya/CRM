@@ -110,7 +110,7 @@ const List = () => {
         <div className="fixed inset-0 bg-black bg-opacity-30" aria-hidden="true" />
         <div className="relative bg-white rounded-xl shadow-xl p-8 max-w-sm mx-auto flex flex-col items-center">
         <h2 className="text-lg font-bold mb-2 text-red-600 flex items-center gap-2">
-              <FaTrash className="inline-block" /> Delete Itinerary?
+              <FaTrash className="inline-block" /> Delete Lead?
             </h2>
           <p className="text-gray-600 mb-4 text-center">Are you sure you want to delete this lead? This action cannot be undone.</p>
           <div className="flex gap-4 w-full">
