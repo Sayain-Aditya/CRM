@@ -9,6 +9,8 @@ import { useEffect } from "react";
 const Destination = () => {
   const [name, setName] = useState("");
   const [destinations, setDestination] = useState([]);
+  
+  console.log("Current destinations state:", destinations);
 
   useEffect(() => {
     fetchDestination();
@@ -23,12 +25,14 @@ const Destination = () => {
     }
 
     try {
+      console.log("Submitting destination:", name.trim());
       const res = await axios.post(
-        "https://billing-backend-seven.vercel.app/adds",
+        "http://localhost:5000/destinations/add",
         {
           name: name.trim(),
         }
       );
+      console.log("Add response:", res);
 
       if (res.status === 201) {
         toast.success("Destination added successfully!");
@@ -36,6 +40,7 @@ const Destination = () => {
         fetchDestination(); // refresh the list
       }
     } catch (error) {
+      console.error("Add error:", error);
       if (error.response?.status === 409) {
         toast.error("Location already exists");
       } else {
@@ -46,22 +51,25 @@ const Destination = () => {
   // Fetch Destination from backend
   const fetchDestination = async () => {
     try {
+      console.log("Fetching destinations...");
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/destinations"
+        "http://localhost:5000/destinations/"
       );
-      setDestination(res.data); // adjust if your data shape is different
+      console.log("Destinations response:", res.data);
+      setDestination(res.data);
     } catch (err) {
+      console.error("Fetch error:", err);
       toast.error("Failed to fetch destination");
     }
   };
   const deleteDestination = async (id) => {
     try {
       const res = await axios.delete(
-        `https://billing-backend-seven.vercel.app/destinations/${id}`
+        `http://localhost:5000/destinations/${id}`
       );
       if (res.status === 200) {
         toast.success("Destination deleted successfully!");
-        fetchDestination(); // refresh the list
+        fetchDestination();
       }
     } catch (error) {
       toast.error("Failed to delete destination");

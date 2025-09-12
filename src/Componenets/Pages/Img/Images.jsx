@@ -11,7 +11,7 @@ const Images = () => {
     const fetchImages = async () => {
       try {
         const res = await axios.get(
-          "https://billing-backend-seven.vercel.app/common/all"
+          "https://billing-backend-seven.vercel.app/gals/all?hotelId=common-images"
         );
         setImages(res.data); // Assuming backend returns [{ _id, url, name }]
       } catch (err) {
@@ -21,8 +21,8 @@ const Images = () => {
 
     fetchImages(); // Initial fetch
 
-    // Set up polling every 5 seconds (adjust timing as needed)
-    const interval = setInterval(fetchImages, 2000);
+    // Set up polling every 10 seconds (reduced frequency)
+    const interval = setInterval(fetchImages, 10000);
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(interval);
@@ -30,9 +30,21 @@ const Images = () => {
 
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
+    console.log("Selected files:", files);
 
     if (files.length > 20) {
       toast.error("⚠️ You can only select up to 20 images.");
+      return;
+    }
+
+    // Basic validation only
+    if (files.some(file => file.size === 0)) {
+      toast.error("⚠️ Some files are empty");
+      return;
+    }
+
+    if (files.some(file => file.size > 500 * 1024)) {
+      toast.error("⚠️ Some files are too large (>500KB)");
       return;
     }
 
@@ -61,29 +73,26 @@ const Images = () => {
 
     if (uniqueFiles.length > 0) {
       const formData = new FormData();
-      uniqueFiles.forEach((file) => {
-        formData.append("images", file);
-      });
+      uniqueFiles.forEach((file) => formData.append("images", file));
+      formData.append("hotelId", "common-images");
 
       try {
-        const res = await fetch(
-          "https://billing-backend-seven.vercel.app/common/upload-images",
+        const res = await axios.post(
+          "https://billing-backend-seven.vercel.app/gals/upload-images",
+          formData,
           {
-            method: "POST",
-            body: formData,
+            headers: { "Content-Type": "multipart/form-data" },
           }
         );
 
-        const data = await res.json();
-
-        if (res.ok) {
-          toast.success("✅ Images uploaded successfully!");
-          setImages((prev) => [...prev, ...data.data]); // URLs from backend
-        } else {
-          toast.error(data.message || "❌ Upload failed");
-        }
+        toast.success("✅ Images uploaded successfully!");
+        const updatedRes = await axios.get(
+          "https://billing-backend-seven.vercel.app/gals/all?hotelId=common-images"
+        );
+        setImages(updatedRes.data);
       } catch (err) {
-        toast.error("❌ Error uploading images");
+        console.error("Upload error:", err);
+        toast.error("❌ Upload failed");
       }
     }
 
@@ -100,7 +109,7 @@ const Images = () => {
 
     try {
       await axios.delete(
-        `https://billing-backend-seven.vercel.app/common/delete/${id}`
+        `https://billing-backend-seven.vercel.app/gals/delete-image/${id}`
       );
       setImages((prev) => prev.filter((img) => img._id !== id));
       toast.success("🗑️ Image deleted successfully.");
