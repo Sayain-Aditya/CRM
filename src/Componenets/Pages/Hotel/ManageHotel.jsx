@@ -20,11 +20,7 @@ const ManageHotel = () => {
 
     try {
       const res = await axios.post(
-<<<<<<< HEAD
-        "https://billing-backend-seven.vercel.app/hotels/add",
-=======
-        "https://billing-backend-wheat.vercel.app/add",
->>>>>>> d1c4b68c2995455797abae7e34be26fc8079e10f
+        "https://billing-backend-wheat.vercel.app/hotels/add",
         {
           name: name.trim(),
         }
@@ -47,11 +43,7 @@ const ManageHotel = () => {
   const fetchHotels = async () => {
     try {
       const res = await axios.get(
-<<<<<<< HEAD
-        "https://billing-backend-seven.vercel.app/hotels/all"
-=======
         "https://billing-backend-wheat.vercel.app/hotels/all"
->>>>>>> d1c4b68c2995455797abae7e34be26fc8079e10f
       );
       setHotels(res.data); // adjust if your data shape is different
     } catch (err) {
