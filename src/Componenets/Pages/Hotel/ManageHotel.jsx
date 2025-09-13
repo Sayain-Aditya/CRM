@@ -20,7 +20,7 @@ const ManageHotel = () => {
 
     try {
       const res = await axios.post(
-        "https://billing-backend-wheat.vercel.app/add",
+        "https://billing-backend-wheat.vercel.app/hotels/add",
         {
           name: name.trim(),
         }
