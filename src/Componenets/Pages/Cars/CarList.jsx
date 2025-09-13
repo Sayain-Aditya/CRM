@@ -20,7 +20,7 @@ const CarList = () => {
 
   const fetchCars = async () => {
     try {
-      const res = await axios.get(`https://billing-backend-seven.vercel.app/car/all`); // Ensure the Promise is awaited
+      const res = await axios.get(`https://billing-backend-wheat.vercel.app/car/all`); // Ensure the Promise is awaited
       console.log("Full API Response:", res); // Log the full response
       const cars = res.data?.data || []; // Access the data field in the response
       const sortedCars = cars.sort((a, b) => {
@@ -73,7 +73,7 @@ const CarList = () => {
   const confirmDelete = async () => {
     if (deleteId) {
       try {
-        await axios.delete(`https://billing-backend-seven.vercel.app/car/delete/${deleteId}`);
+        await axios.delete(`https://billing-backend-wheat.vercel.app/car/delete/${deleteId}`);
         fetchCars();
       } catch (error) {
         console.error("Failed to delete car:", error);

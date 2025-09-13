@@ -47,7 +47,7 @@ const IternaryTable = () => {
   const fetchIternaries = async () => {
     try {
       const res = await axios.get(
-        "https://billing-backend-seven.vercel.app/Iternary/all"
+        "https://billing-backend-wheat.vercel.app/Iternary/all"
       );
       const sortedIternaries = (res.data.data || []).sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt);
@@ -63,7 +63,7 @@ const IternaryTable = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://billing-backend-seven.vercel.app/Iternary/delete/${id}`
+        `https://billing-backend-wheat.vercel.app/Iternary/delete/${id}`
       );
       toast.success("Itinerary deleted successfully!");
       setIternaries((prev) => prev.filter((iternaries) => iternaries._id !== id));

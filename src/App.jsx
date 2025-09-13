@@ -1,4 +1,8 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import DashBoard from "./Componenets/Pages/DashBoard";
 import Product from "./Componenets/Pages/Products";
 import Layout from "./Componenets/Layout";
@@ -8,7 +12,6 @@ import AddImage from "./Componenets/Pages/Hotel/AddImage";
 import Destination from "./Componenets/Pages/Destinations/Destination";
 import List from "./Componenets/Pages/Leads/List";
 import LeadsForm from "./Componenets/Pages/Leads/LeadsForm";
-import { useEffect, useState } from "react";
 import DestinationImages from "./Componenets/Pages/Destinations/DestinationImages";
 import CustomerList from "./Componenets/Pages/Customer/CustomerList";
 import CustomerForm from "./Componenets/Pages/Customer/CustomerForm";
@@ -28,43 +31,13 @@ import AuthPage from "./Componenets/Pages/auth/auth";
 import ProtectedRoute from "./Componenets/ProtectedRoute";
 
 function App() {
-  const [isSubscribed, setIsSubscribed] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.ready.then((registration) => {
-        registration.pushManager.getSubscription().then((subscription) => {
-          setIsSubscribed(!!subscription);
-        });
-      });
-    }
-  }, []);
-
-  const handleEnableNotifications = async () => {
-    const permission = await Notification.requestPermission();
-    if (permission === "granted") {
-      setIsSubscribed(true);
-      alert("Push notifications enabled!");
-    } else {
-      alert("Notifications permission denied.");
-    }
-  };
-
   const isAuthPage = location.pathname === "/";
 
   return (
     <>
-      {!isSubscribed && (
-        <button
-          onClick={handleEnableNotifications}
-          style={{ position: "absolute", top: 10, right: 10, zIndex: 1000 }}
-        >
-          Enable Push Notifications
-        </button>
-      )}
       <ToastContainer />
-
+      
       {isAuthPage ? (
         <Routes>
           <Route path="/" element={<AuthPage />} />
@@ -74,208 +47,34 @@ function App() {
           <div className="min-h-screen bg-white shadow-md">
             <Layout />
           </div>
+
           <div className="flex-1 p-4 bg-gray-100 overflow-y-auto">
             <Routes>
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashBoard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/products"
-                element={
-                  <ProtectedRoute>
-                    <Product />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/common"
-                element={
-                  <ProtectedRoute>
-                    <Images />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/hotel"
-                element={
-                  <ProtectedRoute>
-                    <ManageHotel />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/addimages"
-                element={
-                  <ProtectedRoute>
-                    <AddImage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/destination"
-                element={
-                  <ProtectedRoute>
-                    <Destination />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/DestinationImages"
-                element={
-                  <ProtectedRoute>
-                    <DestinationImages />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/list"
-                element={
-                  <ProtectedRoute>
-                    <List />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/Leadsform"
-                element={
-                  <ProtectedRoute>
-                    <LeadsForm />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/Leadsform/:id"
-                element={
-                  <ProtectedRoute>
-                    <LeadsForm />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/CustomerList"
-                element={
-                  <ProtectedRoute>
-                    <CustomerList />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/CustomerForm"
-                element={
-                  <ProtectedRoute>
-                    <CustomerForm />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/CustomerForm/:id"
-                element={
-                  <ProtectedRoute>
-                    <CustomerForm />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/InvoiceNewList"
-                element={
-                  <ProtectedRoute>
-                    <InvoiceNewList />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/InvoiceNewForm/:id"
-                element={
-                  <ProtectedRoute>
-                    <InvoiceNewForm />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/InvoiceNewForm"
-                element={
-                  <ProtectedRoute>
-                    <InvoiceNewForm />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/InvoiceNewPrint/:id"
-                element={
-                  <ProtectedRoute>
-                    <InvoiceNewPrint />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/IternaryList"
-                element={
-                  <ProtectedRoute>
-                    <IternaryList />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/IternaryList/:id"
-                element={
-                  <ProtectedRoute>
-                    <IternaryList />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/IternaryField/"
-                element={
-                  <ProtectedRoute>
-                    <IternaryField />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/IternaryField/:id"
-                element={
-                  <ProtectedRoute>
-                    <IternaryField />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/IternaryTable"
-                element={
-                  <ProtectedRoute>
-                    <IternaryTable />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/CarList"
-                element={
-                  <ProtectedRoute>
-                    <CarList />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/CarForm"
-                element={
-                  <ProtectedRoute>
-                    <CarForm />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/CarForm/:id"
-                element={
-                  <ProtectedRoute>
-                    <CarForm />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/dashboard" element={<ProtectedRoute><DashBoard /></ProtectedRoute>} />
+              <Route path="/products" element={<ProtectedRoute><Product /></ProtectedRoute>} />
+              <Route path="/common" element={<ProtectedRoute><Images /></ProtectedRoute>} />
+              <Route path="/hotel" element={<ProtectedRoute><ManageHotel /></ProtectedRoute>} />
+              <Route path="/addimages" element={<ProtectedRoute><AddImage /></ProtectedRoute>} />
+              <Route path="/destination" element={<ProtectedRoute><Destination /></ProtectedRoute>} />
+              <Route path="/DestinationImages" element={<ProtectedRoute><DestinationImages /></ProtectedRoute>} />
+              <Route path="/list" element={<ProtectedRoute><List /></ProtectedRoute>} />
+              <Route path="/Leadsform" element={<ProtectedRoute><LeadsForm /></ProtectedRoute>} />
+              <Route path="/Leadsform/:id" element={<ProtectedRoute><LeadsForm /></ProtectedRoute>} />
+              <Route path="/CustomerList" element={<ProtectedRoute><CustomerList /></ProtectedRoute>} />
+              <Route path="/CustomerForm" element={<ProtectedRoute><CustomerForm /></ProtectedRoute>} />
+              <Route path="/CustomerForm/:id" element={<ProtectedRoute><CustomerForm /></ProtectedRoute>} />
+              <Route path="/InvoiceNewList" element={<ProtectedRoute><InvoiceNewList /></ProtectedRoute>} />
+              <Route path="/InvoiceNewForm/:id" element={<ProtectedRoute><InvoiceNewForm /></ProtectedRoute>} />
+              <Route path="/InvoiceNewForm" element={<ProtectedRoute><InvoiceNewForm /></ProtectedRoute>} />
+              <Route path="/InvoiceNewPrint/:id" element={<ProtectedRoute><InvoiceNewPrint /></ProtectedRoute>} />
+              <Route path="/IternaryList" element={<ProtectedRoute><IternaryList /></ProtectedRoute>} />
+              <Route path="/IternaryList/:id" element={<ProtectedRoute><IternaryList /></ProtectedRoute>} />
+              <Route path="/IternaryField/" element={<ProtectedRoute><IternaryField /></ProtectedRoute>} />
+              <Route path="/IternaryField/:id" element={<ProtectedRoute><IternaryField /></ProtectedRoute>} />
+              <Route path="/IternaryTable" element={<ProtectedRoute><IternaryTable /></ProtectedRoute>} />
+              <Route path="/CarList" element={<ProtectedRoute><CarList /></ProtectedRoute>} />
+              <Route path="/CarForm" element={<ProtectedRoute><CarForm /></ProtectedRoute>} />
+              <Route path="/CarForm/:id" element={<ProtectedRoute><CarForm /></ProtectedRoute>} />
             </Routes>
           </div>
         </div>

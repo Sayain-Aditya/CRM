@@ -2,16 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { requestNotificationPermission } from "../../../services/notificationService";
-
-async function getPushSubscription() {
-  if ("serviceWorker" in navigator) {
-    const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.getSubscription();
-    return subscription;
-  }
-  return null;
-}
 
 const LeadsForm = () => {
   const navigate = useNavigate();
@@ -27,15 +17,13 @@ const LeadsForm = () => {
     meetingdate: "",
     status: "true",
     calldate: "",
-    update: "",
     notes: "",
   });
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   useEffect(() => {
     if (id) {
       axios
-        .get(`https://billing-backend-seven.vercel.app/lead/mano/${id}`)
+        .get(`https://billing-backend-wheat.vercel.app/lead/mano/${id}`)
         .then((res) => {
           const {
             name,
@@ -48,7 +36,6 @@ const LeadsForm = () => {
             meetingdate,
             status,
             calldate,
-            // update,
             notes,
           } = res.data.data;
           setFormData({
@@ -62,7 +49,6 @@ const LeadsForm = () => {
             meetingdate: meetingdate || "",
             status: status || "true",
             calldate: calldate || "",
-            // update: update || "",
             notes: notes || "",
           });
         })
@@ -73,14 +59,6 @@ const LeadsForm = () => {
     }
   }, [id]);
 
-  useEffect(() => {
-    const checkNotificationStatus = async () => {
-      const permission = await requestNotificationPermission();
-      setNotificationsEnabled(permission);
-    };
-    checkNotificationStatus();
-  }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -89,13 +67,10 @@ const LeadsForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const subscription = await getPushSubscription();
-
       const followUpDateUTC = new Date(formData.followUpDate).toISOString();
       const payload = {
         ...formData,
         followUpDate: followUpDateUTC,
-        subscription,
       };
 
       console.log("Submitting payload:", payload);
@@ -103,13 +78,13 @@ const LeadsForm = () => {
       let response;
       if (id) {
         response = await axios.put(
-          `https://billing-backend-seven.vercel.app/lead/update/${id}`,
+          `https://billing-backend-wheat.vercel.app/lead/update/${id}`,
           payload
         );
         toast.success("Lead updated successfully");
       } else {
         response = await axios.post(
-          `https://billing-backend-seven.vercel.app/lead/add`,
+          `https://billing-backend-wheat.vercel.app/lead/add`,
           payload
         );
         toast.success("Lead added successfully");
@@ -119,14 +94,6 @@ const LeadsForm = () => {
     } catch (error) {
       toast.error("Something went wrong");
       console.error(error);
-    }
-  };
-
-  const testNotification = () => {
-    if (notificationsEnabled) {
-      toast.info("Test notification would appear here (scheduling removed)");
-    } else {
-      toast.warning("Please enable notifications first");
     }
   };
 
@@ -217,15 +184,6 @@ const LeadsForm = () => {
             <div>
               <label className="block mb-2 font-semibold">
                 Follow-Up Date & Time
-                {notificationsEnabled ? (
-                  <span className="text-green-500 ml-2 text-sm">
-                    🔔 Notifications enabled
-                  </span>
-                ) : (
-                  <span className="text-yellow-500 ml-2 text-sm">
-                    🔕 Notifications disabled
-                  </span>
-                )}
               </label>
               <input
                 type="datetime-local"
@@ -296,18 +254,6 @@ const LeadsForm = () => {
             </div>
           </div>
 
-          {/* Updated Date */}
-          {/* <div>
-            <label className="block mb-2 font-semibold">Last Updated</label>
-            <input
-              type="datetime-local"
-              name="update"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.update}
-              onChange={handleChange}
-            />
-          </div> */}
-
           {/* Notes */}
           <div>
             <label className="block mb-2 font-semibold">Additional Notes</label>
@@ -328,13 +274,6 @@ const LeadsForm = () => {
               className="px-10 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-xl transition-all duration-200"
             >
               {id ? "Update" : "Submit"} Lead
-            </button>
-            <button
-              type="button"
-              onClick={testNotification}
-              className="ml-4 px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-            >
-              Test Notification
             </button>
           </div>
         </form>

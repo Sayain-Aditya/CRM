@@ -18,7 +18,7 @@ const CustomerForm = () => {
     if (id) {
       // Fetch existing customer data to edit
       axios
-        .get(`https://billing-backend-seven.vercel.app/customer/mono/${id}`)
+        .get(`https://billing-backend-wheat.vercel.app/customer/mono/${id}`)
         .then((res) => {
           const { name, phone, email, Address, WhatsApp } = res.data.data;
           setFormData({
@@ -47,14 +47,14 @@ const CustomerForm = () => {
       if (id) {
         // Update
         await axios.put(
-          `https://billing-backend-seven.vercel.app/customer/update/${id}`,
+          `https://billing-backend-wheat.vercel.app/customer/update/${id}`,
           formData
         );
         toast.success("Customer updated successfully");
       } else {
         // Add new
         await axios.post(
-          "https://billing-backend-seven.vercel.app/customer/add",
+          "https://billing-backend-wheat.vercel.app/customer/add",
           formData
         );
         toast.success("Customer added successfully");

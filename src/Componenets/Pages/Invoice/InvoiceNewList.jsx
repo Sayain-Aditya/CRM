@@ -18,7 +18,7 @@ const InvoiceNewList = () => {
     const fetchInvoices = async () => {
       try {
         const response = await fetch(
-          "https://billing-backend-seven.vercel.app/invoices/all"
+          "https://billing-backend-wheat.vercel.app/invoices/all"
         );
         const data = await response.json();
         const sortedInvoices = (data.data || []).sort((a, b) => {
@@ -83,7 +83,7 @@ const InvoiceNewList = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://billing-backend-seven.vercel.app/invoices/delete/${id}`
+        `https://billing-backend-wheat.vercel.app/invoices/delete/${id}`
       );
       setInvoices((prev) => prev.filter((inv) => inv._id !== id));
       toast.success("Invoice deleted successfully!");
