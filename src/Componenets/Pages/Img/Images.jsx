@@ -11,7 +11,7 @@ const Images = () => {
     const fetchImages = async () => {
       try {
         const res = await axios.get(
-          "https://billing-backend-wheat.vercel.app/gals/all?hotelId=common-images"
+          "https://billing-backend-wheat.vercel.app/common/all?hotelId=common-images"
         );
         setImages(res.data); // Assuming backend returns [{ _id, url, name }]
       } catch (err) {
