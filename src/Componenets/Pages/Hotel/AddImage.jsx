@@ -23,7 +23,7 @@ const AddImage = () => {
   const fetchHotels = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/hotels/all"
+        "https://billing-backend-seven.vercel.app/hotels/all"
       );
       setHotels(res.data);
     } catch (err) {
@@ -35,7 +35,7 @@ const AddImage = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:5000/hotels/images?hotelId=${seltOption}`
+        `https://billing-backend-seven.vercel.app/hotels/images?hotelId=${seltOption}`
       );
       setImagesByHotel((prev) => ({
         ...prev,
@@ -84,7 +84,7 @@ const AddImage = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/hotels/upload-images",
+        "https://billing-backend-seven.vercel.app/hotels/upload-images",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -111,7 +111,7 @@ const AddImage = () => {
 
     try {
       await axios.delete(
-        `http://localhost:5000/hotels/delete-image/${id}`
+        `https://billing-backend-seven.vercel.app/hotels/delete-image/${id}`
       );
       toast.success("🗑️ Image deleted successfully.");
       fetchImages();
@@ -199,7 +199,7 @@ const AddImage = () => {
                 />
               </svg>
               <p className="text-gray-500 mt-2">
-                Click to upload or drag and drop images
+                Click to upload or drag and drop the images
               </p>
             </div>
           </label>
