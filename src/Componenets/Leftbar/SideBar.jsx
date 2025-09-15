@@ -48,7 +48,9 @@ const Sidebar = () => {
       }`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 p-6 border-b border-slate-700">
+      <div className={`flex items-center p-6 border-b border-slate-700 ${
+        collapsed ? "justify-center" : "gap-3"
+      }`}>
         <img src="/icon.png" alt="Logo" className="w-10 h-10 rounded-lg" />
         {!collapsed && (
           <h1 className="text-lg font-semibold text-white">
