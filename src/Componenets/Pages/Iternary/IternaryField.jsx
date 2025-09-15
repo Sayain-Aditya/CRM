@@ -193,13 +193,7 @@ const IternaryField = () => {
   const nights = isNaN(days) ? "N/A" : days + 1;
   return (
     <>
-      <div>
-        <button
-          onClick={() => generatePDF(targetRef, { filename: "page.pdf" })}
-        >
-          Download PDF
-        </button>
-      </div>
+
       <div
         ref={targetRef}
         className="min-h-screen text-gray-800 p-6 md:p-12 flex items-start"
