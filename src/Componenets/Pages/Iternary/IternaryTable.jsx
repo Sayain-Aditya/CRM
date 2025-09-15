@@ -84,6 +84,29 @@ const IternaryTable = () => {
     navigate(`/IternaryField/${id}`);
   };
 
+  const handleDownloadPDF = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://billing-backend-wheat.vercel.app/Iternary/pdf/${id}`,
+        { responseType: 'blob' }
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `itinerary-${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success('PDF downloaded successfully!');
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      toast.error('Failed to download PDF. Opening view page...');
+      // Fallback: open view page
+      window.open(`/IternaryField/${id}`, '_blank');
+    }
+  };
+
   return (
     <div className="p-6 bg-gradient-to-b from-purple-50 to-white min-h-screen">
       <Toaster />
@@ -160,6 +183,12 @@ const IternaryTable = () => {
                       View
                     </button>
                     <button
+                      onClick={() => handleDownloadPDF(iternaries._id)}
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    >
+                      PDF
+                    </button>
+                    <button
                       onClick={() =>
                         navigate(`/IternaryList/${iternaries._id}`)
                       }
@@ -221,9 +250,13 @@ const IternaryTable = () => {
                   View
                 </button>
                 <button
-                 onClick={() =>
-                    navigate(`/IternaryList/${iternaries._id}`)
-                  }
+                  onClick={() => handleDownloadPDF(iternaries._id)}
+                  className="flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                >
+                  PDF
+                </button>
+                <button
+                  onClick={() => navigate(`/IternaryList/${iternaries._id}`)}
                   className="flex-1 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
                 >
                   Edit
@@ -235,7 +268,7 @@ const IternaryTable = () => {
                   }}
                   className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                 >
-                  Delete
+                  <FaTrash />
                 </button>
               </div>
             </div>
@@ -243,27 +276,28 @@ const IternaryTable = () => {
         )}
       </div>
 
+      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm mx-auto flex flex-col items-center">
-            <h2 className="text-lg font-bold mb-2 text-red-600 flex items-center gap-2">
-              <FaTrash className="inline-block" /> Delete Itinerary?
-            </h2>
-            <p className="text-gray-600 mb-4 text-center">Are you sure you want to delete this itinerary? This action cannot be undone.</p>
-            <div className="flex gap-4 w-full">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm mx-4">
+            <h3 className="text-lg font-semibold mb-4">Confirm Delete</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this itinerary?
+            </p>
+            <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="flex-1 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold transition"
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
               >
                 Cancel
               </button>
               <button
-                onClick={async () => {
-                  await handleDelete(iternaryToDelete);
+                onClick={() => {
+                  handleDelete(iternaryToDelete);
                   setShowDeleteModal(false);
                   setIternaryToDelete(null);
                 }}
-                className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition"
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
               >
                 Delete
               </button>
@@ -276,3 +310,60 @@ const IternaryTable = () => {
 };
 
 export default IternaryTable;
+//                 </button>
+//                 <button
+//                  onClick={() =>
+//                     navigate(`/IternaryList/${iternaries._id}`)
+//                   }
+//                   className="flex-1 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+//                 >
+//                   Edit
+//                 </button>
+//                 <button
+//                   onClick={() => {
+//                     setIternaryToDelete(iternaries._id);
+//                     setShowDeleteModal(true);
+//                   }}
+//                   className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+//                 >
+//                   Delete
+//                 </button>
+//               </div>
+//             </div>
+//           ))
+//         )}
+//       </div>
+
+//       {showDeleteModal && (
+//         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+//           <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm mx-auto flex flex-col items-center">
+//             <h2 className="text-lg font-bold mb-2 text-red-600 flex items-center gap-2">
+//               <FaTrash className="inline-block" /> Delete Itinerary?
+//             </h2>
+//             <p className="text-gray-600 mb-4 text-center">Are you sure you want to delete this itinerary? This action cannot be undone.</p>
+//             <div className="flex gap-4 w-full">
+//               <button
+//                 onClick={() => setShowDeleteModal(false)}
+//                 className="flex-1 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold transition"
+//               >
+//                 Cancel
+//               </button>
+//               <button
+//                 onClick={async () => {
+//                   await handleDelete(iternaryToDelete);
+//                   setShowDeleteModal(false);
+//                   setIternaryToDelete(null);
+//                 }}
+//                 className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition"
+//               >
+//                 Delete
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default IternaryTable;
