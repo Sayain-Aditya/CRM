@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from "./Leftbar/SideBar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const location = useLocation();
+  const isPdfPage = location.pathname.includes('/IternaryField/');
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex">
-        <Sidebar />
-        <div className="">
-          <Outlet />
+        {!isPdfPage && <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />}
+        <div className="flex-1">
+          <Outlet context={{ setSidebarCollapsed }} />
         </div>
       </div>
     </div>

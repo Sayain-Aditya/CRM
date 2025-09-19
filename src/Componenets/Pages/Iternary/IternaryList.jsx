@@ -391,11 +391,12 @@ const IternaryList = ({ leads, setLeads }) => {
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-blue-700 tracking-wide w-full sm:w-auto">
             Add New Tour
           </h2>
-          <Link to={`/IternaryField/${id}`} className="w-full sm:w-auto">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto px-4 py-2 rounded-lg shadow-lg text-base font-semibold transition">
-              Print Itinerary
-            </button>
-          </Link>
+          <button 
+            onClick={() => window.open(`/IternaryField/${id}`, '_blank')}
+            className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto px-4 py-2 rounded-lg shadow-lg text-base font-semibold transition"
+          >
+            Print Itinerary
+          </button>
           <hr className="mb-4 border-gray-300" />
 
           <form className="space-y-8 text-gray-700 bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 sm:p-8 mt-4">
