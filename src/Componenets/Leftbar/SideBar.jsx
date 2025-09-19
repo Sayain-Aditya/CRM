@@ -48,8 +48,16 @@ const Sidebar = () => {
       }`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 p-6 border-b border-slate-700">
-        <img src="/icon.png" alt="Logo" className="w-10 h-10 rounded-lg" />
+      <div className={`flex items-center border-b border-slate-700 ${
+        collapsed ? "justify-center p-4" : "gap-3 p-6"
+      }`}>
+        <img 
+          src="/icon.png" 
+          alt="Logo" 
+          className={`rounded-lg ${
+            collapsed ? "w-8 h-8" : "w-10 h-10"
+          }`} 
+        />
         {!collapsed && (
           <h1 className="text-lg font-semibold text-white">
             Shine Infosolution
