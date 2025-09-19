@@ -197,7 +197,7 @@ const IternaryField = () => {
       <div className="fixed top-4 right-4 z-50 no-print">
         <button
           onClick={handleDownloadPDF}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 transition-colors"
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 transition-colors"
         >
           <Download className="w-4 h-4" />
           Download PDF
