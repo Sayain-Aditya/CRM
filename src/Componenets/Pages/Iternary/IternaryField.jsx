@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Download, ArrowLeft } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
 import { RxCrossCircled } from "react-icons/rx";
 import { Toaster, toast } from "react-hot-toast";
@@ -193,6 +193,16 @@ const IternaryField = () => {
   const nights = isNaN(days) ? "N/A" : days + 1;
   return (
     <>
+      {/* Download PDF Button */}
+      <div className="fixed top-4 right-4 z-50 no-print">
+        <button
+          onClick={handleDownloadPDF}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 transition-colors"
+        >
+          <Download className="w-4 h-4" />
+          Download PDF
+        </button>
+      </div>
 
       <div
         ref={targetRef}
