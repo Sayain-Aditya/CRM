@@ -21,9 +21,10 @@ import InvoiceNewPrint from "./Componenets/Pages/Invoice/InvoiceNewPrint";
 import IternaryList from "./Componenets/Pages/Iternary/IternaryList";
 import IternaryField from "./Componenets/Pages/Iternary/IternaryField";
 import IternaryTable from "./Componenets/Pages/Iternary/IternaryTable";
+import { registerFCM, listenToMessages } from "./utils/registerFCM"; // ✅ added
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import React from "react";
+import React, { useEffect } from "react"; // ✅ useEffect added
 import "animate.css";
 import CarList from "./Componenets/Pages/Cars/CarList";
 import CarForm from "./Componenets/Pages/Cars/CarForm";
@@ -33,6 +34,12 @@ import ProtectedRoute from "./Componenets/ProtectedRoute";
 function App() {
   const location = useLocation();
   const isAuthPage = location.pathname === "/";
+
+  useEffect(() => {
+    // ✅ Firebase push notification setup
+    registerFCM();
+    listenToMessages();
+  }, []);
 
   return (
     <>

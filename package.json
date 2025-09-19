@@ -16,7 +16,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.6.2",
     "daisyui": "^5.0.35",
-
+    "firebase": "^12.3.0",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.510.0",
     "node-schedule": "^2.1.1",
