@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
-import { FaPlus, FaSearch, FaTimes, FaTrash, FaEdit, FaSpinner } from "react-icons/fa";
+import { FaPlus, FaSearch, FaTimes, FaTrash, FaEdit, FaSpinner,FaRegTimesCircle } from "react-icons/fa";
 import debounce from "lodash.debounce";
 import { Dialog } from '@headlessui/react';
 
