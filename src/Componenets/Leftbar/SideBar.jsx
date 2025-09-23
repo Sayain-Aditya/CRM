@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Squares2X2Icon,
   AdjustmentsHorizontalIcon,
@@ -15,13 +15,20 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 
-const Sidebar = () => {
+const Sidebar = ({ collapsed: externalCollapsed, setCollapsed: setExternalCollapsed }) => {
   const [openProducts, setOpenProducts] = useState(false);
   const [openGallery, setOpenGallery] = useState(false);
   const [selected, setSelected] = useState("");
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(externalCollapsed || false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
+
+  // Sync with external collapsed state
+  useEffect(() => {
+    if (externalCollapsed !== undefined) {
+      setCollapsed(externalCollapsed);
+    }
+  }, [externalCollapsed]);
 
   const handleItemClick = (title) => {
     setSelected(title);
@@ -164,7 +171,13 @@ const Sidebar = () => {
         {sidebarContent}
         {/* Collapse Toggle Button */}
         <button
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={() => {
+            const newCollapsed = !collapsed;
+            setCollapsed(newCollapsed);
+            if (setExternalCollapsed) {
+              setExternalCollapsed(newCollapsed);
+            }
+          }}
           className="absolute top-1/2 -right-3 transform -translate-y-1/2 bg-white border border-slate-300 rounded-full p-1.5 shadow-lg hover:bg-slate-50 transition-colors z-50"
         >
           {collapsed ? (
